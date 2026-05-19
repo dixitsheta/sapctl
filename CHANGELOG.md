@@ -9,9 +9,18 @@ All notable changes to sapctl. Format based on [Keep a Changelog](https://keepac
 - `.env.example` at repo root documenting every key sapctl + Pages Functions read.
 - `docs/manual-setup.md` Sections H-K: GitHub repo flip + branch protection, docs.sapctl.dev Cloudflare Pages project, Google Search Console verification, central `.env` migration walkthrough.
 - `apps/web-static/google41f66520f7aade66.html` for Search Console verification.
+- **License framework (Phase 7.1).** `sapctl license install | verify | show | refresh` -- ed25519-signed JWT, offline-verifiable against an embedded issuer public key per ADR 0005. Free-tier users see no change; gated features check the JWT `features` claim.
+- **Audit-export retention gate (Phase 7.1.5).** `sapctl s4 audit-export --retain N` annotates the manifest with intended retention. `N > 30 days` requires a Team-tier license with feature flag `audit-export-retain-365d`; hard upper bound 365 days.
+- **`docs/adr/0005-license-key-jwt-model.md`** -- offline-verifiable JWT model.
+- **`apps/docs/src/content/docs/install/team-tier.md`** -- recipe for Team-tier license install + troubleshooting.
 
 ### Changed
 - `apps/cli/main.go` now calls `config.LoadDefault()` before Cobra dispatch.
+- ADR 0002 ("Cobra framework"): drop "solo+AI" phrasing in Alternatives row.
+
+### Security
+- License `verify` is fully offline (embedded ed25519 pubkey, no JWKS). `refresh` is the only command that touches the network and only runs when the user explicitly calls it.
+- License file stored at `~/.config/sapctl/license.jwt` with `0600`. `Install()` performs a verify-roundtrip before writing; signature failure leaves the filesystem untouched.
 
 ## [0.1.0-alpha.2] - 2026-05-19
 

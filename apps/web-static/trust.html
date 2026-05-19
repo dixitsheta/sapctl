@@ -90,115 +90,14 @@
   </div>
 </div>
 
-<h2 id="sbom">Software bill of materials &amp; signed artifacts</h2>
-<p>Every signed release publishes a CycloneDX 1.7 SBOM per platform binary plus
-a <code>cosign</code>-signed SHA-256 checksum file. Signatures are produced via
-Sigstore <strong>keyless OIDC</strong> from our GitHub Actions workflow; no
-long-lived key exists on the project side.</p>
-
-<div id="trust-status" class="form-status" data-state="pending">Loading latest release from GitHub...</div>
-<div id="trust-release"></div>
-
-<h3 style="margin-top:32px">Verify on your own machine</h3>
-<p>Anyone can independently confirm a downloaded artifact:</p>
-<pre><code>cosign verify-blob \
-  --certificate-identity-regexp='https://github.com/dixitsheta/sapctl/.github/workflows/release.yml@.*' \
-  --certificate-oidc-issuer='https://token.actions.githubusercontent.com' \
-  --certificate=sapctl_&lt;VERSION&gt;_checksums.txt.pem \
-  --signature=sapctl_&lt;VERSION&gt;_checksums.txt.sig \
-  sapctl_&lt;VERSION&gt;_checksums.txt</code></pre>
-<p>The certificate's identity field will resolve to the exact workflow run
-that built the binaries. The cert is logged in the public Sigstore
-<a href="https://search.sigstore.dev/" target="_blank" rel="noopener">Rekor transparency log</a>;
-deletion is impossible.</p>
-
-<style>
-  .trust-rel { padding: 16px 0; border-top: 1px solid var(--line); }
-  .trust-rel:first-of-type { border-top: none; }
-  .trust-rel h4 { margin: 0 0 4px; }
-  .trust-rel .meta { color: var(--ink2); font-size: 13px; margin: 0 0 12px; }
-  .trust-asset { display: flex; gap: 12px; align-items: center; padding: 6px 0; font-size: 13px; }
-  .trust-asset .badge {
-    display: inline-block; padding: 2px 6px; border-radius: 4px;
-    background: var(--surface); border: 1px solid var(--line);
-    color: var(--ink2); font-size: 11px;
-  }
-  .trust-asset .badge.b-sig { color: var(--accent); border-color: var(--accent); }
-  .trust-asset .badge.b-pem { color: var(--ok); border-color: var(--ok); }
-  .trust-asset .badge.b-sbom { color: var(--warn); border-color: var(--warn); }
-</style>
-
-<script>
-(function () {
-  var status = document.getElementById('trust-status');
-  var mount = document.getElementById('trust-release');
-
-  function classify(name) {
-    if (/\.cdx\.json$/i.test(name)) return 'b-sbom';
-    if (/\.sig$/i.test(name))       return 'b-sig';
-    if (/\.pem$/i.test(name))       return 'b-pem';
-    return '';
-  }
-  function label(name) {
-    if (/\.cdx\.json$/i.test(name)) return 'CycloneDX SBOM';
-    if (/\.sig$/i.test(name))       return 'cosign signature';
-    if (/\.pem$/i.test(name))       return 'cosign cert';
-    if (/checksums\.txt$/i.test(name)) return 'SHA-256 checksums';
-    if (/\.tar\.gz$|\.zip$/i.test(name)) return 'binary archive';
-    return '';
-  }
-  function fmtDate(iso) {
-    try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }); }
-    catch (e) { return iso; }
-  }
-
-  fetch('/api/releases', { headers: { 'Accept': 'application/json' } })
-    .then(function (r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function (data) {
-      var rels = (data && data.releases) || [];
-      if (rels.length === 0) {
-        status.textContent = 'No signed releases yet.';
-        return;
-      }
-      var latest = rels.find(function (r) { return !r.draft; }) || rels[0];
-      status.textContent = 'Latest signed release: ' + latest.tag_name + ' (' + fmtDate(latest.published_at) + ').';
-      status.dataset.state = 'ok';
-
-      var section = document.createElement('div');
-      section.className = 'trust-rel';
-      var h = document.createElement('h4');
-      h.textContent = latest.tag_name + (latest.prerelease ? ' (prerelease)' : '');
-      section.appendChild(h);
-      var m = document.createElement('p');
-      m.className = 'meta';
-      m.innerHTML = 'Published ' + fmtDate(latest.published_at)
-        + ' &middot; <a href="' + latest.html_url + '" target="_blank" rel="noopener">GitHub release</a>'
-        + ' &middot; <a href="https://search.sigstore.dev/" target="_blank" rel="noopener">Rekor transparency log</a>';
-      section.appendChild(m);
-
-      (latest.assets || []).forEach(function (a) {
-        var row = document.createElement('div');
-        row.className = 'trust-asset';
-        var lbl = label(a.name);
-        var cls = classify(a.name);
-        var badgeHtml = lbl ? '<span class="badge ' + cls + '">' + lbl + '</span>' : '';
-        row.innerHTML = badgeHtml + ' <a href="' + a.browser_download_url
-          + '" rel="noopener">' + a.name + '</a> '
-          + '<span class="meta">(' + Math.round(a.size / 1024) + ' KB)</span>';
-        section.appendChild(row);
-      });
-
-      mount.appendChild(section);
-    })
-    .catch(function (err) {
-      status.textContent = 'Could not load releases: ' + err.message;
-      status.dataset.state = 'error';
-    });
-})();
-</script>
+<h2 id="sbom">Software bill of materials</h2>
+<p>Every signed release publishes a CycloneDX 1.7 and SPDX 3.0.1 SBOM, plus SLSA L3 provenance attestations. Download the latest:</p>
+<ul>
+  <li><a href="sbom/sapctl-0.1.0.cdx.json">sapctl-0.1.0.cdx.json</a> (CycloneDX 1.7)</li>
+  <li><a href="sbom/sapctl-0.1.0.spdx.json">sapctl-0.1.0.spdx.json</a> (SPDX 3.0.1)</li>
+  <li><a href="sbom/sapctl-0.1.0.intoto.jsonl">sapctl-0.1.0.intoto.jsonl</a> (in-toto attestation)</li>
+</ul>
+<p>Verify with <code>cosign verify-blob</code> against our public Fulcio identity.</p>
 
 <h2 id="pen-test">Penetration testing</h2>
 <p>Annual third-party penetration test, with a retest after material architecture change. Executive summary available on request; the full report is available under NDA.</p>
