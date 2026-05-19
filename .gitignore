@@ -19,6 +19,8 @@ agentdb.rvf.lock
 /dist/
 /build/
 /out/
+apps/docs/dist/
+apps/docs/.astro/
 *.exe
 *.dll
 *.so

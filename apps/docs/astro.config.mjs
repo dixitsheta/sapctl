@@ -10,10 +10,10 @@ export default defineConfig({
       description:
         'The unified open-source CLI for SAP. CRA-ready, MCP-emitting, audit-signed.',
       logo: { src: './src/assets/logo.svg' },
-      social: [
-        { icon: 'github', label: 'GitHub', href: 'https://github.com/dixitsheta/sapctl' },
-        { icon: 'discord', label: 'Discord', href: 'https://discord.gg/sapctl' },
-      ],
+      social: {
+        github: 'https://github.com/dixitsheta/sapctl',
+        discord: 'https://discord.gg/sapctl',
+      },
       customCss: ['./src/styles/theme.css'],
       sidebar: [
         {
