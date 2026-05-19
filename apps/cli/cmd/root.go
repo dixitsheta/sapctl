@@ -67,6 +67,7 @@ func NewRootCmd(version string) *cobra.Command {
 	root.AddCommand(newDatasphereCmd())
 	root.AddCommand(newAICoreCmd())
 	root.AddCommand(newBundleCmd())
+	root.AddCommand(newLicenseCmd())
 
 	return root
 }

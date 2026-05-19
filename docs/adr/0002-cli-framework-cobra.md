@@ -32,7 +32,7 @@ Use **`github.com/spf13/cobra` v1.8+** for command tree, `github.com/spf13/viper
 
 - `urfave/cli` — simpler, weaker subcommand depth, no AST walking.
 - `kong` — newer, smaller community.
-- Hand-rolled flag parser — non-starter solo+AI.
+- Hand-rolled flag parser — non-starter; reinvents Cobra at zero benefit.
 
 ## Consequences
 

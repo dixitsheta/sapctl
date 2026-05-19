@@ -223,3 +223,25 @@ func assertBundleContains(path string, want []string) error {
 type missingFileErr struct{ name string }
 
 func (e *missingFileErr) Error() string { return "missing in bundle: " + e.name }
+
+func TestEnforceRetainLicense_FreeAllowedUnder30(t *testing.T) {
+	for _, days := range []int{0, 1, 7, 30} {
+		if err := enforceRetainLicense(days); err != nil {
+			t.Errorf("retain=%d should be allowed free-tier, got %v", days, err)
+		}
+	}
+}
+
+func TestEnforceRetainLicense_FreeRejectedOver30(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
+	t.Setenv("XDG_CONFIG_HOME", t.TempDir())
+	if err := enforceRetainLicense(60); err == nil {
+		t.Fatal("retain=60 without license should fail")
+	}
+}
+
+func TestEnforceRetainLicense_RejectOverHardMax(t *testing.T) {
+	if err := enforceRetainLicense(400); err == nil {
+		t.Fatal("retain=400 should hit hard 365-day cap")
+	}
+}

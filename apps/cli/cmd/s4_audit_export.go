@@ -19,9 +19,14 @@ import (
 
 	"github.com/dixitsheta/sapctl/apps/cli/internal/auth"
 	"github.com/dixitsheta/sapctl/apps/cli/internal/errs"
+	"github.com/dixitsheta/sapctl/apps/cli/internal/license"
 	"github.com/dixitsheta/sapctl/apps/cli/internal/sap"
 	auditchain "github.com/dixitsheta/sapctl/packages/audit-chain"
 )
+
+// freeTierRetainDaysMax caps --retain for users without the
+// "audit-export-retain-365d" license feature.
+const freeTierRetainDaysMax = 30
 
 // useCase is a pre-baked OData query targeting a regulatory evidence need.
 type useCase struct {
@@ -55,12 +60,13 @@ var useCases = map[string]useCase{
 }
 
 type s4AuditExportFlags struct {
-	useCase string
-	from    string
-	to      string
-	outDir  string
-	maxRows int
-	bundle  bool
+	useCase    string
+	from       string
+	to         string
+	outDir     string
+	maxRows    int
+	bundle     bool
+	retainDays int // 0 = unset; free-tier cap 30; team-tier up to 365 (license-gated)
 }
 
 func newS4AuditExportCmd() *cobra.Command {
@@ -98,6 +104,8 @@ Verify with:
 	c.Flags().StringVar(&f.outDir, "out", ".", "output directory for the evidence bundle")
 	c.Flags().IntVar(&f.maxRows, "max-rows", 5000, "safety cap on rows fetched")
 	c.Flags().BoolVar(&f.bundle, "bundle", true, "produce a tar.gz bundle (--bundle=false leaves loose files)")
+	c.Flags().IntVar(&f.retainDays, "retain", 0,
+		"intended retention in days (annotated on manifest; >30 requires Team-tier license)")
 	_ = c.MarkFlagRequired("use-case")
 	return c
 }
@@ -115,6 +123,9 @@ func runS4AuditExport(ctx context.Context, cmd *cobra.Command, f s4AuditExportFl
 	if s4Shared.credLabel == "" {
 		return errs.New(errs.ExitUserError, "s4.audit_export.cred_required",
 			"--cred is required; run `sapctl auth login` first")
+	}
+	if err := enforceRetainLicense(f.retainDays); err != nil {
+		return err
 	}
 
 	cfgPath, err := auth.DefaultPath()
@@ -358,4 +369,33 @@ func bundleDir(dir, dst string) error {
 		_, err = io.Copy(tw, fp)
 		return err
 	})
+}
+
+// enforceRetainLicense gates --retain values that exceed the free-tier cap
+// behind the Team-tier "audit-export-retain-365d" feature flag.
+//
+// - retainDays == 0 (flag unset)       -> allow; manifest will note default 30d
+// - retainDays in 1..freeTierRetainDaysMax -> allow
+// - retainDays >  freeTierRetainDaysMax    -> require license with feature
+// - retainDays >  365                       -> always reject (hard upper bound)
+func enforceRetainLicense(retainDays int) error {
+	if retainDays <= 0 || retainDays <= freeTierRetainDaysMax {
+		return nil
+	}
+	if retainDays > 365 {
+		return errs.New(errs.ExitUserError, "s4.audit_export.retain.range",
+			fmt.Sprintf("--retain %d exceeds hard maximum of 365 days", retainDays))
+	}
+	lic, err := license.LoadCurrent()
+	if err != nil {
+		return errs.Wrap(errs.ExitAuth, "s4.audit_export.retain.license_load",
+			"verify license", err)
+	}
+	if !lic.Has("audit-export-retain-365d") {
+		return errs.New(errs.ExitAuth, "s4.audit_export.retain.unlicensed",
+			fmt.Sprintf("--retain %d requires Team-tier (feature 'audit-export-retain-365d'); "+
+				"free-tier cap is %d days. Run `sapctl license install` after subscribing.",
+				retainDays, freeTierRetainDaysMax))
+	}
+	return nil
 }
