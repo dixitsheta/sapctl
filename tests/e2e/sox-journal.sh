@@ -44,9 +44,9 @@ pass "sapctl found"
 # -------- 2. start fake S/4 OData server --------
 step "Start fake S/4HANA OData server on :$PORT"
 FAKE_ROOT="$WORKDIR/fake-s4"
-mkdir -p "$FAKE_ROOT/sap/opu/odata/sap/API_OPLACCTGDOCITEMCUBE_SRV"
+mkdir -p "$FAKE_ROOT/sap/opu/odata/sap/API_JOURNALENTRYITEMBASIC_SRV"
 
-cat > "$FAKE_ROOT/sap/opu/odata/sap/API_OPLACCTGDOCITEMCUBE_SRV/A_JournalEntryItemBasic" <<'JSON'
+cat > "$FAKE_ROOT/sap/opu/odata/sap/API_JOURNALENTRYITEMBASIC_SRV/A_JournalEntryItemBasic" <<'JSON'
 {
   "d": {
     "results": [
@@ -73,10 +73,16 @@ cat > "$FAKE_ROOT/sap/opu/odata/sap/API_OPLACCTGDOCITEMCUBE_SRV/A_JournalEntryIt
 }
 JSON
 
+if lsof -i ":$PORT" -t >/dev/null 2>&1; then
+  fail "port $PORT already in use (stale process from prior run?)"
+fi
 (cd "$FAKE_ROOT" && python3 -m http.server "$PORT" >/dev/null 2>&1) &
 FAKE_PID=$!
-sleep 1
-curl -sf "http://127.0.0.1:$PORT/sap/opu/odata/sap/API_OPLACCTGDOCITEMCUBE_SRV/A_JournalEntryItemBasic" >/dev/null \
+for i in 1 2 3 4 5; do
+  curl -sf "http://127.0.0.1:$PORT/sap/opu/odata/sap/API_JOURNALENTRYITEMBASIC_SRV/A_JournalEntryItemBasic" >/dev/null && break
+  sleep 1
+done
+curl -sf "http://127.0.0.1:$PORT/sap/opu/odata/sap/API_JOURNALENTRYITEMBASIC_SRV/A_JournalEntryItemBasic" >/dev/null \
   || fail "fake server not responding"
 pass "fake server up (pid $FAKE_PID)"
 
@@ -88,17 +94,16 @@ mkdir -p "$XDG_CONFIG_HOME/sapctl"
 "$SAPCTL_BIN" auth login \
   --flow basic \
   --label e2e \
-  --host "127.0.0.1:$PORT" \
-  --user "dummy" \
-  --password "dummy" \
-  --insecure >/dev/null 2>&1 \
-  || fail "auth login failed"
+  --username "dummy" \
+  --password "dummy" >/dev/null 2>"$WORKDIR/auth.err" \
+  || { cat "$WORKDIR/auth.err" >&2; fail "auth login failed"; }
 pass "credential saved"
 
 # -------- 4. audit init --------
 step "Initialize audit chain"
-"$SAPCTL_BIN" audit init --dir "$WORKDIR/audit" >/dev/null \
-  || fail "audit init failed"
+export SAPCTL_AUDIT_DIR="$WORKDIR/audit"
+"$SAPCTL_BIN" audit init >/dev/null 2>"$WORKDIR/audit.err" \
+  || { cat "$WORKDIR/audit.err" >&2; fail "audit init failed"; }
 pass "audit chain initialized"
 
 # -------- 5. audit-export sox-journal --------
@@ -109,11 +114,11 @@ mkdir -p "$OUT"
 if ! SAPCTL_AUDIT_DIR="$WORKDIR/audit" \
      "$SAPCTL_BIN" s4 audit-export \
        --cred e2e \
+       --base-url "http://127.0.0.1:$PORT" \
        --use-case sox-journal \
        --from 2025-01-01 \
        --to   2025-01-31 \
-       --out  "$OUT" \
-       --insecure 2>"$WORKDIR/export.err"; then
+       --out  "$OUT" 2>"$WORKDIR/export.err"; then
   cat "$WORKDIR/export.err" >&2
   fail "audit-export crashed"
 fi
@@ -127,20 +132,23 @@ BUNDLE="$(ls -1 "$OUT"/sapctl-evidence-sox-journal-*.tar.gz 2>/dev/null | head -
 EXTRACT="$WORKDIR/extract"
 mkdir -p "$EXTRACT"
 tar -xzf "$BUNDLE" -C "$EXTRACT"
+# bundle tar.gz wraps a top-level dir; descend into it
+INNER="$(find "$EXTRACT" -maxdepth 1 -mindepth 1 -type d | head -1)"
+[[ -n "$INNER" ]] || fail "extracted bundle missing inner directory"
 pass "bundle extracted: $(basename "$BUNDLE")"
 
 # -------- 7. assert artifacts --------
 step "Assert bundle contents"
 for f in rows.jsonl chain.jsonl ed25519.pub manifest.json; do
-  [[ -s "$EXTRACT/$f" ]] || fail "missing or empty: $f"
+  [[ -s "$INNER/$f" ]] || fail "missing or empty: $f"
 done
 pass "all 4 artifacts present"
 
 # -------- 8. verify chain externally --------
 step "Verify chain with sapctl audit verify"
 if ! "$SAPCTL_BIN" audit verify \
-       --chain "$EXTRACT/chain.jsonl" \
-       --pub   "$EXTRACT/ed25519.pub" >"$WORKDIR/verify.out" 2>&1; then
+       --chain "$INNER/chain.jsonl" \
+       --pub   "$INNER/ed25519.pub" >"$WORKDIR/verify.out" 2>&1; then
   cat "$WORKDIR/verify.out" >&2
   fail "audit verify rejected the chain"
 fi
@@ -151,6 +159,6 @@ echo
 echo "=========================================="
 echo "  sox-journal E2E: PASS"
 echo "  bundle: $BUNDLE"
-echo "  rows:   $(wc -l < "$EXTRACT/rows.jsonl" | tr -d ' ')"
-echo "  chain:  $(wc -l < "$EXTRACT/chain.jsonl" | tr -d ' ')"
+echo "  rows:   $(wc -l < "$INNER/rows.jsonl" | tr -d ' ')"
+echo "  chain:  $(wc -l < "$INNER/chain.jsonl" | tr -d ' ')"
 echo "=========================================="
