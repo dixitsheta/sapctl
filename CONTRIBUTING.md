@@ -1,7 +1,7 @@
 # Contributing to sapctl
 
-Thanks for considering a contribution. sapctl is a solo + AI-agent project
-in pre-alpha; the bar for accepting outside contributions is unusual.
+Thanks for considering a contribution. sapctl is in pre-alpha; the bar
+for accepting outside contributions is unusual.
 
 ## Quick rules
 
@@ -31,6 +31,21 @@ cd packages/audit-chain   && go test ./...
 cd packages/sqlite-mirror && go test ./...
 cd packages/mcp-emitter   && go test ./...
 ```
+
+### Always rebuild the CLI before running E2E
+
+`apps/cli/bin/sapctl` is gitignored but can persist across branches. Stale
+binaries silently hide newly-added commands (`s4 audit-export`, `bundle`,
+`aicore`, `datasphere`). Before running `tests/e2e/*.sh` or demoing, force
+a rebuild:
+
+```bash
+rm -f apps/cli/bin/sapctl
+cd apps/cli && go build -o bin/sapctl .
+```
+
+The E2E harness builds on-demand only if the binary is missing -- so if you
+just `git pull`ed new commands, manually delete `bin/sapctl` first.
 
 ## Areas where help is most welcome
 
