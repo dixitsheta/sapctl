@@ -1,0 +1,14 @@
+{
+  "_comment": "Drop into ~/Library/Application Support/Claude/claude_desktop_config.json (macOS) or %APPDATA%\\Claude\\claude_desktop_config.json (Windows). Restart Claude Desktop after editing.",
+  "mcpServers": {
+    "sapctl": {
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}

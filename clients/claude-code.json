@@ -1,0 +1,15 @@
+{
+  "_comment": "Drop into ~/.claude.json under the 'mcpServers' key, or use: claude mcp add sapctl /usr/local/bin/sapctl mcp serve",
+  "mcpServers": {
+    "sapctl": {
+      "type": "stdio",
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}

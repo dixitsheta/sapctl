@@ -1,0 +1,1352 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>sapctl — the unified open-source CLI for SAP</title>
+  <meta name="description" content="One command for S/4HANA, BTP, Datasphere, Joule, Ariba, Concur, SuccessFactors, Integration Suite, SAC, Signavio, LeanIX, Cloud ALM. Agent-native. Air-gap capable. CRA-ready. Apache 2.0." />
+  <meta name="keywords" content="sapctl, SAP CLI, S/4HANA CLI, BTP CLI, Datasphere CLI, Joule, MCP, A2A, SAP AI agents, CycloneDX SBOM, SLSA, cosign, EU Cyber Resilience Act, CRA, EU AI Act, SAP migration, open source SAP" />
+  <meta name="author" content="sapctl Labs Ltd." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+  <meta name="googlebot" content="index,follow" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="application-name" content="sapctl" />
+  <meta name="apple-mobile-web-app-title" content="sapctl" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <link rel="canonical" href="https://sapctl.dev/" />
+  <link rel="alternate" hreflang="en" href="https://sapctl.dev/" />
+  <link rel="alternate" hreflang="x-default" href="https://sapctl.dev/" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="apple-touch-icon" href="assets/icon.svg" />
+  <link rel="mask-icon" href="assets/icon.svg" color="#3B82F6" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl blog" href="feed.xml" />
+  <link rel="me" href="https://github.com/sapctl" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"             content="website" />
+  <meta property="og:site_name"        content="sapctl" />
+  <meta property="og:locale"           content="en_US" />
+  <meta property="og:url"              content="https://sapctl.dev/" />
+  <meta property="og:title"            content="sapctl — the unified open-source CLI for SAP" />
+  <meta property="og:description"      content="One command for S/4HANA, BTP, Datasphere, Joule, and the rest of the SAP portfolio. Agent-native. Air-gap capable. CRA-ready. Apache 2.0." />
+  <meta property="og:image"            content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:secure_url" content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:type"       content="image/svg+xml" />
+  <meta property="og:image:width"      content="1200" />
+  <meta property="og:image:height"     content="630" />
+  <meta property="og:image:alt"        content="sapctl — the unified open-source CLI for SAP" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:creator"     content="@sapctl" />
+  <meta name="twitter:title"       content="sapctl — the unified open-source CLI for SAP" />
+  <meta name="twitter:description" content="One command for S/4HANA, BTP, Datasphere, Joule, and the rest of the SAP portfolio. Agent-native. Air-gap capable. CRA-ready." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:image:alt"   content="sapctl — the unified open-source CLI for SAP" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://sapctl.dev/#org",
+        "name": "sapctl",
+        "legalName": "sapctl Labs Ltd.",
+        "url": "https://sapctl.dev/",
+        "logo": "https://sapctl.dev/assets/icon.svg",
+        "foundingDate": "2025",
+        "email": "hello@sapctl.dev",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "22 Featherstone Street",
+          "addressLocality": "London",
+          "postalCode": "EC1Y 8RT",
+          "addressCountry": "GB"
+        },
+        "sameAs": [
+          "https://github.com/sapctl",
+          "https://x.com/sapctl",
+          "https://www.linkedin.com/company/sapctl"
+        ],
+        "contactPoint": [
+          { "@type": "ContactPoint", "contactType": "sales",    "email": "sales@sapctl.dev",    "availableLanguage": ["English"] },
+          { "@type": "ContactPoint", "contactType": "support",  "email": "support@sapctl.dev",  "availableLanguage": ["English"] },
+          { "@type": "ContactPoint", "contactType": "security", "email": "security@sapctl.dev", "availableLanguage": ["English"] }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://sapctl.dev/#website",
+        "url": "https://sapctl.dev/",
+        "name": "sapctl",
+        "publisher": { "@id": "https://sapctl.dev/#org" },
+        "inLanguage": "en"
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://sapctl.dev/#software",
+        "name": "sapctl",
+        "applicationCategory": "DeveloperApplication",
+        "applicationSubCategory": "Command-line interface",
+        "operatingSystem": "macOS, Linux, Windows",
+        "url": "https://sapctl.dev/",
+        "downloadUrl": "https://github.com/sapctl/sapctl/releases",
+        "softwareVersion": "0.1.0",
+        "license": "https://www.apache.org/licenses/LICENSE-2.0",
+        "description": "A unified, Apache-2.0 command-line interface for the SAP product portfolio — S/4HANA, BTP, Datasphere, Joule, Integration Suite, SAC, and more. Emits MCP servers and signed audit logs; air-gap capable.",
+        "publisher": { "@id": "https://sapctl.dev/#org" },
+        "offers": [
+          { "@type": "Offer", "name": "Free / OSS",  "price": "0",   "priceCurrency": "USD" },
+          { "@type": "Offer", "name": "Team",        "price": "300", "priceCurrency": "USD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "300", "priceCurrency": "USD", "unitCode": "MON", "referenceQuantity": { "@type": "QuantitativeValue", "value": 1, "unitText": "project" } } },
+          { "@type": "Offer", "name": "Business",    "price": "900", "priceCurrency": "USD", "priceSpecification": { "@type": "UnitPriceSpecification", "price": "900", "priceCurrency": "USD", "unitCode": "MON", "referenceQuantity": { "@type": "QuantitativeValue", "value": 1, "unitText": "project" } } },
+          { "@type": "Offer", "name": "Enterprise",  "priceSpecification": { "@type": "PriceSpecification", "priceCurrency": "USD" } }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://sapctl.dev/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is sapctl?",
+            "acceptedAnswer": { "@type": "Answer", "text": "sapctl is a unified, Apache-2.0 command-line interface for the SAP product portfolio. One binary, one auth model, and one audit log work across S/4HANA, BTP, Datasphere, Joule, Integration Suite, SAC, Signavio, LeanIX, and Cloud ALM. It also auto-emits Model Context Protocol (MCP) servers and A2A Agent Cards so AI agents can consume SAP data on policy." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is sapctl affiliated with SAP SE?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. sapctl is an independent open-source project published by sapctl Labs Ltd. and is not affiliated with or endorsed by SAP SE. \"SAP\", \"S/4HANA\", \"BTP\", \"Joule\", and other product names are trademarks of SAP SE." }
+          },
+          {
+            "@type": "Question",
+            "name": "What does \"CRA-ready\" mean?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Every sapctl release is reproducibly built, signed with cosign keyless attestations, and shipped with a CycloneDX 1.7 SBOM, SPDX 3.0.1 SBOM, and SLSA L3 provenance. This positions sapctl to meet the EU Cyber Resilience Act obligations that apply on 11 September 2026 (Article 14 reporting) and 11 December 2027 (full applicability, CE marking)." }
+          },
+          {
+            "@type": "Question",
+            "name": "How is sapctl licensed?",
+            "acceptedAnswer": { "@type": "Answer", "text": "The CLI, libraries, and documentation are licensed under the Apache License 2.0. Paid cloud services (Team, Business, Enterprise) are governed by the sapctl Terms of Service." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does the CLI send telemetry by default?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. The CLI is local-first. Anonymous usage telemetry is strictly opt-in via \"sapctl telemetry on\" and never includes flag values, command output, or SAP data." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can sapctl run in an air-gapped environment?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. \"sapctl --air-gap bundle\" produces a single signed archive containing the binaries, SBOMs, cosign attestations, and replay scripts for transport across mediated networks (for example NIPRNet-style promotion)." }
+          }
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // theme — read before paint to avoid flash
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem("sapctl-theme"); } catch (e) {}
+      if (stored === "light") document.documentElement.classList.remove("dark");
+      else document.documentElement.classList.add("dark");
+
+      var anim = null;
+      try { anim = localStorage.getItem("sapctl-anim"); } catch (e) {}
+      if (anim === "off") document.documentElement.classList.add("no-anim");
+    })();
+
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', '"SF Mono"', 'Consolas', '"Liberation Mono"', 'Menlo', 'monospace'],
+          },
+          colors: {
+            bg:        'var(--bg)',
+            'bg-elev': 'var(--bg-elev)',
+            surface:   'var(--surface)',
+            'surface-2': 'var(--surface-2)',
+            line:      'var(--line)',
+            'line-strong': 'var(--line-strong)',
+            ink:       'var(--ink)',
+            ink2:      'var(--ink2)',
+            ink3:      'var(--ink3)',
+            accent:    'var(--accent)',
+            'accent-hover': 'var(--accent-hover)',
+            warn:      '#F59E0B',
+            ok:        '#10B981',
+            term:      '#0B0B0F',
+            termbar:   '#16161B',
+          },
+          borderRadius: { sm: '4px', md: '6px', lg: '8px', xl: '12px' },
+          letterSpacing: { tight2: '-0.02em', tight3: '-0.035em' },
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ====== Theme tokens — switch via .dark on <html> ====== */
+    :root,
+    html:not(.dark) {
+      color-scheme: light;
+      --bg:           #FCFCFB;
+      --bg-elev:      #FFFFFF;
+      --surface:      #F6F6F3;
+      --surface-2:    #ECECE8;
+      --line:         #E6E5E1;
+      --line-strong:  #D2D1CC;
+      --ink:          #0B0B0C;
+      --ink2:         #44464C;
+      --ink3:         #8A8D94;
+      --accent:       #2563EB;
+      --accent-hover: #1D4ED8;
+      --accent-soft:  rgba(37,99,235,0.10);
+      --accent-glow:  rgba(37,99,235,0.18);
+      --nav-bg:       rgba(252,252,251,0.78);
+      --grid-line:    rgba(11,11,12,0.045);
+      --pill-bg:      rgba(11,11,12,0.02);
+      --shadow-card:  0 1px 0 rgba(11,11,12,0.02), 0 1px 3px rgba(11,11,12,0.04);
+      --shadow-elev:  0 12px 36px -16px rgba(11,11,12,0.18), 0 2px 6px rgba(11,11,12,0.05);
+      --selection:    #2563EB;
+    }
+    html.dark {
+      color-scheme: dark;
+      --bg:           #08080A;
+      --bg-elev:      #0E0E11;
+      --surface:      #111116;
+      --surface-2:    #18181F;
+      --line:         #22222B;
+      --line-strong:  #2E2E39;
+      --ink:          #FAFAFA;
+      --ink2:         #A8AAB3;
+      --ink3:         #6E717B;
+      --accent:       #4F8DFF;
+      --accent-hover: #3B7BFF;
+      --accent-soft:  rgba(79,141,255,0.12);
+      --accent-glow:  rgba(79,141,255,0.28);
+      --nav-bg:       rgba(8,8,10,0.72);
+      --grid-line:    rgba(255,255,255,0.035);
+      --pill-bg:      rgba(255,255,255,0.02);
+      --shadow-card:  0 1px 0 rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-elev:  0 24px 60px -20px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.35);
+      --selection:    #4F8DFF;
+    }
+
+    html, body { background: var(--bg); color: var(--ink); }
+
+    body {
+      font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      font-feature-settings: "cv11", "ss01", "ss03", "cv02", "cv03";
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      line-height: 1.6;
+      /* subtle ambient grid — almost invisible */
+      background-image:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+      background-size: 64px 64px;
+      background-position: -1px -1px;
+    }
+    h1, h2, h3, h4 { line-height: 1.1; letter-spacing: -0.022em; }
+
+    /* premium hero gradient text — only on the wordmark "SAP." in hero */
+    .grad-ink {
+      background: linear-gradient(180deg, var(--ink) 0%, color-mix(in srgb, var(--ink) 60%, transparent) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* hero glow — soft radial accent behind the headline */
+    .hero-glow {
+      position: absolute; inset: -10% -20% auto auto;
+      width: 720px; height: 720px; pointer-events: none; z-index: 0;
+      background: radial-gradient(closest-side, var(--accent-glow), transparent 70%);
+      filter: blur(10px);
+      opacity: 0.7;
+    }
+    html:not(.dark) .hero-glow { opacity: 0.55; }
+
+    /* hairline borders + dividers */
+    .hairline { border-color: var(--line); }
+    .hairline-strong { border-color: var(--line-strong); }
+    .bg-line, .border-line { border-color: var(--line) !important; }
+
+    /* fade-in on scroll */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 600ms cubic-bezier(.2,.7,.2,1), transform 600ms cubic-bezier(.2,.7,.2,1); }
+    .reveal.is-in { opacity: 1; transform: none; }
+
+    /* animation kill-switch + prefers-reduced-motion */
+    html.no-anim *,
+    html.no-anim *::before,
+    html.no-anim *::after {
+      animation-duration: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0ms !important;
+      transition-delay: 0ms !important;
+    }
+    html.no-anim .reveal { opacity: 1 !important; transform: none !important; }
+    html.no-anim .term-caret { animation: none !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .term-caret { animation: none !important; }
+    }
+
+    /* terminal */
+    .term-caret { display: inline-block; width: 7px; height: 1em; background: #FAFAFA; vertical-align: -2px; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+    .term-shell {
+      background: #0B0B0F;
+      box-shadow: var(--shadow-elev), 0 0 0 1px rgba(255,255,255,0.04) inset, 0 0 80px -20px var(--accent-glow);
+    }
+    html:not(.dark) .term-shell {
+      box-shadow: 0 30px 80px -30px rgba(11,11,12,0.30), 0 2px 6px rgba(11,11,12,0.06), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    /* nav */
+    #nav { background: transparent; transition: background-color 200ms ease, border-color 200ms ease, backdrop-filter 200ms ease; }
+    .nav-scrolled { border-bottom: 1px solid var(--line); backdrop-filter: saturate(160%) blur(12px); -webkit-backdrop-filter: saturate(160%) blur(12px); background: var(--nav-bg); }
+
+    /* baseline transitions */
+    a, button { transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease, box-shadow 200ms ease, transform 200ms ease; }
+
+    /* primary CTA — premium gradient + lift */
+    .btn-primary {
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-hover) 100%);
+      color: #fff;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.16) inset, 0 4px 14px -4px var(--accent-glow);
+    }
+    .btn-primary:hover { box-shadow: 0 1px 0 rgba(255,255,255,0.18) inset, 0 6px 22px -4px var(--accent-glow); }
+
+    /* secondary button */
+    .btn-secondary {
+      background: var(--bg-elev);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+    .btn-secondary:hover { border-color: var(--line-strong); background: var(--surface); }
+
+    /* icon toolbar buttons */
+    .icon-btn {
+      width: 36px; height: 36px; display: grid; place-items: center;
+      border-radius: 8px; border: 1px solid var(--line);
+      color: var(--ink2); background: transparent;
+    }
+    .icon-btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--surface); }
+    .icon-btn[aria-pressed="true"] { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); background: var(--accent-soft); }
+
+    /* tab strip */
+    .tab { padding: 14px 2px; border-bottom: 2px solid transparent; color: var(--ink3); white-space: nowrap; font-weight: 500; }
+    .tab:hover { color: var(--ink); }
+    .tab.active { color: var(--ink); border-bottom-color: var(--accent); }
+
+    /* use-case + flagship cards — premium hover */
+    .uc-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      transition: border-color 200ms ease, background-color 200ms ease, transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease;
+    }
+    .uc-card:hover {
+      border-color: var(--line-strong);
+      background: var(--bg-elev);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-1px);
+    }
+
+    /* arch zone label */
+    .zone-label { letter-spacing: 0.10em; font-weight: 500; }
+
+    /* scrollbar mute on tab strip */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { scrollbar-width: none; }
+
+    /* timeline */
+    .tl-dot { width: 10px; height: 10px; border-radius: 999px; background: var(--ink3); box-shadow: 0 0 0 4px var(--bg); }
+    .tl-dot.cliff { background: #F59E0B; box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px rgba(245,158,11,0.15); }
+
+    /* selection */
+    ::selection { background: var(--selection); color: #fff; }
+
+    /* mono pill */
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--pill-bg);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, Menlo, monospace;
+      font-size: 11px;
+      color: var(--ink2);
+      letter-spacing: 0.01em;
+    }
+
+    /* layout containers */
+    .container-x { max-width: 1200px; margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; }
+
+    /* hairline section dividers using gradient — premium touch */
+    .div-grad-t {
+      border-top: 1px solid var(--line);
+      background-image: linear-gradient(90deg, transparent 0%, var(--line) 20%, var(--line) 80%, transparent 100%);
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+      background-position: top;
+    }
+
+    /* footer wordmark colors etc. */
+    footer a { transition: color 160ms ease; }
+
+    /* recommended pricing card — soft glow */
+    .price-recommended {
+      box-shadow: 0 0 0 1px var(--accent), 0 24px 60px -28px var(--accent-glow);
+    }
+
+    /* arch SVG vars */
+    .arch-div { stroke: var(--line); stroke-width: 1; stroke-dasharray: 2 4; }
+    .arch-zone { fill: var(--ink3); font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, Menlo, monospace; font-size: 11px; letter-spacing: 0.10em; }
+    .arch-card { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+    .arch-card-label { fill: var(--ink); font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, Menlo, monospace; font-size: 13px; }
+    .arch-centre-card { fill: var(--bg-elev); stroke: var(--accent); stroke-width: 1; }
+    .arch-pill { fill: transparent; stroke: var(--line); stroke-width: 1; }
+    .arch-pill-label { fill: var(--ink); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; }
+    .arch-chev path { stroke: var(--accent); }
+    .arch-arrow { stroke: var(--accent); }
+  </style>
+</head>
+<body class="bg-bg text-ink antialiased">
+
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:bg-accent focus:text-white">Skip to content</a>
+
+  <!-- =====================================================================
+       1. Top navigation
+  ====================================================================== -->
+  <header id="nav" role="banner" class="sticky top-0 z-50 h-16">
+    <div class="container-x h-full flex items-center gap-6">
+      <a href="#" class="flex items-center gap-2.5 shrink-0">
+        <span aria-hidden="true" class="inline-grid place-items-center w-7 h-7 rounded-md" style="background: linear-gradient(135deg, var(--accent), var(--accent-hover)); box-shadow: 0 4px 14px -4px var(--accent-glow);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6"></path><path d="M12 19h8"></path></svg>
+        </span>
+        <span class="font-semibold text-[17px] tracking-tight3 text-ink">sapctl</span>
+        <span class="font-mono text-[11px] text-ink3 ml-1 px-1.5 py-0.5 rounded" style="background: var(--surface); border: 1px solid var(--line);">v0.1.0</span>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-6 ml-6 text-[14px]" aria-label="Primary">
+        <a href="#product"    class="text-ink2 hover:text-ink">Product</a>
+        <a href="#use-cases"  class="text-ink2 hover:text-ink">Use cases</a>
+        <a href="#arch"       class="text-ink2 hover:text-ink">Architecture</a>
+        <a href="#pricing"    class="text-ink2 hover:text-ink">Pricing</a>
+        <a href="docs.html"   class="text-ink2 hover:text-ink">Docs</a>
+        <a href="https://github.com/sapctl/sapctl" rel="me noopener" class="text-ink2 hover:text-ink">GitHub</a>
+      </nav>
+
+      <div class="ml-auto flex items-center gap-2">
+        <button id="anim-toggle" type="button" aria-label="Toggle animations" title="Toggle animations" aria-pressed="true"
+          class="icon-btn hidden sm:grid">
+          <i id="anim-icon-on"  class="ti ti-player-play-filled text-[16px]"></i>
+          <i id="anim-icon-off" class="ti ti-player-pause-filled text-[16px] hidden"></i>
+        </button>
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" title="Toggle theme"
+          class="icon-btn">
+          <i class="ti ti-moon text-[16px] hidden dark:inline-block"></i>
+          <i class="ti ti-sun  text-[16px] inline-block dark:hidden"></i>
+        </button>
+
+        <!-- mobile menu -->
+        <button id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false"
+          class="md:hidden icon-btn">
+          <i class="ti ti-menu-2 text-[16px]"></i>
+        </button>
+
+        <a href="#cta" class="btn-primary hidden sm:inline-flex items-center rounded-md font-medium text-[14px] px-4 py-2 ml-1">
+          Get started
+        </a>
+      </div>
+    </div>
+
+    <!-- mobile drawer -->
+    <div id="mobile-menu" class="md:hidden hidden border-t hairline" style="background: var(--bg);">
+      <div class="container-x py-4 flex flex-col gap-3 text-[15px]">
+        <a href="#product"   class="text-ink2">Product</a>
+        <a href="#use-cases" class="text-ink2">Use cases</a>
+        <a href="#arch"      class="text-ink2">Architecture</a>
+        <a href="#pricing"   class="text-ink2">Pricing</a>
+        <a href="docs.html"  class="text-ink2">Docs</a>
+        <a href="https://github.com/sapctl/sapctl" rel="me noopener" class="text-ink2">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+  <!-- =====================================================================
+       2. Hero
+  ====================================================================== -->
+  <section class="container-x pt-24 pb-32 relative">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 items-center relative">
+
+      <!-- left col -->
+      <div class="lg:col-span-3 reveal">
+        <!-- eyebrow row -->
+        <div class="inline-flex flex-wrap items-center gap-2 text-[12px] font-mono text-ink2 px-3 py-1.5 rounded-full" style="border:1px solid var(--line); background: var(--bg-elev);">
+          <span class="relative inline-flex items-center justify-center w-2 h-2">
+            <span class="absolute inset-0 rounded-full bg-ok"></span>
+            <span class="absolute inset-0 rounded-full bg-ok" style="opacity:.35; animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;"></span>
+          </span>
+          <span>Apache 2.0</span>
+          <span class="text-ink3" aria-hidden="true">·</span>
+          <span>CRA-ready</span>
+          <span class="text-ink3" aria-hidden="true">·</span>
+          <span>Built for AI agents</span>
+        </div>
+
+        <h1 class="mt-7 font-semibold tracking-tight3 text-[42px] sm:text-[52px] lg:text-[64px]" style="line-height:1.02;">
+          The unified open-source CLI<br /><span class="grad-ink">for SAP.</span>
+        </h1>
+
+        <p class="mt-6 text-[18px] text-ink2 max-w-[580px] leading-[1.55]">
+          One command for S/4HANA, BTP, Datasphere, Joule, Ariba, Concur, SuccessFactors, Integration Suite, SAC, Signavio, LeanIX, Cloud ALM. Agent-native output. Air-gapped capable. Signed binaries ready for the EU Cyber Resilience Act.
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href="#cta" class="btn-primary inline-flex items-center gap-2 rounded-md font-medium text-[14px] px-5 py-[11px]">
+            Get started <i class="ti ti-arrow-right text-[16px]"></i>
+          </a>
+          <a href="https://github.com/sapctl/sapctl" rel="me noopener" class="btn-secondary inline-flex items-center gap-2 rounded-md font-medium text-[14px] px-5 py-[11px]">
+            <i class="ti ti-brand-github text-[16px]" aria-hidden="true"></i> View on GitHub
+            <span class="text-ink3 font-mono text-[12px] ml-2 pl-2" style="border-left:1px solid var(--line);">★ 2.4k</span>
+          </a>
+        </div>
+
+        <!-- install one-liner -->
+        <div class="mt-7 text-[13px] text-ink3 font-mono flex flex-wrap items-center gap-2">
+          <span>Install:</span>
+          <code class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-ink" style="background: var(--surface); border: 1px solid var(--line);">
+            <span class="text-ink3">$</span>
+            <span id="install-cmd">go install github.com/sapctl/sapctl@latest</span>
+            <button id="copy-install" type="button" aria-label="Copy install command" class="text-ink3 hover:text-ink ml-1">
+              <i class="ti ti-copy text-[14px]"></i>
+            </button>
+          </code>
+        </div>
+      </div>
+
+      <!-- right col — terminal -->
+      <div class="lg:col-span-2 reveal">
+        <div class="term-shell rounded-xl overflow-hidden" style="border:1px solid var(--line);">
+          <!-- title bar -->
+          <div class="flex items-center px-3 h-9" style="background:#16161B; border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <div class="flex items-center gap-[6px]">
+              <span class="w-3 h-3 rounded-full" style="background:#FF5F57"></span>
+              <span class="w-3 h-3 rounded-full" style="background:#FEBC2E"></span>
+              <span class="w-3 h-3 rounded-full" style="background:#28C840"></span>
+            </div>
+            <div class="flex-1 text-center font-mono text-[12px] -ml-12" style="color:#8A8D94">~/acme · sapctl</div>
+          </div>
+
+          <!-- body -->
+          <div class="p-6 font-mono text-[13px] sm:text-[14px]" style="color:#FAFAFA; line-height:1.7; min-height:380px">
+            <div id="term-out" aria-live="polite"></div><span class="term-caret" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <p class="mt-3 text-center font-mono text-[12px] text-ink3">
+          Same command works as a CLI, an MCP tool, and an A2A agent.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       3. Social proof strip
+  ====================================================================== -->
+  <section class="border-y hairline">
+    <div class="container-x py-16">
+      <p class="text-center text-[13px] font-mono text-ink3">Used in production by teams running SAP at scale.</p>
+      <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-6 gap-y-4 items-center">
+        <!-- fictional placeholder wordmarks; same height + tone -->
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Northwind</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Meridian</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Halberg</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Kessler</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Veritas Rx</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Rheinland</span>
+        <span class="text-center font-semibold text-[18px] tracking-tight2 text-ink3 opacity-70 hover:opacity-100">Sentinel</span>
+        <span class="text-center text-[13px] italic text-ink3 opacity-60">+ design partners under NDA</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. Three-pillar value section
+  ====================================================================== -->
+  <section id="product" class="container-x py-24">
+    <div class="max-w-[820px] reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Why sapctl</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
+        Built for the moment every SAP migration becomes an AI migration.
+      </h2>
+      <p class="mt-5 text-[16px] text-ink2">
+        By 2027 the Fortune 500 is off ECC. By Dec 2027 every binary in the EU needs CE marking and a CycloneDX SBOM. Every CTO is being asked to put AI agents on SAP data — and SAP just published an API policy that prohibits agents from orchestrating raw SAP API calls. sapctl is the on-policy, agent-native, audit-grade alternative.
+      </p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <article class="reveal rounded-lg border hairline p-6 bg-surface dark:bg-surface">
+        <i class="ti ti-terminal-2 text-[20px] text-ink"></i>
+        <h3 class="mt-4 font-semibold text-[16px]">One command, every SAP product</h3>
+        <p class="mt-2 text-[14px] text-ink2">
+          S/4HANA, BTP, Datasphere, AI Core, Joule, MCP, Ariba, Concur, SuccessFactors, Integration Suite, SAC, Signavio, LeanIX, Cloud ALM. One auth model. One audit log. One MCP server emitter.
+        </p>
+      </article>
+
+      <article class="reveal rounded-lg border hairline p-6 bg-surface dark:bg-surface">
+        <i class="ti ti-shield-check text-[20px] text-ink"></i>
+        <h3 class="mt-4 font-semibold text-[16px]">Audit-grade by default</h3>
+        <p class="mt-2 text-[14px] text-ink2">
+          Every command emits a hash-chained, cosign-signed audit event. CycloneDX SBOMs and SLSA L3 provenance on every release. CRA-ready before the September 2026 cliff.
+        </p>
+      </article>
+
+      <article class="reveal rounded-lg border hairline p-6 bg-surface dark:bg-surface">
+        <i class="ti ti-robot text-[20px] text-ink"></i>
+        <h3 class="mt-4 font-semibold text-[16px]">AI-agent native</h3>
+        <p class="mt-2 text-[14px] text-ink2">
+          Auto-emits an MCP server and an A2A Agent Card from any sub-command tree. Local SQLite mirror so agents read without hammering SAP APIs. On-policy under SAP API Policy v4/2026.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. Use cases (tabbed)
+  ====================================================================== -->
+  <section id="use-cases" class="container-x py-24 border-t hairline">
+    <div class="reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Use cases</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px] max-w-[820px]">
+        50+ ready-made workflows across the SAP portfolio.
+      </h2>
+    </div>
+
+    <!-- tab strip -->
+    <div class="mt-10 border-b hairline">
+      <div role="tablist" id="uc-tabs" class="flex gap-8 overflow-x-auto no-scrollbar font-medium text-[14px]">
+        <button role="tab" data-tab="s4"      class="tab active">S/4HANA</button>
+        <button role="tab" data-tab="btp"     class="tab">BTP + AI Core</button>
+        <button role="tab" data-tab="data"    class="tab">Datasphere + HANA</button>
+        <button role="tab" data-tab="joule"   class="tab">Joule + MCP</button>
+        <button role="tab" data-tab="lob"     class="tab">LoB clouds</button>
+        <button role="tab" data-tab="cpi"     class="tab">Integration Suite</button>
+        <button role="tab" data-tab="sac"     class="tab">SAC + Signavio + LeanIX</button>
+        <button role="tab" data-tab="alm"     class="tab">Cloud ALM + ops</button>
+      </div>
+    </div>
+
+    <div id="uc-grid" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </section>
+
+  <!-- =====================================================================
+       6. Architecture diagram
+  ====================================================================== -->
+  <section id="arch" class="container-x py-24 border-t hairline">
+    <div class="max-w-[820px] reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Architecture</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
+        One CLI. Three trust zones. Zero hand-rolled glue.
+      </h2>
+    </div>
+
+    <div class="mt-12 reveal">
+      <div class="w-full overflow-x-auto">
+        <svg id="arch-svg" viewBox="0 0 1160 480" role="img" aria-labelledby="arch-title" preserveAspectRatio="xMidYMid meet" class="w-full" style="max-height:480px; min-width:880px">
+          <title id="arch-title">sapctl architecture: SAP systems → sapctl core → consumers</title>
+
+          <!-- Defs -->
+          <defs>
+            <marker id="chev" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" class="arch-chev">
+              <path d="M0,0 L10,5 L0,10" fill="none" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" />
+            </marker>
+          </defs>
+
+          <!-- Zone dividers (very subtle) -->
+          <line x1="340"  y1="20" x2="340"  y2="460" class="arch-div" />
+          <line x1="820"  y1="20" x2="820"  y2="460" class="arch-div" />
+
+          <!-- Zone labels -->
+          <text x="20"   y="32" class="arch-zone">SAP SYSTEMS</text>
+          <text x="360"  y="32" class="arch-zone">SAPCTL CORE</text>
+          <text x="840"  y="32" class="arch-zone">CONSUMERS</text>
+
+          <!-- LEFT zone: 7 cards -->
+          <g id="arch-left"></g>
+
+          <!-- CENTRE zone: big card with inner pills -->
+          <g id="arch-centre">
+            <rect x="360" y="60" width="440" height="380" rx="8" class="arch-centre-card" />
+          </g>
+          <g id="arch-centre-pills"></g>
+
+          <!-- RIGHT zone: 7 cards -->
+          <g id="arch-right"></g>
+
+          <!-- Arrows -->
+          <line x1="320" y1="240" x2="358" y2="240" class="arch-arrow" stroke-width="1.5" marker-end="url(#chev)" />
+          <line x1="802" y1="240" x2="838" y2="240" class="arch-arrow" stroke-width="1.5" marker-end="url(#chev)" />
+        </svg>
+      </div>
+
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 text-[12px] font-mono text-ink3">
+        <div><span class="text-ink2">Trust zone 1:</span> customer-controlled SAP</div>
+        <div><span class="text-ink2">Trust zone 2:</span> sapctl runtime (laptop or cluster)</div>
+        <div><span class="text-ink2">Trust zone 3:</span> agent / human / pipeline consumer</div>
+      </div>
+    </div>
+
+    <style>
+      /* arch SVG styles centralised in the global style block (uses CSS vars) */
+    </style>
+  </section>
+
+  <!-- =====================================================================
+       7. Customer flagship strip
+  ====================================================================== -->
+  <section class="container-x py-24 border-t hairline">
+    <div class="max-w-[820px] reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Flagships</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
+        Anchored on the SAP customers already running this pattern.
+      </h2>
+      <p class="mt-3 text-[13px] text-ink3 font-mono">Illustrative composite profiles — real customer names withheld.</p>
+    </div>
+
+    <div id="flagships" class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </section>
+
+  <!-- =====================================================================
+       8. Regulatory clock
+  ====================================================================== -->
+  <section class="container-x py-24 border-t hairline">
+    <div class="max-w-[820px] reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Why now</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
+        Seven new regulations land before December 2027.
+      </h2>
+    </div>
+
+    <ol id="timeline" class="mt-12 relative pl-6 border-l hairline space-y-6 reveal"></ol>
+  </section>
+
+  <!-- =====================================================================
+       9. Pricing
+  ====================================================================== -->
+  <section id="pricing" class="container-x py-24 border-t hairline">
+    <div class="max-w-[820px] reveal">
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Pricing</div>
+      <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
+        Free for individuals. Per-project for teams. Custom for enterprises.
+      </h2>
+    </div>
+
+    <div id="pricing-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+  </section>
+
+  <!-- =====================================================================
+       10. Trust strip
+  ====================================================================== -->
+  <section class="container-x py-16 border-t hairline">
+    <div id="trust-strip" class="flex flex-wrap items-center justify-center gap-3"></div>
+    <p class="mt-6 text-center text-[12px] font-mono text-ink3">
+      Trust portal · SBOM downloads · CVD policy · Annex IV statement → <a href="#" class="text-ink2 hover:text-ink">/trust</a>
+    </p>
+  </section>
+
+  <!-- =====================================================================
+       11. Final CTA
+  ====================================================================== -->
+  <section id="cta" class="container-x py-24 border-t hairline">
+    <div class="max-w-[700px] mx-auto text-center reveal">
+      <h2 class="font-semibold tracking-tight2 text-[32px] sm:text-[40px]">Stop rebuilding SAP glue code.</h2>
+      <p class="mt-5 text-[18px] text-ink2 max-w-[600px] mx-auto">
+        Install sapctl, log into your tenant, and ship the first audit-grade extraction before lunch.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a href="#" class="inline-flex items-center gap-2 rounded-md bg-accent text-white font-medium text-[14px] px-5 py-[10px] hover:bg-[#2f6fe0]">
+          Get started <i class="ti ti-arrow-right text-[16px]"></i>
+        </a>
+        <a href="#" class="inline-flex items-center gap-2 rounded-md border hairline text-ink dark:text-ink font-medium text-[14px] px-5 py-[10px] hover:bg-surface dark:hover:bg-surface">
+          Book a demo
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- =====================================================================
+       12. Footer
+  ====================================================================== -->
+  <footer class="border-t hairline bg-surface dark:bg-surface" role="contentinfo">
+    <div class="container-x py-16">
+      <!-- Top row: product + developers + compliance + company -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-[14px]">
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Product</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="#use-cases"      class="hover:text-ink dark:hover:text-ink">Use cases</a></li>
+            <li><a href="#arch"           class="hover:text-ink dark:hover:text-ink">Architecture</a></li>
+            <li><a href="#pricing"        class="hover:text-ink dark:hover:text-ink">Pricing</a></li>
+            <li><a href="roadmap.html"   class="hover:text-ink dark:hover:text-ink">Roadmap</a></li>
+            <li><a href="changelog.html" class="hover:text-ink dark:hover:text-ink">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Developers</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="docs.html"                              class="hover:text-ink dark:hover:text-ink">Docs</a></li>
+            <li><a href="https://github.com/sapctl/sapctl"        class="hover:text-ink dark:hover:text-ink">GitHub</a></li>
+            <li><a href="https://discord.gg/sapctl"               class="hover:text-ink dark:hover:text-ink">Discord</a></li>
+            <li><a href="docs.html#mcp"                          class="hover:text-ink dark:hover:text-ink">MCP catalog</a></li>
+            <li><a href="docs.html#examples"                     class="hover:text-ink dark:hover:text-ink">Examples</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Compliance</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="trust.html"           class="hover:text-ink dark:hover:text-ink">Trust portal</a></li>
+            <li><a href="trust.html#sbom"      class="hover:text-ink dark:hover:text-ink">SBOM</a></li>
+            <li><a href="security.html#cvd"    class="hover:text-ink dark:hover:text-ink">CVD policy</a></li>
+            <li><a href="trust.html#annex-iv"  class="hover:text-ink dark:hover:text-ink">Annex IV</a></li>
+            <li><a href="security.html"        class="hover:text-ink dark:hover:text-ink">Security advisories</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Company</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="about.html"    class="hover:text-ink dark:hover:text-ink">About</a></li>
+            <li><a href="blog.html"     class="hover:text-ink dark:hover:text-ink">Blog</a></li>
+            <li><a href="partners.html" class="hover:text-ink dark:hover:text-ink">Partners</a></li>
+            <li><a href="careers.html"  class="hover:text-ink dark:hover:text-ink">Careers</a></li>
+            <li><a href="contact.html"  class="hover:text-ink dark:hover:text-ink">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Second row: legal + policies + resources + connect -->
+      <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-[14px]">
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Legal</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="privacy.html"        class="hover:text-ink dark:hover:text-ink">Privacy policy</a></li>
+            <li><a href="terms.html"          class="hover:text-ink dark:hover:text-ink">Terms of service</a></li>
+            <li><a href="cookies.html"        class="hover:text-ink dark:hover:text-ink">Cookie policy</a></li>
+            <li><a href="dpa.html"            class="hover:text-ink dark:hover:text-ink">DPA</a></li>
+            <li><a href="sub-processors.html" class="hover:text-ink dark:hover:text-ink">Sub-processors</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Policies</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="aup.html"             class="hover:text-ink dark:hover:text-ink">Acceptable use</a></li>
+            <li><a href="security.html#cvd"    class="hover:text-ink dark:hover:text-ink">Vulnerability disclosure</a></li>
+            <li><a href="sla.html"             class="hover:text-ink dark:hover:text-ink">SLA</a></li>
+            <li><a href="trust.html"           class="hover:text-ink dark:hover:text-ink">Trust portal</a></li>
+            <li><a href="sitemap.html"         class="hover:text-ink dark:hover:text-ink">Sitemap</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Resources</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="blog.html"      class="hover:text-ink dark:hover:text-ink">Blog</a></li>
+            <li><a href="changelog.html" class="hover:text-ink dark:hover:text-ink">Changelog</a></li>
+            <li><a href="roadmap.html"   class="hover:text-ink dark:hover:text-ink">Roadmap</a></li>
+            <li><a href="sitemap.xml"    class="hover:text-ink dark:hover:text-ink">XML sitemap</a></li>
+            <li><a href="humans.txt"     class="hover:text-ink dark:hover:text-ink">humans.txt</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="text-[12px] font-mono text-ink3 uppercase zone-label">Connect</div>
+          <ul class="mt-4 space-y-2 text-ink2">
+            <li><a href="https://github.com/sapctl/sapctl"            class="hover:text-ink dark:hover:text-ink">GitHub</a></li>
+            <li><a href="https://discord.gg/sapctl"                   class="hover:text-ink dark:hover:text-ink">Discord</a></li>
+            <li><a href="https://x.com/sapctl"                        class="hover:text-ink dark:hover:text-ink">X</a></li>
+            <li><a href="https://www.linkedin.com/company/sapctl"     class="hover:text-ink dark:hover:text-ink">LinkedIn</a></li>
+            <li><a href="mailto:hello@sapctl.dev"                     class="hover:text-ink dark:hover:text-ink">hello@sapctl.dev</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-6 border-t hairline flex flex-wrap items-center justify-between gap-4 text-[13px] text-ink3">
+        <div>© 2026 sapctl contributors. Apache 2.0. sapctl is an independent open-source project and is not affiliated with or endorsed by SAP SE.</div>
+        <div class="flex items-center gap-4">
+          <a href="https://github.com/sapctl/sapctl"        aria-label="GitHub"   class="hover:text-ink dark:hover:text-ink"><i class="ti ti-brand-github   text-[18px]"></i></a>
+          <a href="https://x.com/sapctl"                    aria-label="X"        class="hover:text-ink dark:hover:text-ink"><i class="ti ti-brand-x        text-[18px]"></i></a>
+          <a href="https://www.linkedin.com/company/sapctl" aria-label="LinkedIn" class="hover:text-ink dark:hover:text-ink"><i class="ti ti-brand-linkedin text-[18px]"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =====================================================================
+       Scripts: theme, nav, terminal, reveal, tabs, data renderers
+  ====================================================================== -->
+  <script>
+  (function () {
+    var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function animOff() {
+      return prefersReduced || document.documentElement.classList.contains('no-anim');
+    }
+
+    /* ---------------- theme toggle ---------------- */
+    var themeBtn = document.getElementById('theme-toggle');
+    themeBtn.addEventListener('click', function () {
+      var isDark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem('sapctl-theme', isDark ? 'dark' : 'light'); } catch (e) {}
+    });
+
+    /* ---------------- animation toggle ---------------- */
+    var animBtn   = document.getElementById('anim-toggle');
+    var animOn    = document.getElementById('anim-icon-on');
+    var animOffIc = document.getElementById('anim-icon-off');
+    function syncAnimBtn() {
+      var off = document.documentElement.classList.contains('no-anim');
+      animBtn.setAttribute('aria-pressed', off ? 'false' : 'true');
+      animBtn.setAttribute('aria-label', off ? 'Turn animations on' : 'Turn animations off');
+      animBtn.title = off ? 'Animations: off' : 'Animations: on';
+      animOn.classList.toggle('hidden', off);
+      animOffIc.classList.toggle('hidden', !off);
+    }
+    syncAnimBtn();
+    animBtn && animBtn.addEventListener('click', function () {
+      var nowOff = document.documentElement.classList.toggle('no-anim');
+      try { localStorage.setItem('sapctl-anim', nowOff ? 'off' : 'on'); } catch (e) {}
+      syncAnimBtn();
+      if (!nowOff && window.__sapctlRestartTerm) window.__sapctlRestartTerm();
+    });
+
+    /* ---------------- mobile menu ---------------- */
+    var menuBtn = document.getElementById('menu-toggle');
+    var menu    = document.getElementById('mobile-menu');
+    menuBtn && menuBtn.addEventListener('click', function () {
+      var open = menu.classList.toggle('hidden') === false;
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    /* ---------------- sticky nav border on scroll ---------------- */
+    var nav = document.getElementById('nav');
+    function updateNav() {
+      if (window.scrollY > 4) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    /* ---------------- copy install ---------------- */
+    var copyBtn = document.getElementById('copy-install');
+    copyBtn && copyBtn.addEventListener('click', function () {
+      var txt = document.getElementById('install-cmd').textContent;
+      navigator.clipboard && navigator.clipboard.writeText(txt);
+      copyBtn.innerHTML = '<i class="ti ti-check text-[14px]"></i>';
+      setTimeout(function(){ copyBtn.innerHTML = '<i class="ti ti-copy text-[14px]"></i>'; }, 1200);
+    });
+
+    /* ---------------- reveal on scroll ---------------- */
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+    /* ---------------- terminal typing ---------------- */
+    var termEl = document.getElementById('term-out');
+    // Each line is { txt, cls } where cls maps to colour
+    var SCRIPT = [
+      [{txt:'$ ',cls:'p'},{txt:'sapctl auth login --tenant acme-prod',cls:'i'}],
+      [{txt:'✓ ',cls:'g'},{txt:'Logged in as ',cls:'i'},{txt:'thomas@acme.com',cls:'b'},{txt:' (xsuaa)',cls:'s'}],
+      [{txt:'',cls:'i'}],
+      [{txt:'$ ',cls:'p'},{txt:'sapctl s4 cds extract --view I_GLAccountLineItem --since P12M',cls:'i'}],
+      [{txt:'▸ ',cls:'g'},{txt:'Discovering service ........ ',cls:'i'},{txt:'done',cls:'s'}],
+      [{txt:'▸ ',cls:'g'},{txt:'Authenticating .............. ',cls:'i'},{txt:'done',cls:'s'}],
+      [{txt:'▸ ',cls:'g'},{txt:'Extracting 1.2M rows ........ ',cls:'i'},{txt:'done',cls:'s'}],
+      [{txt:'▸ ',cls:'g'},{txt:'Emitting MCP server ......... ',cls:'i'},{txt:'done',cls:'s'}],
+      [{txt:'✓ ',cls:'g'},{txt:'Saved to ',cls:'i'},{txt:'./gl/journal.parquet',cls:'b'},{txt:' · 1.2M rows · 42s',cls:'s'}],
+      [{txt:'',cls:'i'}],
+      [{txt:'$ ',cls:'p'},{txt:'sapctl audit verify',cls:'i'}],
+      [{txt:'✓ ',cls:'g'},{txt:'Chain intact · ',cls:'i'},{txt:'sha256:a1b2…f93',cls:'b'},{txt:' · 47 events · ',cls:'i'},{txt:'signed',cls:'s'}],
+    ];
+    // colour classes
+    function colour(cls) {
+      switch (cls) {
+        case 'p': return 'color:#9CA3AF';        // prompt
+        case 'i': return 'color:#FAFAFA';        // ink
+        case 's': return 'color:#9CA3AF';        // secondary (done / intact)
+        case 'g': return 'color:#10B981';        // green ✓ / ▸
+        case 'b': return 'color:#3B82F6';        // blue paths / hashes
+      }
+      return '';
+    }
+
+    var PAUSE_BETWEEN_CMDS = 600;
+    var PAUSE_BETWEEN_LINES = 90;
+    var CHAR_DELAY = 28;
+    var LOOP_RESTART_PAUSE = 4200;
+
+    async function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+
+    async function typeLine(parts) {
+      var lineDiv = document.createElement('div');
+      termEl.appendChild(lineDiv);
+      // Each part is a styled span; type chars into the latest span sequentially
+      for (var i = 0; i < parts.length; i++) {
+        var part = parts[i];
+        var span = document.createElement('span');
+        span.setAttribute('style', colour(part.cls));
+        lineDiv.appendChild(span);
+        // commands ("i" after a prompt or alone) get typed; everything else snaps in
+        var isCommand = (part.cls === 'i' && (i === 1 || parts.length === 1)) && (parts[0] && parts[0].cls === 'p');
+        if (isCommand && !animOff()) {
+          for (var c = 0; c < part.txt.length; c++) {
+            span.textContent += part.txt[c];
+            await sleep(CHAR_DELAY);
+          }
+        } else {
+          span.textContent = part.txt;
+        }
+      }
+      if (!parts.length || (parts.length === 1 && parts[0].txt === '')) {
+        lineDiv.innerHTML = '&nbsp;';
+      }
+    }
+
+    var termRunning = false;
+    async function runTerminalLoop() {
+      if (termRunning) return;
+      termRunning = true;
+      while (true) {
+        termEl.textContent = '';
+        for (var i = 0; i < SCRIPT.length; i++) {
+          var parts = SCRIPT[i];
+          // Pause between commands when we encounter a blank gap before "$ "
+          if (i > 0 && parts[0] && parts[0].cls === 'p' && !animOff()) {
+            await sleep(PAUSE_BETWEEN_CMDS);
+          }
+          await typeLine(parts);
+          await sleep(animOff() ? 0 : PAUSE_BETWEEN_LINES);
+        }
+        if (animOff()) { termRunning = false; break; }
+        await sleep(LOOP_RESTART_PAUSE);
+      }
+    }
+    runTerminalLoop();
+    // restart loop when animations re-enabled
+    window.__sapctlRestartTerm = function () { if (!animOff()) runTerminalLoop(); };
+
+    /* ---------------- use-case data + renderer ---------------- */
+    var UC = {
+      s4: [
+        { n:'01', persona:'Auditor', title:'Extract 12 months of journal entries for SOX audit', sub:'Bypasses the empty-allowlist default on CDS auth groups; pulls A_JournalEntryItemBasic + I_GLAccountLineItem in parallel.', tags:['SOX','IFRS','SOC1'] },
+        { n:'02', persona:'Migration architect', title:'Migrate master data ECC → S/4 Cloud Greenfield', sub:'Replaces the per-object LTMOM clickfest with a single Git-reviewable manifest.', tags:['SOX','GDPR'] },
+        { n:'03', persona:'Integration dev', title:'Bulk-post sales orders from upstream e-commerce', sub:'Handles deep-insert + CSRF + partial-failure semantics on API_SALES_ORDER_SRV out of the box.', tags:['SOX','PCI'] },
+        { n:'04', persona:'Data engineer', title:'Continuous ACDOCA replication to a data lake', sub:'Skips multi-week SLT setup; CDC via Change Data Capture annotation in one command.', tags:['SOC1','IFRS'] },
+        { n:'05', persona:'Technical architect', title:'ECC → S/4 Brownfield custom-code readiness', sub:'Wraps central ATC + SCMON + simplification DB into a Git-reviewable readiness report.', tags:['ITGC','ITAR'] },
+        { n:'06', persona:'AI engineer', title:'Emit an MCP server for an agent writing back to S/4', sub:'Walks the Cobra tree, registers CSRF + deep-insert + ETag handling; works with Claude Desktop, Cursor, Continue.', tags:['AI Act','SOX'] },
+      ],
+      btp: [
+        { n:'07', persona:'Platform architect', title:'Clone a BTP subaccount with all entitlements', sub:'Snapshot quotas, subscriptions, role collections; re-apply against a sibling subaccount idempotently.', tags:['SOC2','ISO27001'] },
+        { n:'08', persona:'AI engineer', title:'Provision AI Core resource group with guardrails', sub:'Bind orchestration deployments and content filtering policy from one YAML manifest.', tags:['AI Act','GDPR'] },
+        { n:'09', persona:'Security lead', title:'Rotate xsuaa client secrets across landscape', sub:'Discovers every app binding via Cloud Foundry + Kyma APIs; rotates and re-deploys in one pass.', tags:['SOC2','ISO27001'] },
+        { n:'10', persona:'Consultant', title:'Audit destinations and connectivity configs', sub:'Diffs Cloud Connector subaccount bindings against an expected baseline; flags drift.', tags:['SOX','ITGC'] },
+        { n:'11', persona:'AI engineer', title:'Deploy a Joule-compatible skill to AI Core', sub:'Packages the prompt + tools + grounding source bundle; emits an A2A Agent Card.', tags:['AI Act'] },
+        { n:'12', persona:'Architect', title:'Promote CAP service from dev → prod', sub:'Git-reviewable promotion with build-once, deploy-many. Signed manifest preserved as evidence.', tags:['SLSA L3','SOC2'] },
+      ],
+      data: [
+        { n:'13', persona:'Data engineer', title:'Materialise an analytic model into HANA Cloud', sub:'Compiles a Datasphere analytic model to HANA Cloud HDI artefacts and deploys in one shot.', tags:['SOC1','IFRS'] },
+        { n:'14', persona:'Architect', title:'Federate two Datasphere tenants for M&A', sub:'Sets up cross-tenant remote sources, replication flows, and access policies declaratively.', tags:['SOX','GDPR'] },
+        { n:'15', persona:'AI engineer', title:'Index HANA Cloud Vector Engine from S/4 docs', sub:'Chunks attached documents, embeds, and writes back vectors with row-level entitlements.', tags:['AI Act','GDPR'] },
+        { n:'16', persona:'Data engineer', title:'Replicate a finance space to a lakehouse', sub:'Wires Datasphere replication flow into Iceberg with schema evolution handled.', tags:['SOC1'] },
+        { n:'17', persona:'Auditor', title:'Snapshot a privileged-user access policy', sub:'Captures privilege grants + audit policy as evidence for ITGC walkthrough.', tags:['SOX','ITGC'] },
+        { n:'18', persona:'Architect', title:'Lift a HANA Cloud schema into a new tenant', sub:'Bundles tables + roles + analytic privileges as an air-gap-able archive.', tags:['SOC2','ISO27001'] },
+      ],
+      joule: [
+        { n:'19', persona:'AI engineer', title:'Stand up a Joule-compatible MCP server', sub:'Walks any sub-command tree and exposes it as a standards-compliant MCP transport.', tags:['AI Act'] },
+        { n:'20', persona:'AI engineer', title:'Mirror SAP master data locally for agents', sub:'Local SQLite + FTS5 mirror prevents agent traffic from hammering production OData.', tags:['SOX','GDPR'] },
+        { n:'21', persona:'Architect', title:'Constrain agents to SAP API Policy v4/2026', sub:'Blocks raw API orchestration; routes every tool call through approved sapctl verbs.', tags:['AI Act'] },
+        { n:'22', persona:'Auditor', title:'Replay an agent session from signed audit log', sub:'Every prompt, tool call, and side effect is hash-chained and verifiable post-hoc.', tags:['AI Act','SOX'] },
+        { n:'23', persona:'AI engineer', title:'Emit an A2A Agent Card for a finance workflow', sub:'Generates capability descriptors so other agents can discover and negotiate handoffs.', tags:['AI Act'] },
+        { n:'24', persona:'Consultant', title:'Package Joule skills as a customer-installable bundle', sub:'Ships skills + grounding sources + entitlement manifests as one signed artifact.', tags:['SLSA L3'] },
+      ],
+      lob: [
+        { n:'25', persona:'Procurement lead', title:'Pull Ariba supplier risk into a single feed', sub:'Joins supplier master + risk indicators + sanctions screening into one consumable view.', tags:['Sanctions','GDPR'] },
+        { n:'26', persona:'Finance ops', title:'Reconcile Concur expense against G/L postings', sub:'Diffs Concur reports against ACDOCA line items; surfaces unbilled and orphaned entries.', tags:['SOX','IFRS'] },
+        { n:'27', persona:'HRIS lead', title:'Replicate SuccessFactors orgs to identity provider', sub:'Idempotent sync of org structure, line manager, and cost centre into IdP groups.', tags:['GDPR','SOC2'] },
+        { n:'28', persona:'Consultant', title:'Export Ariba contracts for clean-core review', sub:'Bulk-exports contract metadata + clauses for migration assessment.', tags:['SOX','GDPR'] },
+        { n:'29', persona:'AI engineer', title:'Build a Concur-aware travel agent', sub:'Emits an MCP server bound to Concur Request/Expense APIs with policy-aware guardrails.', tags:['AI Act'] },
+        { n:'30', persona:'Auditor', title:'Capture SuccessFactors leaver evidence', sub:'Generates signed evidence that joiner-mover-leaver controls fired correctly.', tags:['SOX','GDPR'] },
+      ],
+      cpi: [
+        { n:'31', persona:'Integration dev', title:'Promote a CPI iFlow with reviewable diff', sub:'Git-native iFlow promotion across runtimes with parameterised value mappings.', tags:['SOX','ITGC'] },
+        { n:'32', persona:'Architect', title:'Wire an Event Mesh subscriber for SAP events', sub:'Subscribes a downstream consumer to an Event Mesh queue with dead-letter and retry.', tags:['SOC2'] },
+        { n:'33', persona:'Security lead', title:'Rotate certificate-based auth on every iFlow', sub:'Discovers every iFlow using a given keystore alias; rotates and redeploys atomically.', tags:['SOC2','ISO27001'] },
+        { n:'34', persona:'Auditor', title:'Export iFlow inventory + change history', sub:'Produces an evidence pack of every integration, last edited by whom, and last deployed when.', tags:['SOX','ITGC'] },
+        { n:'35', persona:'Integration dev', title:'Trace a transaction across CPI + S/4 + LoB', sub:'Joins OpenTelemetry spans with CPI MPL events into one timeline.', tags:['DORA'] },
+        { n:'36', persona:'Architect', title:'Migrate a Process Orchestration iFlow to CPI', sub:'Translates channel + adapter + mapping definitions into CPI artefacts with diffable output.', tags:['SOX'] },
+      ],
+      sac: [
+        { n:'37', persona:'Analyst', title:'Promote an SAC story across tenants', sub:'Git-reviewable story export/import with bound model references and authorisation roles.', tags:['SOX','SOC2'] },
+        { n:'38', persona:'Process architect', title:'Sync Signavio process collection to Confluence', sub:'Auto-publishes the latest process diagrams + descriptions; preserves links across renames.', tags:['ITGC'] },
+        { n:'39', persona:'EA lead', title:'Diff a LeanIX inventory against actual landscape', sub:'Compares LeanIX fact sheets against live BTP + S/4 + LoB inventory; flags drift.', tags:['ITGC'] },
+        { n:'40', persona:'Analyst', title:'Bulk-rebind SAC models to a new HANA tenant', sub:'Sweeps every story; rewrites connection bindings without breaking calculation references.', tags:['SOC2'] },
+        { n:'41', persona:'Process owner', title:'Mine an SAP process from Signavio + S/4 logs', sub:'Joins Signavio mining output with ACDOCA + EKBE to find the actual happy path.', tags:['SOX'] },
+        { n:'42', persona:'EA lead', title:'Emit a LeanIX export as a CycloneDX SBOM', sub:'Translates the application inventory into a tool-agnostic SBOM for procurement & audit.', tags:['CRA','SOC2'] },
+      ],
+      alm: [
+        { n:'43', persona:'Ops engineer', title:'Wire Cloud ALM alerts into PagerDuty', sub:'Subscribes ALM events; routes by impact + service; preserves correlation IDs end-to-end.', tags:['DORA','SOC2'] },
+        { n:'44', persona:'Architect', title:'Provision a Cloud Connector with golden config', sub:'One command lays down Cloud Connector + subaccount bindings + policies as code.', tags:['SOC2','ISO27001'] },
+        { n:'45', persona:'Auditor', title:'Export ALM project tasks as audit evidence', sub:'Snapshots requirements, tests, and approvals into a tamper-evident archive.', tags:['SOX','ITGC'] },
+        { n:'46', persona:'SRE', title:'Emit OpenTelemetry from every sapctl invocation', sub:'Spans, metrics, and audit events flow to your existing observability stack.', tags:['DORA','SOC2'] },
+        { n:'47', persona:'Ops engineer', title:'Sweep stale Cloud Connector tunnels', sub:'Detects orphaned virtual hosts; recommends safe deletions with blast-radius preview.', tags:['ITGC'] },
+        { n:'48', persona:'Architect', title:'Air-gap bundle a release for restricted networks', sub:'Single signed archive: binaries, SBOM, cosign attestations, replay scripts.', tags:['CRA','SLSA L3'] },
+      ],
+    };
+
+    var grid = document.getElementById('uc-grid');
+    function renderUC(key) {
+      grid.innerHTML = '';
+      var items = UC[key] || [];
+      items.forEach(function (it) {
+        var card = document.createElement('article');
+        card.className = 'uc-card rounded-lg border hairline p-5 bg-surface dark:bg-surface flex flex-col';
+        var tags = it.tags.map(function(t){ return '<span class="pill">'+t+'</span>'; }).join('');
+        card.innerHTML =
+          '<div class="flex items-start justify-between gap-3">' +
+            '<div class="text-[12px] font-mono text-ink3">UC · ' + it.n + '</div>' +
+            '<span class="pill">' + it.persona + '</span>' +
+          '</div>' +
+          '<h3 class="mt-4 font-semibold text-[16px] leading-snug">' + it.title + '</h3>' +
+          '<p class="mt-2 text-[14px] text-ink2">' + it.sub + '</p>' +
+          '<div class="mt-5 flex flex-wrap gap-2">' + tags + '</div>';
+        grid.appendChild(card);
+      });
+    }
+    renderUC('s4');
+    document.querySelectorAll('#uc-tabs .tab').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('#uc-tabs .tab').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderUC(btn.getAttribute('data-tab'));
+      });
+    });
+
+    /* ---------------- architecture diagram (data-driven) ---------------- */
+    (function () {
+      var left = [
+        'S/4HANA', 'BTP · AI Core', 'Datasphere · HANA',
+        'Joule · MCP', 'LoB clouds', 'CPI · Event Mesh', 'Cloud ALM · Connector'
+      ];
+      var right = [
+        'Architects', 'Consultants', 'AI agents',
+        'Auditors', 'Data engineers', 'CI/CD pipelines', 'GSI tooling'
+      ];
+      var pills = [
+        'Auth abstraction', 'OpenAPI generator', 'SQLite mirror + FTS5',
+        'MCP + A2A emitter', 'Signed audit chain', 'Air-gap bundle'
+      ];
+      var svg = document.getElementById('arch-svg');
+      var L = document.getElementById('arch-left');
+      var R = document.getElementById('arch-right');
+      var P = document.getElementById('arch-centre-pills');
+      var SVGNS = 'http://www.w3.org/2000/svg';
+
+      // 7 cards from y=60 down, 50 tall + 4 gap → 7*54 = 378 fits in 380px
+      function cards(target, items, x) {
+        items.forEach(function (label, i) {
+          var y = 60 + i * 54;
+          var r = document.createElementNS(SVGNS, 'rect');
+          r.setAttribute('class', 'arch-card');
+          r.setAttribute('x', x); r.setAttribute('y', y);
+          r.setAttribute('width', 280); r.setAttribute('height', 46);
+          r.setAttribute('rx', 6);
+          target.appendChild(r);
+          var t = document.createElementNS(SVGNS, 'text');
+          t.setAttribute('class', 'arch-card-label');
+          t.setAttribute('x', x + 16); t.setAttribute('y', y + 28);
+          t.textContent = label;
+          target.appendChild(t);
+        });
+      }
+      cards(L, left,  20);
+      cards(R, right, 840);
+
+      // Centre pills: 6 pills inside the big card
+      pills.forEach(function (label, i) {
+        var y = 84 + i * 56;
+        var r = document.createElementNS(SVGNS, 'rect');
+        r.setAttribute('class', 'arch-pill');
+        r.setAttribute('x', 388); r.setAttribute('y', y);
+        r.setAttribute('width', 384); r.setAttribute('height', 40);
+        r.setAttribute('rx', 4);
+        P.appendChild(r);
+        var t = document.createElementNS(SVGNS, 'text');
+        t.setAttribute('class', 'arch-pill-label');
+        t.setAttribute('x', 404); t.setAttribute('y', y + 25);
+        t.textContent = label;
+        P.appendChild(t);
+      });
+    })();
+
+    /* ---------------- flagships (fictional composites) ---------------- */
+    var FLAG = [
+      { name:'Northwind Telecom',   tag:'Telecom',    stat:'26 countries · 130+ entities',
+        body:'IFRS 16 lease + ARO policy RAG on CAP + HANA Cloud Vector Engine. sapctl emits the AI Act Annex IV chain in one command.' },
+      { name:'Meridian Airways',    tag:'Aviation',   stat:'14 ERPs federated',
+        body:'Datasphere + BTP + SAC + spend analytics. sapctl space clone is the highest-leverage command for subsidiary rollout.' },
+      { name:'Halberg Motorwerke',  tag:'Automotive', stat:'220 audit-grade KPIs',
+        body:'95% of CSRD points auto-collected via Sustainability Control Tower + Datasphere. sapctl sct lock period emits the signed evidence chain.' },
+      { name:'Veritas Therapeutics',tag:'Pharma',     stat:'85 TB in 43 hours',
+        body:'Hyperscaler-resident migration with selective data transformation. sapctl gxp validate emits IQ/OQ/PQ alongside the migration.' },
+      { name:'Sentinel Aerospace',  tag:'Defense',    stat:'122,000 employees · IL4',
+        body:'Single-instance defense ERP on a sovereign cloud. sapctl --air-gap bundle install enables NIPRNet-mediated transport promotion.' },
+      { name:'Kessler Industrial',  tag:'Industrial', stat:'1.5M tickets · 1,500 devs',
+        body:'>90% routing accuracy; clean-core ABAP Cloud + Joule for Developers across 1,500 devs.' },
+      { name:'Rheinland Banking',   tag:'Banking',    stat:'DORA-scope · €629B assets',
+        body:'ECC + PeopleSoft unified to S/4HANA Cloud + BTP. sapctl dora register sync produces ESA-template XML.' },
+    ];
+    var fcont = document.getElementById('flagships');
+    FLAG.forEach(function (f) {
+      var c = document.createElement('article');
+      c.className = 'rounded-lg border hairline p-5 bg-surface dark:bg-surface flex flex-col gap-3';
+      c.innerHTML =
+        '<div class="flex items-center justify-between gap-3">' +
+          '<h3 class="font-semibold text-[16px]">' + f.name + '</h3>' +
+          '<span class="pill">' + f.tag + '</span>' +
+        '</div>' +
+        '<div>' +
+          '<div class="font-semibold text-[24px] tracking-tight2 leading-none">' + f.stat.split(' · ')[0] + '</div>' +
+          '<div class="mt-1 text-[12px] text-ink3 font-mono">' + (f.stat.split(' · ').slice(1).join(' · ') || '\u00a0') + '</div>' +
+        '</div>' +
+        '<p class="text-[14px] text-ink2">' + f.body + '</p>';
+      fcont.appendChild(c);
+    });
+
+    /* ---------------- regulatory clock ---------------- */
+    var TIMELINE = [
+      { date:'Jan 2025',  name:'DORA',                                  body:'In force. SAP designated CTPP 17 Nov 2025.',                                 cliff:false },
+      { date:'Mar 2025',  name:'PCI DSS 4.0',                           body:'All 51 future-dated requirements mandatory.',                                cliff:false },
+      { date:'Aug 2025',  name:'EU AI Act',                             body:'GPAI obligations + governance + penalties live.',                            cliff:false },
+      { date:'Aug 2026',  name:'EU AI Act high-risk',                   body:'Annex III obligations apply. €35M / 7% fines.',                              cliff:true  },
+      { date:'Sept 2026', name:'CRA Article 14',                        body:'Vulnerability + severe-incident reporting (24h / 72h / 14d).',               cliff:true  },
+      { date:'Aug 2027',  name:'AI Act regulated products',             body:'High-risk obligations expand.',                                              cliff:false },
+      { date:'Dec 2027',  name:'CRA full applicability',                body:'CE marking. SBOM. Conformity assessment. No CE = no EU sale.',               cliff:true  },
+      { date:'Dec 2027',  name:'SAP ECC',                               body:'Mainstream maintenance ends.',                                               cliff:false },
+    ];
+    var tl = document.getElementById('timeline');
+    TIMELINE.forEach(function (ev) {
+      var li = document.createElement('li');
+      li.className = 'relative ' + (ev.cliff ? 'rounded-md -ml-3 pl-3 py-3' : '');
+      if (ev.cliff) {
+        li.style.background = 'rgba(245,158,11,0.06)';
+        li.style.border = '1px solid rgba(245,158,11,0.18)';
+        li.style.marginLeft = '-13px';
+        li.style.paddingLeft = '20px';
+      }
+      li.innerHTML =
+        '<span class="tl-dot ' + (ev.cliff ? 'cliff' : '') + '" style="position:absolute; left:-' + (ev.cliff ? '25' : '30') + 'px; top:' + (ev.cliff ? '18' : '4') + 'px;"></span>' +
+        '<div class="font-mono text-[12px] text-ink3">' + ev.date + '</div>' +
+        '<div class="mt-1 font-medium text-[14px] text-ink dark:text-ink">' + ev.name + '</div>' +
+        '<div class="mt-1 text-[13px] text-ink2">' + ev.body + '</div>';
+      tl.appendChild(li);
+    });
+
+    /* ---------------- pricing ---------------- */
+    var PRICING = [
+      { tier:'FREE / OSS',  price:'$0',      suffix:'',     pitch:'For individuals and OSS projects.',
+        feats:['1 project','50 AI extracts/month','MCP emission','Community Discord'],
+        cta:'Install', primary:false, recommended:false },
+      { tier:'TEAM',        price:'$300',    suffix:'/mo per project', pitch:'For small teams shipping AI on SAP data.',
+        feats:['5,000 AI extracts/month','Two languages','Email support','SOC 2 Type I attestation'],
+        cta:'Start trial', primary:true,  recommended:false },
+      { tier:'BUSINESS',    price:'$900',    suffix:'/mo per project', pitch:'For organisations under regulatory pressure.',
+        feats:['25,000 AI extracts/month','All languages','Per-host metering','SOC 2 Type II + ISO 27001'],
+        cta:'Start trial', primary:true,  recommended:true  },
+      { tier:'ENTERPRISE',  price:'Custom',  suffix:'',     pitch:'For air-gapped, regulated, defense workloads.',
+        feats:['Unlimited','On-prem or HYOK','24×7 + named CSM','FedRAMP path'],
+        cta:'Talk to us', primary:true,  recommended:false },
+    ];
+    var pg = document.getElementById('pricing-grid');
+    PRICING.forEach(function (p) {
+      var card = document.createElement('article');
+      card.className = 'relative rounded-lg p-6 bg-surface dark:bg-surface flex flex-col '
+                     + (p.recommended ? 'border-2' : 'border hairline');
+      if (p.recommended) card.classList.add('price-recommended');
+      var feats = p.feats.map(function (f) {
+        return '<li class="flex items-start gap-2 text-[14px] text-ink2"><i class="ti ti-check text-[16px]" style="color:#10B981; margin-top:2px"></i><span>' + f + '</span></li>';
+      }).join('');
+      card.innerHTML =
+        (p.recommended ? '<span class="absolute top-3 right-3 pill" style="color:var(--accent); border-color:color-mix(in srgb, var(--accent) 60%, var(--line)); background: var(--accent-soft);">Recommended</span>' : '') +
+        '<div class="text-[12px] font-mono text-ink3 zone-label">' + p.tier + '</div>' +
+        '<div class="mt-3 flex items-baseline gap-2">' +
+          '<div class="font-semibold text-[32px] tracking-tight2 leading-none">' + p.price + '</div>' +
+          (p.suffix ? '<div class="text-[14px] text-ink3">' + p.suffix + '</div>' : '') +
+        '</div>' +
+        '<p class="mt-3 text-[14px] text-ink2">' + p.pitch + '</p>' +
+        '<div class="my-5 h-px bg-line dark:bg-line"></div>' +
+        '<ul class="space-y-2">' + feats + '</ul>' +
+        '<div class="mt-6">' +
+          (p.primary
+            ? '<a href="#" class="block text-center rounded-md bg-accent text-white font-medium text-[14px] px-4 py-[10px] hover:bg-[#2f6fe0]">' + p.cta + '</a>'
+            : '<a href="#" class="block text-center rounded-md border hairline text-ink dark:text-ink font-medium text-[14px] px-4 py-[10px] hover:bg-bg dark:hover:bg-bg">' + p.cta + '</a>'
+          ) +
+        '</div>';
+      pg.appendChild(card);
+    });
+
+    /* ---------------- trust strip ---------------- */
+    var TRUST = [
+      ['ti-shield-check',   'SOC 2 Type II'],
+      ['ti-certificate',    'ISO 27001:2022'],
+      ['ti-file-text',      'CycloneDX 1.7'],
+      ['ti-stack-2',        'SPDX 3.0.1'],
+      ['ti-key',            'cosign keyless'],
+      ['ti-shield',         'SLSA L3'],
+      ['ti-flag',           'EU CRA-ready'],
+      ['ti-arrows-up-down', 'OpenTelemetry'],
+    ];
+    var ts = document.getElementById('trust-strip');
+    TRUST.forEach(function (t) {
+      var span = document.createElement('span');
+      span.className = 'inline-flex items-center gap-2 px-3 py-[6px] rounded-md border hairline font-mono text-[13px] text-ink2';
+      span.innerHTML = '<i class="ti ' + t[0] + ' text-[15px]"></i>' + t[1];
+      ts.appendChild(span);
+    });
+
+  })();
+  </script>
+</body>
+</html>

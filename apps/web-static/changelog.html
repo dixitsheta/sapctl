@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Changelog — sapctl</title>
+  <meta name="description" content="Releases, fixes, and breaking changes to the sapctl CLI and cloud services." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/changelog.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/changelog.html" />
+  <meta property="og:title"       content="Changelog — sapctl" />
+  <meta property="og:description" content="Releases, fixes, and breaking changes to the sapctl CLI and cloud services." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Changelog — sapctl" />
+  <meta name="twitter:description" content="Releases, fixes, and breaking changes to the sapctl CLI and cloud services." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Changelog",
+      "item": "https://sapctl.dev/changelog.html"
+    }
+  ]
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Changelog</div>
+      <h1 class="page-title">Changelog</h1>
+      <p class="page-sub">Every signed release with a CycloneDX SBOM and SLSA L3 provenance.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p id="cl-status" class="form-status" data-state="pending">Loading releases from GitHub...</p>
+
+<div id="cl-list"></div>
+
+<noscript>
+  <p>JavaScript is required to render the live changelog. View raw releases at
+  <a href="https://github.com/dixitsheta/sapctl/releases">github.com/dixitsheta/sapctl/releases</a>.</p>
+</noscript>
+
+<template id="cl-item">
+  <section class="cl-release">
+    <h2 class="cl-tag"></h2>
+    <p class="cl-meta"><time></time> · <a class="cl-link" target="_blank" rel="noopener">view on GitHub</a></p>
+    <div class="cl-body"></div>
+    <details class="cl-assets" hidden>
+      <summary>Signed artifacts</summary>
+      <ul></ul>
+    </details>
+  </section>
+</template>
+
+<style>
+  .cl-release { padding: 24px 0; border-bottom: 1px solid var(--line); }
+  .cl-release:last-child { border-bottom: none; }
+  .cl-tag { margin: 0 0 4px; }
+  .cl-meta { color: var(--ink2); font-size: 13px; margin: 0 0 12px; }
+  .cl-body { white-space: pre-wrap; font: inherit; }
+  .cl-body code { background: var(--surface); padding: 1px 4px; border-radius: 4px; font-size: 13px; }
+  .cl-assets summary { cursor: pointer; color: var(--ink2); }
+  .cl-assets ul { margin-top: 8px; font-size: 13px; }
+  .form-status[data-state="error"] { color: var(--warn); }
+  .form-status[data-state="ok"]    { color: var(--ok); }
+</style>
+
+<script>
+(function () {
+  var status = document.getElementById('cl-status');
+  var list = document.getElementById('cl-list');
+  var tpl = document.getElementById('cl-item');
+
+  function fmtDate(iso) {
+    try {
+      var d = new Date(iso);
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) { return iso; }
+  }
+
+  function renderBody(text) {
+    var safe = String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    safe = safe
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+      .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^# (.+)$/gm, '<h3>$1</h3>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>');
+    safe = safe.replace(/(<li>.*<\/li>\n?)+/g, function (m) { return '<ul>' + m + '</ul>'; });
+    return safe;
+  }
+
+  fetch('/api/releases', { headers: { 'Accept': 'application/json' } })
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      var rels = (data && data.releases) || [];
+      if (rels.length === 0) {
+        status.textContent = 'No releases yet. Check back soon.';
+        return;
+      }
+      status.textContent = 'Live from GitHub Releases. Updated every 5 minutes.';
+      status.dataset.state = 'ok';
+      rels.forEach(function (r) {
+        var node = tpl.content.cloneNode(true);
+        var section = node.querySelector('.cl-release');
+        if (r.prerelease) section.classList.add('cl-pre');
+        node.querySelector('.cl-tag').textContent = (r.name && r.name.trim()) || r.tag_name;
+        node.querySelector('time').textContent = fmtDate(r.published_at);
+        node.querySelector('time').setAttribute('datetime', r.published_at);
+        var link = node.querySelector('.cl-link');
+        link.href = r.html_url;
+        node.querySelector('.cl-body').innerHTML = renderBody(r.body);
+        var assets = (r.assets || []).filter(function (a) {
+          return /\.(tar\.gz|zip|sig|pem|json|cdx\.json|txt)$/i.test(a.name);
+        });
+        if (assets.length) {
+          var details = node.querySelector('.cl-assets');
+          details.hidden = false;
+          var ul = details.querySelector('ul');
+          assets.forEach(function (a) {
+            var li = document.createElement('li');
+            var anchor = document.createElement('a');
+            anchor.href = a.browser_download_url;
+            anchor.textContent = a.name;
+            anchor.rel = 'noopener';
+            li.appendChild(anchor);
+            li.appendChild(document.createTextNode(' (' + Math.round(a.size / 1024) + ' KB)'));
+            ul.appendChild(li);
+          });
+        }
+        list.appendChild(node);
+      });
+    })
+    .catch(function (err) {
+      status.textContent = 'Could not load releases: ' + err.message;
+      status.dataset.state = 'error';
+    });
+})();
+</script>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

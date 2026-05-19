@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blog — sapctl</title>
+  <meta name="description" content="Field notes on building sapctl: SAP CDS, MCP servers, CRA conformity, air-gap distribution." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/blog.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/blog.html" />
+  <meta property="og:title"       content="Blog — sapctl" />
+  <meta property="og:description" content="Field notes on building sapctl: SAP CDS, MCP servers, CRA conformity, air-gap distribution." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Blog — sapctl" />
+  <meta name="twitter:description" content="Field notes on building sapctl: SAP CDS, MCP servers, CRA conformity, air-gap distribution." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Notes from the build",
+      "item": "https://sapctl.dev/blog.html"
+    }
+  ]
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Blog</div>
+      <h1 class="page-title">Notes from the build</h1>
+      <p class="page-sub">Field notes on building one CLI for the whole SAP portfolio, signed binaries for the CRA, and agents that stay on policy.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<div class="card-grid">
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">May 2026 · 12 min</span>
+    <h3>One auth model for every SAP product</h3>
+    <p>Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet.</p>
+  </a>
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">April 2026 · 9 min</span>
+    <h3>Emitting an MCP server from a Cobra tree</h3>
+    <p>A walk-through of the code generator that turns sub-commands into a standards-compliant MCP transport.</p>
+  </a>
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">April 2026 · 7 min</span>
+    <h3>Hash-chained audit logs that survive an air-gap</h3>
+    <p>How we made an audit chain that you can verify after a cold restore on a network you cannot reach.</p>
+  </a>
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">March 2026 · 14 min</span>
+    <h3>SLSA L3 on a budget</h3>
+    <p>Reproducible builds, hermetic environments, and the cheapest path to credible provenance.</p>
+  </a>
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">March 2026 · 6 min</span>
+    <h3>SAP API Policy v4/2026 in plain English</h3>
+    <p>What the policy actually says about agents and what it means for your architecture.</p>
+  </a>
+  <a class="card" href="#" style="text-decoration:none">
+    <span class="kicker">Feb 2026 · 11 min</span>
+    <h3>Why we built a local SQLite mirror</h3>
+    <p>FTS5, vector search, and a deliberate choice to keep agents off the OData hot path.</p>
+  </a>
+</div>
+<p style="margin-top:32px">Subscribe via <a class="link" href="feed.xml">RSS</a>.</p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

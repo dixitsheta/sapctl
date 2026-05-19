@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1F1F23" stroke-width="1"></path>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0A0A0B"></rect>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.6"></rect>
+
+  
+  <g transform="translate(72,72)">
+    <rect width="56" height="56" rx="12" fill="#111114" stroke="#1F1F23"></rect>
+    <path d="M16 18 L26 28 L16 38" fill="none" stroke="#3B82F6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    <line x1="30" y1="40" x2="44" y2="40" stroke="#FAFAFA" stroke-width="3.5" stroke-linecap="round"></line>
+  </g>
+  <text x="148" y="111" font-family="Inter, sans-serif" font-weight="600" font-size="22" fill="#9CA3AF" letter-spacing="0.02em">sapctl · v0.1.0</text>
+
+  
+  <text x="72" y="280" font-family="Inter, sans-serif" font-weight="600" font-size="76" fill="#FAFAFA" letter-spacing="-0.02em">The unified open-source CLI</text>
+  <text x="72" y="370" font-family="Inter, sans-serif" font-weight="600" font-size="76" fill="#FAFAFA" letter-spacing="-0.02em">for SAP.</text>
+
+  
+  <text x="72" y="438" font-family="Inter, sans-serif" font-weight="400" font-size="24" fill="#9CA3AF">One command for S/4HANA, BTP, Datasphere, Joule, Integration Suite, SAC.</text>
+  <text x="72" y="472" font-family="Inter, sans-serif" font-weight="400" font-size="24" fill="#9CA3AF">Agent-native. Air-gap capable. CRA-ready.</text>
+
+  
+  <g font-family="ui-monospace, Menlo, monospace" font-size="18" fill="#9CA3AF">
+    <g transform="translate(72,540)">
+      <circle cx="9" cy="11" r="5" fill="#10B981"></circle>
+      <text x="22" y="17">Apache 2.0</text>
+    </g>
+    <g transform="translate(220,540)">
+      <text x="0" y="17">·  CRA-ready</text>
+    </g>
+    <g transform="translate(380,540)">
+      <text x="0" y="17">·  Built for AI agents</text>
+    </g>
+    <g transform="translate(620,540)">
+      <text x="0" y="17">·  SLSA L3 · cosign · SBOM</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(820,170)" opacity="0.95">
+    <rect width="308" height="290" rx="12" fill="#0F0F12" stroke="#1F1F23"></rect>
+    <rect width="308" height="28" rx="12" fill="#1F1F23"></rect>
+    <rect y="14" width="308" height="14" fill="#1F1F23"></rect>
+    <circle cx="14" cy="14" r="5" fill="#FF5F57"></circle>
+    <circle cx="32" cy="14" r="5" fill="#FEBC2E"></circle>
+    <circle cx="50" cy="14" r="5" fill="#28C840"></circle>
+    <g font-family="ui-monospace, Menlo, monospace" font-size="13">
+      <text x="20" y="60" fill="#9CA3AF">$</text>
+      <text x="34" y="60" fill="#FAFAFA">sapctl auth login --tenant acme</text>
+      <text x="20" y="84" fill="#10B981">✓</text>
+      <text x="34" y="84" fill="#9CA3AF">logged in as thomas@acme.com</text>
+      <text x="20" y="120" fill="#9CA3AF">$</text>
+      <text x="34" y="120" fill="#FAFAFA">sapctl s4 cds extract</text>
+      <text x="20" y="144" fill="#10B981">▸</text>
+      <text x="34" y="144" fill="#FAFAFA">Discovering service ... <tspan fill="#9CA3AF">done</tspan></text>
+      <text x="20" y="168" fill="#10B981">▸</text>
+      <text x="34" y="168" fill="#FAFAFA">Extracting 1.2M rows ... <tspan fill="#9CA3AF">done</tspan></text>
+      <text x="20" y="192" fill="#10B981">✓</text>
+      <text x="34" y="192" fill="#9CA3AF">saved to <tspan fill="#3B82F6">./gl/journal.parquet</tspan></text>
+      <text x="20" y="228" fill="#9CA3AF">$</text>
+      <text x="34" y="228" fill="#FAFAFA">sapctl audit verify</text>
+      <text x="20" y="252" fill="#10B981">✓</text>
+      <text x="34" y="252" fill="#9CA3AF">chain intact · <tspan fill="#3B82F6">sha256:a1b2…</tspan></text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,104 @@
+version: 2
+
+project_name: sapctl
+
+# Repo is a Go workspace; modules live under apps/cli + packages/*.
+# Run tidy inside apps/cli where the CLI module lives.
+before:
+  hooks:
+    - sh -c "cd apps/cli && go mod tidy"
+
+builds:
+  - id: sapctl
+    main: .
+    dir: apps/cli
+    binary: sapctl
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+
+archives:
+  - id: default
+    name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    files:
+      - README.md
+      - SECURITY.md
+
+checksum:
+  name_template: '{{ .ProjectName }}_{{ .Version }}_checksums.txt'
+  algorithm: sha256
+
+sboms:
+  - id: cyclonedx
+    artifacts: archive
+    documents:
+      - '{{ .ArtifactName }}.cdx.json'
+    cmd: syft
+    args:
+      - $artifact
+      - --output
+      - 'cyclonedx-json=$document'
+
+signs:
+  - id: cosign-checksum
+    cmd: cosign
+    args:
+      - sign-blob
+      - '--output-signature=${signature}'
+      - '--output-certificate=${certificate}'
+      - '--yes'
+      - '${artifact}'
+    artifacts: checksum
+    signature: '${artifact}.sig'
+    certificate: '${artifact}.pem'
+
+release:
+  draft: false
+  prerelease: auto
+  name_template: 'sapctl {{ .Tag }}'
+  footer: |
+    ## Verification
+
+    Verify the checksum signature with cosign keyless:
+
+    ```
+    cosign verify-blob \
+      --certificate-identity-regexp='https://github.com/dixitsheta/sapctl/.github/workflows/release.yml@.*' \
+      --certificate-oidc-issuer='https://token.actions.githubusercontent.com' \
+      --certificate=sapctl_{{ .Version }}_checksums.txt.pem \
+      --signature=sapctl_{{ .Version }}_checksums.txt.sig \
+      sapctl_{{ .Version }}_checksums.txt
+    ```
+
+    > Independent open-source project. Not affiliated with SAP SE.
+
+changelog:
+  use: github
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'

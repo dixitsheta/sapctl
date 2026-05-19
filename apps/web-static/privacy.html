@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy policy — sapctl</title>
+  <meta name="description" content="How sapctl handles personal data: what we collect, why, your rights under GDPR/CCPA, and our data-processing model." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/privacy.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/privacy.html" />
+  <meta property="og:title"       content="Privacy policy — sapctl" />
+  <meta property="og:description" content="How sapctl handles personal data: what we collect, why, your rights under GDPR/CCPA, and our data-processing model." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Privacy policy — sapctl" />
+  <meta name="twitter:description" content="How sapctl handles personal data: what we collect, why, your rights under GDPR/CCPA, and our data-processing model." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl changelog" href="feed.xml" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Privacy policy",
+      "item": "https://sapctl.dev/privacy.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <header data-site-nav></header>
+
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Privacy policy</div>
+      <h1 class="page-title">Privacy policy</h1>
+      <p class="page-sub">How we collect, use, and protect personal data when you use the sapctl CLI, website, and cloud services.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<nav class="toc" aria-label="On this page">
+        <div class="toc-label">On this page</div>
+        <ul><li><a href="#summary">At a glance</a></li><li><a href="#who">Who we are</a></li><li><a href="#what">What we collect</a></li><li><a href="#why">Why we collect it</a></li><li><a href="#legal-basis">Legal basis (GDPR)</a></li><li><a href="#cli-data">What the CLI sends</a></li><li><a href="#cookies">Cookies & analytics</a></li><li><a href="#sharing">Sharing & sub-processors</a></li><li><a href="#transfers">International transfers</a></li><li><a href="#retention">Retention</a></li><li><a href="#rights">Your rights</a></li><li><a href="#security">Security</a></li><li><a href="#children">Children</a></li><li><a href="#changes">Changes to this policy</a></li><li><a href="#contact">Contact</a></li></ul>
+      </nav>
+
+<h2 id="summary">At a glance</h2>
+<ul>
+  <li>The <code>sapctl</code> CLI is local-first. It does not phone home, send telemetry, or upload SAP data to us by default.</li>
+  <li>Our website uses privacy-preserving analytics with no cross-site identifiers and no third-party ad cookies.</li>
+  <li>Our cloud services (Team, Business, Enterprise) process customer data strictly as a processor under a signed DPA.</li>
+  <li>We are GDPR, UK GDPR, CCPA/CPRA, LGPD, and PIPEDA aligned. Standard Contractual Clauses are used for international transfers.</li>
+</ul>
+
+<h2 id="who">Who we are</h2>
+<p>sapctl Labs Ltd. (“sapctl”, “we”, “us”) is the controller for personal data collected via the sapctl website, GitHub project, and managed cloud services. Registered office: 22 Featherstone Street, London EC1Y 8RT, United Kingdom. Companies House no. 16243389. Our Data Protection Officer can be reached at <a href="mailto:dpo@sapctl.dev">dpo@sapctl.dev</a>.</p>
+
+<h2 id="what">What we collect</h2>
+<h3>From visitors to this website</h3>
+<ul>
+  <li>Page-level visit metadata (URL path, referrer, country, anonymised user agent) via a self-hosted, cookie-free analytics endpoint.</li>
+  <li>IP address (truncated to /24 IPv4 or /48 IPv6 before storage) for rate-limiting and security telemetry only.</li>
+  <li>Form submissions (name, work email, company, message) when you contact us or request a demo.</li>
+</ul>
+<h3>From CLI users</h3>
+<ul>
+  <li><strong>No anonymous telemetry is collected by default.</strong> If you opt in with <code>sapctl telemetry on</code>, we receive sub-command names invoked, duration, error class, OS, and CLI version. We never receive flag values, arguments, command output, or SAP data.</li>
+  <li>If you sign in to the optional Trust Portal, we collect: email, organisation, hashed password (Argon2id), MFA seed metadata, sign-in IP/UA, and an audit log of sensitive actions.</li>
+</ul>
+<h3>From paying customers</h3>
+<ul>
+  <li>Billing contact name, work email, billing address, tax ID, and payment-method metadata (last 4 digits, brand, expiry — we never store full card numbers; payment processing is delegated to Stripe).</li>
+  <li>Tenant configuration: organisation name, allowed SAP tenants, role assignments, project metadata.</li>
+</ul>
+
+<h2 id="why">Why we collect it</h2>
+<table>
+  <thead><tr><th>Purpose</th><th>Data</th><th>Legal basis</th></tr></thead>
+  <tbody>
+    <tr><td>Operate the website and CLI</td><td>Visit metadata, opt-in telemetry</td><td>Legitimate interest · Consent</td></tr>
+    <tr><td>Respond to enquiries</td><td>Contact-form data</td><td>Legitimate interest · Pre-contract</td></tr>
+    <tr><td>Deliver paid services</td><td>Account, billing, tenant config</td><td>Contract</td></tr>
+    <tr><td>Security & abuse prevention</td><td>Truncated IPs, audit logs</td><td>Legitimate interest · Legal obligation</td></tr>
+    <tr><td>Comply with tax/accounting law</td><td>Billing records</td><td>Legal obligation</td></tr>
+  </tbody>
+</table>
+
+<h2 id="legal-basis">Legal basis (GDPR)</h2>
+<p>Where the GDPR or UK GDPR applies we rely on one of: (a) your <strong>consent</strong> (telemetry, marketing email); (b) the necessity of performing a <strong>contract</strong> with you (paid services); (c) compliance with a <strong>legal obligation</strong> (tax, security incident reporting); or (d) our <strong>legitimate interests</strong> in running and securing the service, balanced against your rights.</p>
+
+<h2 id="cli-data">What the CLI sends</h2>
+<p>By default the CLI communicates only with the SAP tenants you authenticate against and with localhost. The matrix below describes every outbound destination and how to disable it:</p>
+<table>
+  <thead><tr><th>Destination</th><th>Default</th><th>Disable</th></tr></thead>
+  <tbody>
+    <tr><td>Your SAP tenant(s)</td><td>On</td><td>n/a — required for CLI to function</td></tr>
+    <tr><td>SAP-published OpenAPI catalogues</td><td>On (cached)</td><td><code>--offline</code> or <code>SAPCTL_OFFLINE=1</code></td></tr>
+    <tr><td>Update checker (GitHub releases)</td><td>On</td><td><code>sapctl config set update.check false</code></td></tr>
+    <tr><td>Anonymous usage telemetry</td><td><strong>Off</strong></td><td>Opt-in via <code>sapctl telemetry on</code></td></tr>
+    <tr><td>Crash reports</td><td><strong>Off</strong></td><td>Opt-in per invocation with <code>--report-crashes</code></td></tr>
+  </tbody>
+</table>
+
+<h2 id="cookies">Cookies & analytics</h2>
+<p>This website uses two strictly-necessary cookies: <code>sapctl-theme</code> (your light/dark preference, first-party, 1 year) and <code>sapctl-csrf</code> (CSRF token on form pages, session). We do not use third-party advertising cookies, marketing pixels, or cross-site trackers. See the <a href="cookies.html">cookie policy</a> for the full register.</p>
+
+<h2 id="sharing">Sharing & sub-processors</h2>
+<p>We do not sell personal data and we do not share it for advertising. We use a small number of carefully selected sub-processors — see <a href="sub-processors.html">the sub-processor list</a>. We will not add or change a sub-processor without 30 days’ notice; subscribe to <a href="https://sapctl.dev/sub-processors.atom">the sub-processor feed</a> for updates.</p>
+
+<h2 id="transfers">International transfers</h2>
+<p>Our infrastructure is hosted in the EU (Frankfurt, Dublin) by default and in the US (us-east-1, us-west-2) for customers who opt in. Where personal data is transferred outside the EEA/UK we rely on the European Commission’s <strong>Standard Contractual Clauses (2021/914)</strong> and, where applicable, the UK’s International Data Transfer Addendum, supplemented by encryption-in-transit (TLS 1.3) and encryption-at-rest (AES-256-GCM).</p>
+
+<h2 id="retention">Retention</h2>
+<ul>
+  <li>Website analytics: 12 months, then aggregated.</li>
+  <li>Account data: lifetime of the account + 30 days.</li>
+  <li>Audit logs: 13 months, hash-chained and tamper-evident.</li>
+  <li>Billing records: 7 years (statutory retention under UK Companies Act 2006 s.388).</li>
+</ul>
+
+<h2 id="rights">Your rights</h2>
+<p>You have the right to: access, rectification, erasure, restriction of processing, data portability, and objection. Where we rely on consent you may withdraw it at any time. EEA/UK residents may complain to a supervisory authority (in the UK: the Information Commissioner’s Office, <a href="https://ico.org.uk">ico.org.uk</a>). California residents have the rights described in the CCPA/CPRA, including the right to know, delete, correct, and opt-out of “sharing”. We do not sell personal information.</p>
+<p>To exercise any right, email <a href="mailto:privacy@sapctl.dev">privacy@sapctl.dev</a> from the address on your account. We respond within 30 days.</p>
+
+<h2 id="security">Security</h2>
+<p>See our <a href="security.html">security policy</a> and the <a href="trust.html">Trust Portal</a> for certifications, SBOMs, and pen-test summaries.</p>
+
+<h2 id="children">Children</h2>
+<p>sapctl is a developer tool and is not directed to children under 16. We do not knowingly collect personal data from children.</p>
+
+<h2 id="changes">Changes to this policy</h2>
+<p>We will post any material change here at least 30 days before it takes effect and notify account holders by email. A version history is maintained on our <a href="https://github.com/sapctl/policies">policy repository</a>.</p>
+
+<h2 id="contact">Contact</h2>
+<p>Data Protection Officer · <a href="mailto:dpo@sapctl.dev">dpo@sapctl.dev</a><br/>
+Privacy enquiries · <a href="mailto:privacy@sapctl.dev">privacy@sapctl.dev</a><br/>
+EU representative (Art. 27 GDPR) · <a href="mailto:eu-rep@sapctl.dev">eu-rep@sapctl.dev</a>, c/o Prighter, Schwarzenbergplatz 4, 1030 Wien, Austria.</p>
+
+    </article>
+  </main>
+
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

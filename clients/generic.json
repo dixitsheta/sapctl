@@ -1,0 +1,15 @@
+{
+  "_comment": "Minimal portable MCP server descriptor. Most MCP clients accept a `mcpServers` object keyed by display name. Use this as a template when adapting to other clients.",
+  "mcpServers": {
+    "sapctl": {
+      "command": "sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${env:HOME}",
+        "XDG_CONFIG_HOME": "${env:HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      },
+      "description": "Unified, agent-native CLI for the SAP product portfolio"
+    }
+  }
+}

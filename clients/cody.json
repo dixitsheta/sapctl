@@ -1,0 +1,14 @@
+{
+  "_comment": "Sourcegraph Cody. Add to VS Code settings.json (User OR Workspace). Key: 'cody.experimental.mcp.servers'. Restart Cody after editing. Requires Cody >= 1.45 with MCP enabled in settings.",
+  "cody.experimental.mcp.servers": {
+    "sapctl": {
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}

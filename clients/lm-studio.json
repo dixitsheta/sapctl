@@ -1,0 +1,14 @@
+{
+  "_comment": "LM Studio (>= 0.3.0). Open LM Studio -> Settings -> Developer -> 'Edit mcp.json'. Restart server after saving.",
+  "mcpServers": {
+    "sapctl": {
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}

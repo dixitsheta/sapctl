@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "sapctl": {
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin",
+        "SAPCTL_AUDIT": "0",
+        "SAPCTL_TRACE": "0"
+      },
+      "description": "Unified, agent-native CLI for the SAP product portfolio"
+    }
+  }
+}

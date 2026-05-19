@@ -1,0 +1,43 @@
+---
+title: sapctl
+description: The unified open-source CLI for SAP. CRA-ready, MCP-emitting, audit-signed.
+template: splash
+hero:
+  tagline: One command for S/4HANA, BTP, Datasphere, Joule, Ariba, Concur, SuccessFactors, Integration Suite, SAC, Signavio, LeanIX, Cloud ALM. Agent-native output. Air-gap capable. Signed binaries ready for the EU CRA.
+  actions:
+    - text: Install
+      link: /install/
+      icon: right-arrow
+      variant: primary
+    - text: Quickstart
+      link: /getting-started/
+      icon: rocket
+    - text: View on GitHub
+      link: https://github.com/dixitsheta/sapctl
+      icon: external
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why sapctl
+
+<CardGrid>
+  <Card title="One CLI, all SAP" icon="approve-check">
+    Single binary, single auth model, single command tree across the SAP
+    portfolio. Stop maintaining glue code per migration.
+  </Card>
+  <Card title="Agent-native" icon="puzzle">
+    Every command is exposed as an MCP tool over `sapctl mcp serve`. No
+    SDK porting required for AI agents.
+  </Card>
+  <Card title="CRA / DORA evidence by default" icon="seti:lock">
+    Every run emits a hash-chained, ed25519-signed audit event. Recipes
+    (SOX, DORA, AI Act, CRA) generate auditor-ready bundles.
+  </Card>
+  <Card title="Air-gap ready" icon="rocket">
+    `sapctl bundle export` produces in-toto-signed tarballs verifiable on
+    disconnected machines.
+  </Card>
+</CardGrid>
+
+> Independent open-source project. Not affiliated with SAP SE.

@@ -1,0 +1,8 @@
+go 1.25.0
+
+use (
+	./apps/cli
+	./packages/audit-chain
+	./packages/mcp-emitter
+	./packages/sqlite-mirror
+)

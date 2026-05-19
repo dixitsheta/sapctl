@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roadmap — sapctl</title>
+  <meta name="description" content="What we are building next, ordered by the regulatory cliffs the work feeds." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/roadmap.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/roadmap.html" />
+  <meta property="og:title"       content="Roadmap — sapctl" />
+  <meta property="og:description" content="What we are building next, ordered by the regulatory cliffs the work feeds." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Roadmap — sapctl" />
+  <meta name="twitter:description" content="What we are building next, ordered by the regulatory cliffs the work feeds." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Roadmap",
+      "item": "https://sapctl.dev/roadmap.html"
+    }
+  ]
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Roadmap</div>
+      <h1 class="page-title">Roadmap</h1>
+      <p class="page-sub">Ordered by the regulatory and customer-driven dates the work feeds. Subject to change as we learn.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<h2>Next 90 days</h2>
+<ul>
+  <li><strong>SuccessFactors EC write paths.</strong> Idempotent imports for org, position, employee.</li>
+  <li><strong>Cloud ALM → OpenTelemetry.</strong> Native exporter so ALM alerts flow into your existing observability.</li>
+  <li><strong>Signed audit chain v2.</strong> Sigstore Rekor witness on every audit event.</li>
+</ul>
+<h2>Aug 2026 — EU AI Act high-risk</h2>
+<ul>
+  <li><strong>Annex IV statement automation.</strong> Generate a draft Annex IV pack from your <code>sapctl</code> usage.</li>
+  <li><strong>Agent policy router.</strong> Enforce SAP API Policy v4/2026 at the tool boundary.</li>
+</ul>
+<h2>Sept 2026 — CRA Article 14</h2>
+<ul>
+  <li><strong>ENISA reporting CLI.</strong> One command to submit early-warning, 72-hour, and 14-day reports.</li>
+  <li><strong>Severe-incident webhook.</strong> Route incidents from your stack into the ENISA single platform.</li>
+</ul>
+<h2>Dec 2027 — CRA full applicability</h2>
+<ul>
+  <li><strong>CE marking flow.</strong> Generate the technical file and DoC from CI artefacts.</li>
+  <li><strong>Conformity assessment helpers.</strong> Pre-flight checks against the harmonised standards.</li>
+</ul>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

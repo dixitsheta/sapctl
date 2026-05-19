@@ -1,0 +1,65 @@
+# macOS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local DBs / agent state (not part of source)
+ruvector.db
+agentdb.rvf
+agentdb.rvf.lock
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Build artifacts
+/dist/
+/build/
+/out/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Go
+/apps/cli/bin/
+*.test
+*.prof
+coverage.out
+coverage.html
+
+# Node / pnpm
+node_modules/
+.next/
+.turbo/
+.astro/
+.cache/
+*.tsbuildinfo
+pnpm-debug.log*
+npm-debug.log*
+
+# Env / secrets — NEVER commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets/
+
+# OS / temp
+tmp/
+*.log
+*.bak
+
+# Private working files -- live locally only, never on remote
+/CLAUDE.md
+/AGENTS.md
+/company/
+/plans/
+/ref/
+/GSC/
+/memory/

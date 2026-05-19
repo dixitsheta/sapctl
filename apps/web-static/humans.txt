@@ -1,0 +1,16 @@
+/* TEAM */
+  Project: sapctl
+  Contact: hello [at] sapctl.dev
+  Source: https://github.com/sapctl/sapctl
+  License: Apache-2.0
+
+/* SITE */
+  Last update: 2026-05-16
+  Built with: HTML, CSS, a sprinkle of vanilla JS, Tailwind CDN, Tabler Icons, Inter.
+  Standards: HTML5, WCAG 2.2 AA, schema.org, Open Graph, sitemap.org.
+  Components: zero npm dependencies on the marketing site.
+
+/* THANKS */
+  Inter typeface — Rasmus Andersson
+  Tabler Icons — Paweł Kuna
+  Plausible Analytics — for cookie-free metrics

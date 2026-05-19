@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sub-processors — sapctl</title>
+  <meta name="description" content="The current list of sub-processors that may process customer personal data on behalf of sapctl." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/sub-processors.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/sub-processors.html" />
+  <meta property="og:title"       content="Sub-processors — sapctl" />
+  <meta property="og:description" content="The current list of sub-processors that may process customer personal data on behalf of sapctl." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Sub-processors — sapctl" />
+  <meta name="twitter:description" content="The current list of sub-processors that may process customer personal data on behalf of sapctl." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl changelog" href="feed.xml" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Sub-processors",
+      "item": "https://sapctl.dev/sub-processors.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <header data-site-nav></header>
+
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Sub-processors</div>
+      <h1 class="page-title">Sub-processors</h1>
+      <p class="page-sub">Every third-party service that may process Customer Personal Data on our behalf. Subscribe to the Atom feed for changes.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p>We notify customers at least 30 days before adding or changing a sub-processor. Subscribe to <a href="sub-processors.atom">the Atom feed</a> or watch the <a href="https://github.com/sapctl/policies">policy repository</a> on GitHub.</p>
+
+<h2>Infrastructure</h2>
+<table>
+  <thead><tr><th>Sub-processor</th><th>Purpose</th><th>Location</th><th>Transfer mechanism</th></tr></thead>
+  <tbody>
+    <tr><td>Amazon Web Services, Inc.</td><td>Compute, storage, networking</td><td>Frankfurt (eu-central-1), Dublin (eu-west-1), Virginia (us-east-1)</td><td>SCCs · DPF</td></tr>
+    <tr><td>Cloudflare, Inc.</td><td>DNS, edge cache, WAF</td><td>Global edge</td><td>SCCs · DPF</td></tr>
+    <tr><td>Hetzner Online GmbH</td><td>Build infrastructure and SBOM signing</td><td>Falkenstein, Germany</td><td>n/a (EU)</td></tr>
+  </tbody>
+</table>
+
+<h2>Operations & support</h2>
+<table>
+  <thead><tr><th>Sub-processor</th><th>Purpose</th><th>Location</th><th>Transfer mechanism</th></tr></thead>
+  <tbody>
+    <tr><td>GitHub, Inc.</td><td>Source code, issue tracking, releases</td><td>USA</td><td>SCCs · DPF</td></tr>
+    <tr><td>HelpScout, Inc.</td><td>Customer support ticketing</td><td>USA</td><td>SCCs · DPF</td></tr>
+    <tr><td>Stripe Payments Europe Ltd.</td><td>Payment processing</td><td>Ireland; failover USA</td><td>SCCs · DPF</td></tr>
+    <tr><td>Twilio SendGrid</td><td>Transactional email</td><td>USA</td><td>SCCs · DPF</td></tr>
+  </tbody>
+</table>
+
+<h2>Optional (Enterprise tier only, by opt-in)</h2>
+<table>
+  <thead><tr><th>Sub-processor</th><th>Purpose</th><th>Location</th><th>Transfer mechanism</th></tr></thead>
+  <tbody>
+    <tr><td>Microsoft Azure</td><td>Sovereign-cloud regions for IL4-class workloads</td><td>Customer-selected sovereign region</td><td>SCCs · in-region</td></tr>
+    <tr><td>Google Cloud Platform</td><td>HIPAA-eligible regions for regulated pharma customers</td><td>Customer-selected region</td><td>SCCs · DPF</td></tr>
+  </tbody>
+</table>
+
+    </article>
+  </main>
+
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

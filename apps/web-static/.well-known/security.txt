@@ -1,0 +1,10 @@
+# https://sapctl.dev/.well-known/security.txt
+Contact: mailto:security@sapctl.dev
+Contact: https://github.com/sapctl/sapctl/security/advisories/new
+Expires: 2027-05-16T00:00:00.000Z
+Encryption: https://sapctl.dev/.well-known/pgp-key.txt
+Acknowledgments: https://sapctl.dev/security.html#advisories
+Policy: https://sapctl.dev/security.html
+Preferred-Languages: en
+Canonical: https://sapctl.dev/.well-known/security.txt
+Hiring: https://sapctl.dev/careers.html

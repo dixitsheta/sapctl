@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build & vet (${{ matrix.os }} / ${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        arch: [amd64, arm64]
+        exclude:
+          - os: windows-latest
+            arch: arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+      - name: Build sapctl
+        env:
+          GOARCH: ${{ matrix.arch }}
+          CGO_ENABLED: '0'
+        working-directory: apps/cli
+        run: go build -o bin/sapctl .
+      - name: Vet (apps/cli)
+        working-directory: apps/cli
+        run: go vet ./...
+      - name: Vet (audit-chain)
+        working-directory: packages/audit-chain
+        run: go vet ./...
+      - name: Vet (sqlite-mirror)
+        working-directory: packages/sqlite-mirror
+        run: go vet ./...
+      - name: Vet (mcp-emitter)
+        working-directory: packages/mcp-emitter
+        run: go vet ./...
+
+  test:
+    name: Test (ubuntu / amd64)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
+          cache: true
+      - name: Test apps/cli
+        working-directory: apps/cli
+        run: go test -race ./...
+      - name: Test packages/audit-chain
+        working-directory: packages/audit-chain
+        run: go test -race ./...
+      - name: Test packages/sqlite-mirror
+        working-directory: packages/sqlite-mirror
+        run: go test -race ./...
+      - name: Test packages/mcp-emitter
+        working-directory: packages/mcp-emitter
+        run: go test -race ./...

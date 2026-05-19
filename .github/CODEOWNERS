@@ -1,0 +1,13 @@
+# Default reviewer for everything.
+*                                @dixitsheta
+
+# Governance files MUST be reviewed by the project lead.
+/LICENSE                         @dixitsheta
+/CODE_OF_CONDUCT.md              @dixitsheta
+/SECURITY.md                     @dixitsheta
+/company/**                      @dixitsheta
+/plans/**                        @dixitsheta
+
+# CI / release pipeline -- security-relevant.
+/.github/**                      @dixitsheta
+/.goreleaser.yaml                @dixitsheta

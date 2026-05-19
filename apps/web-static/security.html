@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Security policy & vulnerability disclosure — sapctl</title>
+  <meta name="description" content="How sapctl secures its software supply chain and how to report a vulnerability." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/security.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/security.html" />
+  <meta property="og:title"       content="Security policy & vulnerability disclosure — sapctl" />
+  <meta property="og:description" content="How sapctl secures its software supply chain and how to report a vulnerability." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Security policy & vulnerability disclosure — sapctl" />
+  <meta name="twitter:description" content="How sapctl secures its software supply chain and how to report a vulnerability." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl changelog" href="feed.xml" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Security policy",
+      "item": "https://sapctl.dev/security.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <header data-site-nav></header>
+
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Security</div>
+      <h1 class="page-title">Security policy</h1>
+      <p class="page-sub">How we secure the sapctl software supply chain, our coordinated-vulnerability-disclosure policy, and a register of recent advisories.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<nav class="toc" aria-label="On this page">
+        <div class="toc-label">On this page</div>
+        <ul><li><a href="#cvd">Coordinated vulnerability disclosure</a></li><li><a href="#scope">In scope</a></li><li><a href="#safe-harbour">Safe harbour</a></li><li><a href="#supply-chain">Supply chain</a></li><li><a href="#cra">CRA Article 14 reporting</a></li><li><a href="#advisories">Advisories</a></li><li><a href="#contact">Contact</a></li></ul>
+      </nav>
+
+<h2 id="cvd">Coordinated vulnerability disclosure</h2>
+<p>We welcome reports of security issues in any sapctl-maintained software and infrastructure. Please email <a href="mailto:security@sapctl.dev">security@sapctl.dev</a> with the details. Our PGP key is published at <a href=".well-known/security.txt">/.well-known/security.txt</a>; fingerprint <code>5C1F  9C8D  2D9E  4D6B  91FA   A6E0  3A1E  44C4  1E0C  E1AC</code>.</p>
+<p>We acknowledge within 24 hours, triage within 3 business days, and aim to ship a fix within 30 days for high-severity issues. We credit reporters in the published advisory unless you ask us not to.</p>
+
+<h2 id="scope">In scope</h2>
+<ul>
+  <li>The <code>sapctl</code> command-line tool and its first-party plug-ins.</li>
+  <li>The <code>sapctl.dev</code> website and the Trust Portal.</li>
+  <li>Build, signing, and release infrastructure.</li>
+</ul>
+
+<h3>Out of scope</h3>
+<ul>
+  <li>SAP-vendor systems, third-party SAAS used as sub-processors, and customer SAP tenants.</li>
+  <li>Reports requiring physical access, social engineering of staff, or DDoS.</li>
+  <li>Findings produced solely by automated scanners without a working proof-of-concept.</li>
+</ul>
+
+<h2 id="safe-harbour">Safe harbour</h2>
+<p>Good-faith research under this policy is authorised: we will not pursue legal action against researchers who comply with this policy, avoid privacy violations and service disruption, and give us reasonable time to fix issues before public disclosure.</p>
+
+<h2 id="supply-chain">Supply chain</h2>
+<ul>
+  <li>Every release is reproducibly built and signed with <a href="https://github.com/sigstore/cosign">cosign</a> keyless attestations.</li>
+  <li>Each release ships a CycloneDX 1.7 SBOM and SPDX 3.0.1 SBOM, plus SLSA L3 provenance.</li>
+  <li>Dependency upgrades go through automated SCA and human review; transitive-dependency CVEs trigger an internal SLA.</li>
+</ul>
+
+<h2 id="cra">CRA Article 14 reporting</h2>
+<p>From <strong>11 Sept 2026</strong>, sapctl will report actively exploited vulnerabilities to ENISA via the single reporting platform within 24 hours of awareness (early warning), with a notification within 72 hours and a final report within 14 days. Severe incidents are reported on the same cadence. Customers can subscribe to a private advisory feed by emailing <a href="mailto:security@sapctl.dev">security@sapctl.dev</a>.</p>
+
+<h2 id="advisories">Advisories</h2>
+<p>Public advisories are published as GitHub Security Advisories on <a href="https://github.com/sapctl/sapctl/security/advisories">sapctl/sapctl</a> and mirrored as an RSS feed at <a href="advisories.xml">/advisories.xml</a>. No active advisories at the time of writing.</p>
+
+<h2 id="contact">Contact</h2>
+<p><a href="mailto:security@sapctl.dev">security@sapctl.dev</a> · PGP fingerprint <code>5C1F 9C8D 2D9E 4D6B 91FA A6E0 3A1E 44C4 1E0C E1AC</code> · <a href=".well-known/security.txt">security.txt</a></p>
+
+    </article>
+  </main>
+
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Trust portal — sapctl</title>
+  <meta name="description" content="Certifications, SBOMs, pen-test summaries, and CRA Annex IV documentation for sapctl." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/trust.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/trust.html" />
+  <meta property="og:title"       content="Trust portal — sapctl" />
+  <meta property="og:description" content="Certifications, SBOMs, pen-test summaries, and CRA Annex IV documentation for sapctl." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Trust portal — sapctl" />
+  <meta name="twitter:description" content="Certifications, SBOMs, pen-test summaries, and CRA Annex IV documentation for sapctl." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl changelog" href="feed.xml" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Trust portal",
+      "item": "https://sapctl.dev/trust.html"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+  <header data-site-nav></header>
+
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Trust portal</div>
+      <h1 class="page-title">Trust portal</h1>
+      <p class="page-sub">Compliance certifications, SBOMs, pen-test summaries, and EU CRA Annex IV documentation.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<h2 id="certs">Certifications & attestations</h2>
+<div class="card-grid">
+  <div class="card">
+    <span class="kicker">SOC 2 Type II</span>
+    <h3>Trust Services Criteria · 2026 audit window</h3>
+    <p>Annual audit by an AICPA-licensed firm. Report available under NDA.</p>
+    <div class="row"><a class="pill" href="mailto:trust@sapctl.dev">Request report</a></div>
+  </div>
+  <div class="card">
+    <span class="kicker">ISO/IEC 27001:2022</span>
+    <h3>Information security management</h3>
+    <p>Certified scope: design, development, and operation of sapctl cloud services.</p>
+    <div class="row"><a class="pill" href="assets/iso-27001-cert.pdf">Public certificate</a></div>
+  </div>
+  <div class="card">
+    <span class="kicker">PCI DSS</span>
+    <h3>Not in scope</h3>
+    <p>Cardholder data is processed by Stripe; sapctl never stores PAN. SAQ-A applies to our merchant relationship.</p>
+  </div>
+</div>
+
+<h2 id="sbom">Software bill of materials &amp; signed artifacts</h2>
+<p>Every signed release publishes a CycloneDX 1.7 SBOM per platform binary plus
+a <code>cosign</code>-signed SHA-256 checksum file. Signatures are produced via
+Sigstore <strong>keyless OIDC</strong> from our GitHub Actions workflow; no
+long-lived key exists on the project side.</p>
+
+<div id="trust-status" class="form-status" data-state="pending">Loading latest release from GitHub...</div>
+<div id="trust-release"></div>
+
+<h3 style="margin-top:32px">Verify on your own machine</h3>
+<p>Anyone can independently confirm a downloaded artifact:</p>
+<pre><code>cosign verify-blob \
+  --certificate-identity-regexp='https://github.com/dixitsheta/sapctl/.github/workflows/release.yml@.*' \
+  --certificate-oidc-issuer='https://token.actions.githubusercontent.com' \
+  --certificate=sapctl_&lt;VERSION&gt;_checksums.txt.pem \
+  --signature=sapctl_&lt;VERSION&gt;_checksums.txt.sig \
+  sapctl_&lt;VERSION&gt;_checksums.txt</code></pre>
+<p>The certificate's identity field will resolve to the exact workflow run
+that built the binaries. The cert is logged in the public Sigstore
+<a href="https://search.sigstore.dev/" target="_blank" rel="noopener">Rekor transparency log</a>;
+deletion is impossible.</p>
+
+<style>
+  .trust-rel { padding: 16px 0; border-top: 1px solid var(--line); }
+  .trust-rel:first-of-type { border-top: none; }
+  .trust-rel h4 { margin: 0 0 4px; }
+  .trust-rel .meta { color: var(--ink2); font-size: 13px; margin: 0 0 12px; }
+  .trust-asset { display: flex; gap: 12px; align-items: center; padding: 6px 0; font-size: 13px; }
+  .trust-asset .badge {
+    display: inline-block; padding: 2px 6px; border-radius: 4px;
+    background: var(--surface); border: 1px solid var(--line);
+    color: var(--ink2); font-size: 11px;
+  }
+  .trust-asset .badge.b-sig { color: var(--accent); border-color: var(--accent); }
+  .trust-asset .badge.b-pem { color: var(--ok); border-color: var(--ok); }
+  .trust-asset .badge.b-sbom { color: var(--warn); border-color: var(--warn); }
+</style>
+
+<script>
+(function () {
+  var status = document.getElementById('trust-status');
+  var mount = document.getElementById('trust-release');
+
+  function classify(name) {
+    if (/\.cdx\.json$/i.test(name)) return 'b-sbom';
+    if (/\.sig$/i.test(name))       return 'b-sig';
+    if (/\.pem$/i.test(name))       return 'b-pem';
+    return '';
+  }
+  function label(name) {
+    if (/\.cdx\.json$/i.test(name)) return 'CycloneDX SBOM';
+    if (/\.sig$/i.test(name))       return 'cosign signature';
+    if (/\.pem$/i.test(name))       return 'cosign cert';
+    if (/checksums\.txt$/i.test(name)) return 'SHA-256 checksums';
+    if (/\.tar\.gz$|\.zip$/i.test(name)) return 'binary archive';
+    return '';
+  }
+  function fmtDate(iso) {
+    try { return new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }); }
+    catch (e) { return iso; }
+  }
+
+  fetch('/api/releases', { headers: { 'Accept': 'application/json' } })
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      var rels = (data && data.releases) || [];
+      if (rels.length === 0) {
+        status.textContent = 'No signed releases yet.';
+        return;
+      }
+      var latest = rels.find(function (r) { return !r.draft; }) || rels[0];
+      status.textContent = 'Latest signed release: ' + latest.tag_name + ' (' + fmtDate(latest.published_at) + ').';
+      status.dataset.state = 'ok';
+
+      var section = document.createElement('div');
+      section.className = 'trust-rel';
+      var h = document.createElement('h4');
+      h.textContent = latest.tag_name + (latest.prerelease ? ' (prerelease)' : '');
+      section.appendChild(h);
+      var m = document.createElement('p');
+      m.className = 'meta';
+      m.innerHTML = 'Published ' + fmtDate(latest.published_at)
+        + ' &middot; <a href="' + latest.html_url + '" target="_blank" rel="noopener">GitHub release</a>'
+        + ' &middot; <a href="https://search.sigstore.dev/" target="_blank" rel="noopener">Rekor transparency log</a>';
+      section.appendChild(m);
+
+      (latest.assets || []).forEach(function (a) {
+        var row = document.createElement('div');
+        row.className = 'trust-asset';
+        var lbl = label(a.name);
+        var cls = classify(a.name);
+        var badgeHtml = lbl ? '<span class="badge ' + cls + '">' + lbl + '</span>' : '';
+        row.innerHTML = badgeHtml + ' <a href="' + a.browser_download_url
+          + '" rel="noopener">' + a.name + '</a> '
+          + '<span class="meta">(' + Math.round(a.size / 1024) + ' KB)</span>';
+        section.appendChild(row);
+      });
+
+      mount.appendChild(section);
+    })
+    .catch(function (err) {
+      status.textContent = 'Could not load releases: ' + err.message;
+      status.dataset.state = 'error';
+    });
+})();
+</script>
+
+<h2 id="pen-test">Penetration testing</h2>
+<p>Annual third-party penetration test, with a retest after material architecture change. Executive summary available on request; the full report is available under NDA.</p>
+
+<h2 id="annex-iv">EU CRA Annex IV statement</h2>
+<p>From 11 December 2027 the EU Cyber Resilience Act applies in full to sapctl as a “product with digital elements”. Our Annex IV technical documentation includes: product description, intended use, risk assessment, threat model, secure development lifecycle, vulnerability handling, applied harmonised standards, and a CE marking statement.</p>
+<p>Latest draft Annex IV pack is available to customers and conformity assessors: <a href="mailto:trust@sapctl.dev">trust@sapctl.dev</a>.</p>
+
+<h2 id="subprocessors">Sub-processors</h2>
+<p>See the full <a href="sub-processors.html">sub-processor list</a> and subscribe to the change feed.</p>
+
+<h2 id="contact">Contact</h2>
+<p><a href="mailto:trust@sapctl.dev">trust@sapctl.dev</a> · for security disclosures, <a href="security.html">security policy</a>.</p>
+
+    </article>
+  </main>
+
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

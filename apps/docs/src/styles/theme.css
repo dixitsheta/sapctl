@@ -1,0 +1,17 @@
+/* sapctl docs theme -- match marketing site tokens */
+:root {
+  --sl-color-accent-low: #0a2a6b;
+  --sl-color-accent: #4F8DFF;
+  --sl-color-accent-high: #cfe0ff;
+}
+:root[data-theme='dark'] {
+  --sl-color-bg: #08080A;
+  --sl-color-bg-nav: #08080A;
+  --sl-color-bg-sidebar: #08080A;
+  --sl-color-text: #FAFAFA;
+  --sl-color-text-accent: #4F8DFF;
+}
+:root[data-theme='light'] {
+  --sl-color-bg: #FCFCFB;
+  --sl-color-text: #0B0B0C;
+}

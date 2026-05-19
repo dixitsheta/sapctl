@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Documentation — sapctl</title>
+  <meta name="description" content="Install, authenticate, and use sapctl across S/4HANA, BTP, Datasphere, Joule, and the rest of the SAP portfolio." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/docs.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/docs.html" />
+  <meta property="og:title"       content="Documentation — sapctl" />
+  <meta property="og:description" content="Install, authenticate, and use sapctl across S/4HANA, BTP, Datasphere, Joule, and the rest of the SAP portfolio." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Documentation — sapctl" />
+  <meta name="twitter:description" content="Install, authenticate, and use sapctl across S/4HANA, BTP, Datasphere, Joule, and the rest of the SAP portfolio." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://sapctl.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Documentation",
+      "item": "https://sapctl.dev/docs.html"
+    }
+  ]
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Docs</div>
+      <h1 class="page-title">Documentation</h1>
+      <p class="page-sub">Install, authenticate, and ship your first audit-grade extraction. The docs site below is a navigation stub — full content lives at docs.sapctl.dev.</p>
+      <div class="page-meta">Last updated: May 16, 2026</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<h2 id="install">Install</h2>
+<p>Pick the channel that fits your environment:</p>
+<ul>
+  <li><strong>Go:</strong> <code>go install github.com/sapctl/sapctl@latest</code></li>
+  <li><strong>Homebrew:</strong> <code>brew install sapctl/tap/sapctl</code></li>
+  <li><strong>Scoop:</strong> <code>scoop bucket add sapctl https://github.com/sapctl/scoop &amp;&amp; scoop install sapctl</code></li>
+  <li><strong>Apt:</strong> <code>curl -fsSL https://sapctl.dev/install.sh | bash</code></li>
+  <li><strong>Air-gapped:</strong> verified tarball + cosign attestation on the <a href="https://github.com/sapctl/sapctl/releases">releases page</a>.</li>
+</ul>
+
+<h2 id="auth">Authenticate</h2>
+<p>One auth flow works across every SAP product. xsuaa, IAS, and Cloud Identity tokens are managed by the OS keychain.</p>
+<pre><code>sapctl auth login --tenant acme-prod
+sapctl auth status</code></pre>
+
+<h2 id="extract">First extraction</h2>
+<pre><code>sapctl s4 cds extract --view I_GLAccountLineItem --since P12M --out gl/</code></pre>
+
+<h2 id="mcp">MCP catalog</h2>
+<p>Every sub-command tree can be emitted as a Model Context Protocol server, ready to wire into Claude Desktop, Cursor, or Continue. See <code>sapctl mcp emit --help</code>.</p>
+
+<h2 id="examples">Examples</h2>
+<p>Browse 50+ ready-made workflows on the <a href="index.html#use-cases">use cases</a> page or in the <a href="https://github.com/sapctl/examples">examples repo</a>.</p>
+
+<h2>Full documentation</h2>
+<p>The full reference, configuration cookbook, and tenant-by-tenant guides live at <a href="https://docs.sapctl.dev">docs.sapctl.dev</a>.</p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+</body>
+</html>

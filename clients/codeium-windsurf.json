@@ -1,0 +1,14 @@
+{
+  "_comment": "Codeium / Windsurf editor. Drop into ~/.codeium/windsurf/mcp_config.json (macOS/Linux). Restart Windsurf after editing. Requires Windsurf >= 1.0 with MCP plugins enabled.",
+  "mcpServers": {
+    "sapctl": {
+      "command": "/usr/local/bin/sapctl",
+      "args": ["mcp", "serve"],
+      "env": {
+        "HOME": "${HOME}",
+        "XDG_CONFIG_HOME": "${HOME}/.config",
+        "PATH": "/usr/local/bin:/usr/bin:/bin"
+      }
+    }
+  }
+}
