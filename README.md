@@ -2,13 +2,13 @@
 
 > One CLI for the SAP portfolio. Designed so an LLM agent can drive it as easily as a human.
 
-`sapctl` started because I got tired of bouncing between BTP Cockpit, S/4 Fiori, and twelve different OData docs to pull one journal extract for an auditor. The plan is a single binary that speaks to S/4HANA, BTP, Datasphere, AI Core, and (over time) Integration Suite, SuccessFactors, Ariba, Concur, SAC, Signavio, LeanIX, and Cloud ALM — with the same flags, the same JSON schema, and the same signed audit chain for every call.
+`sapctl` started because I got tired of bouncing between BTP Cockpit, S/4 Fiori, and twelve different OData docs to pull one journal extract for an auditor. The plan is a single binary that speaks to S/4HANA, BTP, Datasphere, and AI Core today — and to Integration Suite, SuccessFactors, Ariba, Concur, SAC, Signavio, LeanIX, and Cloud ALM over time — with the same flags, the same JSON schema, and the same signed audit chain on every call.
 
 Three things it tries to get right:
 
-- **Agent-native output.** Every command takes `--json` and emits MCP tool descriptors, so Claude/Cursor/Ollama can call it without screen-scraping.
-- **Compliance-ready by default.** ed25519 hash-chained audit log, CycloneDX 1.7 SBOM, cosign keyless signature, SLSA L3 provenance on every release. Built for the EU Cyber Resilience Act, DORA, SOX 404.
-- **Works disconnected.** Air-gap bundle format (in-toto v1) so the same chain that runs in a German bank's prod also runs on a USB stick into a classified network.
+- **Agent-native output.** Every command takes `--json` and emits MCP tool descriptors — Claude, Cursor, and Ollama can call it without screen-scraping.
+- **Compliance-ready by default.** ed25519 hash-chained audit log, CycloneDX 1.7 SBOM, cosign keyless signature, and SLSA L3 provenance on every release — built for the EU Cyber Resilience Act, DORA, and SOX 404.
+- **Works disconnected.** Air-gap bundle format (in-toto v1) — the same chain that runs in a German bank's prod also runs on a USB stick into a classified network.
 
 **Status:** v0.1.0-alpha. v1.0 GA targeted Q1 2027.
 
