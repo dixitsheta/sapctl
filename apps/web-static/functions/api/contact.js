@@ -14,7 +14,7 @@
 //   CONTACT_FROM       sender for Resend (must be a verified domain)
 //
 // Security: no secrets in code; all from env. Honeypot + Turnstile + JSON
-// validation per CLAUDE.md security checklist.
+// validation.
 
 export async function onRequestPost({ request, env }) {
   let body;

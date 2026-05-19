@@ -16,7 +16,7 @@ description: Top-level sapctl commands.
 | `mcp` | Model Context Protocol server (`serve`, `list-tools`) |
 | `version` | Print build metadata |
 
-Global flags (locked by [ADR 0002](https://github.com/dixitsheta/sapctl/blob/main/company/engineering/adr/0002-cli-framework-cobra.md)):
+Global flags (locked by [ADR 0002](https://github.com/dixitsheta/sapctl/blob/main/docs/adr/0002-cli-framework-cobra.md)):
 
 \`\`\`
 --json --select --dry-run --compact --quiet --yes --no-input --agent --since --audit

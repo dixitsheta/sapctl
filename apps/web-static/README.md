@@ -1,8 +1,8 @@
 # apps/web-static — sapctl.dev v0
 
-Static-site copy of `ref/sapctl/`, the production-grade design source. This is the **v0** marketing site, deployed as-is to Cloudflare Pages at https://sapctl.dev.
+Static marketing site. This is the **v0** version, deployed as-is to Cloudflare Pages at https://sapctl.dev.
 
-v1 will port this to Next.js 15 at `apps/web/` per `/plans/03-ui-integration.md` Phase 4.
+v1 will port this to Next.js 15 at `apps/web/`.
 
 ## Deploy
 

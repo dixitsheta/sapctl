@@ -1,8 +1,7 @@
 // Package main is the entry point for the sapctl CLI.
 //
 // sapctl is the unified, agent-native command-line interface for the SAP
-// product portfolio. See /CLAUDE.md and /plans/00-master-plan.md for project
-// context.
+// product portfolio.
 package main
 
 import (

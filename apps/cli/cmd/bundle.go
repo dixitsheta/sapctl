@@ -120,7 +120,7 @@ func runBundleExport(cmd *cobra.Command, f bundleExportFlags) error {
 			case "specs":
 				srcs = append(srcs, "specs")
 			case "recipes":
-				srcs = append(srcs, "company/engineering/adr")
+				srcs = append(srcs, "docs/adr")
 			case "binary":
 				if exe, err := os.Executable(); err == nil {
 					srcs = append(srcs, exe)
