@@ -11,10 +11,36 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"time"
 
 	_ "modernc.org/sqlite"
 )
+
+// DefaultDir is the default directory for mirror databases under
+// ~/.config/sapctl/mirror/.
+func DefaultDir() (string, error) {
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("home dir: %w", err)
+	}
+	dir := filepath.Join(home, ".config", "sapctl", "mirror")
+	if err := os.MkdirAll(dir, 0700); err != nil {
+		return "", fmt.Errorf("mkdir mirror: %w", err)
+	}
+	return dir, nil
+}
+
+// DefaultPath returns the default mirror DB path for a (service, entity) pair.
+// The file is stored under DefaultDir() as <service>_<entity>.db.
+func DefaultPath(service, entity string) (string, error) {
+	dir, err := DefaultDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(dir, fmt.Sprintf("%s_%s.db", service, entity)), nil
+}
 
 // Store wraps an opened SQLite database.
 type Store struct {
@@ -139,16 +165,32 @@ func (s *Store) List(ctx context.Context, service, entity string, limit int) ([]
 	return scanRows(rows)
 }
 
-// Search runs FTS5 MATCH over `raw`. service+entity narrow the search.
+// Search runs FTS5 MATCH over `raw`. service+entity narrow the search; if
+// both are empty, the search runs across ALL entities in the database.
 func (s *Store) Search(ctx context.Context, service, entity, query string, limit int) ([]Row, error) {
 	q := `SELECT e.service, e.entity, e.key, e.fetched_at, e.raw
 	      FROM entities_fts f
-	      JOIN entities e ON e.service = f.service AND e.entity = f.entity AND e.key = f.key
-	      WHERE f.service = ? AND f.entity = ? AND entities_fts MATCH ?
-	      ORDER BY bm25(entities_fts)`
-	args := []any{service, entity, query}
+	      JOIN entities e ON e.service = f.service AND e.entity = f.entity AND e.key = f.key`
+	var args []any
+	var conditions []string
+
+	if service != "" {
+		conditions = append(conditions, "f.service = ?")
+		args = append(args, service)
+	}
+	if entity != "" {
+		conditions = append(conditions, "f.entity = ?")
+		args = append(args, entity)
+	}
+	conditions = append(conditions, "entities_fts MATCH ?")
+	args = append(args, query)
+
+	if len(conditions) > 0 {
+		q += " WHERE " + joinConditions(conditions, " AND ")
+	}
+	q += " ORDER BY bm25(entities_fts)"
 	if limit > 0 {
-		q += ` LIMIT ?`
+		q += " LIMIT ?"
 		args = append(args, limit)
 	}
 	rows, err := s.db.QueryContext(ctx, q, args...)
@@ -157,6 +199,19 @@ func (s *Store) Search(ctx context.Context, service, entity, query string, limit
 	}
 	defer rows.Close()
 	return scanRows(rows)
+}
+
+// joinConditions joins conditions with the given separator. Avoids importing
+// strings just for this.
+func joinConditions(conds []string, sep string) string {
+	if len(conds) == 0 {
+		return ""
+	}
+	out := conds[0]
+	for _, c := range conds[1:] {
+		out += sep + c
+	}
+	return out
 }
 
 func scanRows(rows *sql.Rows) ([]Row, error) {
@@ -237,4 +292,37 @@ func (s *Store) Delete(ctx context.Context, service, entity string) (int, error)
 		return 0, err
 	}
 	return int(n), tx.Commit()
+}
+
+// ServiceInfo describes a service+entity pair present in the mirror.
+type ServiceInfo struct {
+	Service   string `json:"service"`
+	Entity    string `json:"entity"`
+	RowCount  int    `json:"row_count"`
+	Watermark string `json:"watermark,omitempty"`
+}
+
+// ListServices returns all distinct (service, entity) pairs with row counts
+// and watermarks.
+func (s *Store) ListServices(ctx context.Context) ([]ServiceInfo, error) {
+	rows, err := s.db.QueryContext(ctx,
+		`SELECT e.service, e.entity, COUNT(*) as row_count, COALESCE(w.since, '') as watermark
+		 FROM entities e
+		 LEFT JOIN watermarks w ON w.service = e.service AND w.entity = e.entity
+		 GROUP BY e.service, e.entity
+		 ORDER BY e.service, e.entity`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var out []ServiceInfo
+	for rows.Next() {
+		var si ServiceInfo
+		if err := rows.Scan(&si.Service, &si.Entity, &si.RowCount, &si.Watermark); err != nil {
+			return nil, err
+		}
+		out = append(out, si)
+	}
+	return out, rows.Err()
 }

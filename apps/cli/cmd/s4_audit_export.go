@@ -57,6 +57,46 @@ var useCases = map[string]useCase{
 		selectField: "BusinessPartner,BusinessPartnerFullName,BusinessPartnerCategory,LastChangeDateTime,CreatedByUser",
 		description: "SOX business-partner master deltas (master-data integrity)",
 	},
+	"ds-privileged-access": {
+		name:        "ds-privileged-access",
+		service:     "API_DSP_SPACE_USER",
+		entity:      "A_SpaceUser",
+		dateField:   "LastModifiedDateTime",
+		selectField: "SpaceId,UserId,Role,LastModifiedDateTime",
+		description: "Datasphere privileged access snapshot (Space Admins)",
+	},
+	"ds-replication-health": {
+		name:        "ds-replication-health",
+		service:     "API_DSP_REPLICATION_FLOW",
+		entity:      "A_ReplicationFlow",
+		dateField:   "LastSyncDateTime",
+		selectField: "FlowId,SourceSystem,TargetSystem,Status,LastSyncDateTime",
+		description: "Datasphere replication flow integrity and sync timestamps",
+	},
+	"ds-privacy-catalog": {
+		name:        "ds-privacy-catalog",
+		service:     "API_DSP_CATALOG_TAG",
+		entity:      "A_CatalogTag",
+		dateField:   "CreatedDateTime",
+		selectField: "TagId,TagName,Category,SensitivityLevel,CreatedDateTime",
+		description: "Datasphere sensitive data catalog tags (GDPR/Privacy)",
+	},
+	"sac-user-roles": {
+		name:        "sac-user-roles",
+		service:     "API_SAC_USER_ROLE",
+		entity:      "A_UserRoleAssignment",
+		dateField:   "LastModifiedDateTime",
+		selectField: "UserId,RoleName,AssignmentDate,LastModifiedDateTime",
+		description: "SAC user role and permission snapshot",
+	},
+	"bdc-storage-policy": {
+		name:        "bdc-storage-policy",
+		service:     "API_BDC_STORAGE_POLICY",
+		entity:      "A_StoragePolicy",
+		dateField:   "EffectiveDate",
+		selectField: "PolicyId,RetentionPeriod,StorageTier,EffectiveDate",
+		description: "Business Data Cloud storage and retention policy evidence",
+	},
 }
 
 type s4AuditExportFlags struct {
@@ -79,8 +119,13 @@ event per row, ed25519-signed, hash-linked), and emit a verifiable tar.gz
 bundle ready for auditor consumption.
 
 Available use cases:
-  sox-journal   SOX general-ledger journal items by posting date range
-  sox-bp        SOX business-partner master deltas (master-data integrity)
+  sox-journal       SOX general-ledger journal items by posting date range
+  sox-bp           SOX business-partner master deltas (master-data integrity)
+  ds-privileged-access Datasphere privileged access snapshot (Space Admins)
+  ds-replication-health Datasphere replication flow integrity and sync timestamps
+  ds-privacy-catalog Datasphere sensitive data catalog tags (GDPR/Privacy)
+  sac-user-roles SAC user role and permission snapshot
+  bdc-storage-policy Business Data Cloud storage and retention policy evidence
 
 Output bundle contains:
   rows.jsonl       one OData row per line

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"path/filepath"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -30,7 +31,123 @@ func newMirrorCmd() *cobra.Command {
 	c.AddCommand(newMirrorStatsCmd())
 	c.AddCommand(newMirrorSetWatermarkCmd())
 	c.AddCommand(newMirrorResetCmd())
+	c.AddCommand(newMirrorDiscoverCmd())
+	c.AddCommand(newMirrorQueryCmd())
 	return c
+}
+
+// resolveMirrorDB returns the effective mirror DB path. If f.db is empty,
+// it computes the default from service+entity via sqlitemirror.DefaultPath.
+func resolveMirrorDB(f mirrorFlags) (string, error) {
+	if f.db != "" {
+		return f.db, nil
+	}
+	return sqlitemirror.DefaultPath(f.service, f.entity)
+}
+
+func newMirrorDiscoverCmd() *cobra.Command {
+	var db string
+	c := &cobra.Command{
+		Use:   "discover",
+		Short: "List all mirrored services and entities",
+		Long: `Enumerate every (service, entity) pair stored in the mirror
+directory with row counts and watermarks. Scans all .db files under
+~/.config/sapctl/mirror/ unless --db is given.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
+			defer cancel()
+
+			// If --db is given, query that single file.
+			if db != "" {
+				return discoverFromFile(ctx, cmd, db)
+			}
+
+			// Otherwise scan the default mirror directory for .db files.
+			dir, err := sqlitemirror.DefaultDir()
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.discover.dir", "resolve default dir", err)
+			}
+			entries, err := filepath.Glob(filepath.Join(dir, "*.db"))
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.discover.glob", "glob mirror dir", err)
+			}
+			if len(entries) == 0 {
+				if globalFlags.JSON {
+					return writeJSON(cmd, map[string]any{"count": 0, "services": []any{}})
+				}
+				fmt.Fprintln(cmd.OutOrStdout(), "no mirrored services found in "+dir)
+				return nil
+			}
+
+			var all []sqlitemirror.ServiceInfo
+			for _, f := range entries {
+				s, err := sqlitemirror.Open(f)
+				if err != nil {
+					continue // skip unopenable DBs
+				}
+				services, err := s.ListServices(ctx)
+				_ = s.Close()
+				if err != nil {
+					continue
+				}
+				all = append(all, services...)
+			}
+
+			if globalFlags.JSON {
+				return writeJSON(cmd, map[string]any{
+					"count":    len(all),
+					"services": all,
+				})
+			}
+			if len(all) == 0 {
+				fmt.Fprintln(cmd.OutOrStdout(), "no mirrored services found")
+				return nil
+			}
+			for _, si := range all {
+				w := si.Watermark
+				if w == "" {
+					w = "-"
+				}
+				fmt.Fprintf(cmd.OutOrStdout(), "%-30s %-30s %6d rows  watermark=%s\n",
+					si.Service, si.Entity, si.RowCount, w)
+			}
+			return nil
+		},
+	}
+	c.Flags().StringVar(&db, "db", "", "single mirror DB path (default: scan ~/.config/sapctl/mirror/*.db)")
+	return c
+}
+
+// discoverFromFile queries ListServices from a single mirror DB file.
+func discoverFromFile(ctx context.Context, cmd *cobra.Command, path string) error {
+	s, err := sqlitemirror.Open(path)
+	if err != nil {
+		return errs.Wrap(errs.ExitUserError, "mirror.discover.open", "open mirror", err)
+	}
+	defer s.Close()
+	services, err := s.ListServices(ctx)
+	if err != nil {
+		return errs.Wrap(errs.ExitUserError, "mirror.discover.query", "list services", err)
+	}
+	if globalFlags.JSON {
+		return writeJSON(cmd, map[string]any{
+			"count":    len(services),
+			"services": services,
+		})
+	}
+	if len(services) == 0 {
+		fmt.Fprintln(cmd.OutOrStdout(), "no mirrored services found")
+		return nil
+	}
+	for _, si := range services {
+		w := si.Watermark
+		if w == "" {
+			w = "-"
+		}
+		fmt.Fprintf(cmd.OutOrStdout(), "%-30s %-30s %6d rows  watermark=%s\n",
+			si.Service, si.Entity, si.RowCount, w)
+	}
+	return nil
 }
 
 func newMirrorSetWatermarkCmd() *cobra.Command {
@@ -43,7 +160,11 @@ func newMirrorSetWatermarkCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 10*time.Second)
 			defer cancel()
-			s, err := sqlitemirror.Open(f.db)
+			dbPath, err := resolveMirrorDB(f)
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.set-watermark.path", "resolve db path", err)
+			}
+			s, err := sqlitemirror.Open(dbPath)
 			if err != nil {
 				return errs.Wrap(errs.ExitUserError, "mirror.set-watermark.open", "open mirror", err)
 			}
@@ -60,11 +181,10 @@ func newMirrorSetWatermarkCmd() *cobra.Command {
 			return nil
 		},
 	}
-	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (required)")
+	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (default: ~/.config/sapctl/mirror/<service>_<entity>.db)")
 	c.Flags().StringVar(&f.service, "service", "", "service (required)")
 	c.Flags().StringVar(&f.entity, "entity", "", "entity (required)")
 	c.Flags().StringVar(&since, "since", "", "new watermark value (empty = clear)")
-	_ = c.MarkFlagRequired("db")
 	_ = c.MarkFlagRequired("service")
 	_ = c.MarkFlagRequired("entity")
 	return c
@@ -84,7 +204,11 @@ func newMirrorResetCmd() *cobra.Command {
 			}
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
 			defer cancel()
-			s, err := sqlitemirror.Open(f.db)
+			dbPath, err := resolveMirrorDB(f)
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.reset.path", "resolve db path", err)
+			}
+			s, err := sqlitemirror.Open(dbPath)
 			if err != nil {
 				return errs.Wrap(errs.ExitUserError, "mirror.reset.open", "open mirror", err)
 			}
@@ -102,11 +226,10 @@ func newMirrorResetCmd() *cobra.Command {
 			return nil
 		},
 	}
-	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (required)")
+	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (default: ~/.config/sapctl/mirror/<service>_<entity>.db)")
 	c.Flags().StringVar(&f.service, "service", "", "service (required)")
 	c.Flags().StringVar(&f.entity, "entity", "", "entity (required)")
 	c.Flags().BoolVar(&yes, "yes", false, "confirm destructive operation")
-	_ = c.MarkFlagRequired("db")
 	_ = c.MarkFlagRequired("service")
 	_ = c.MarkFlagRequired("entity")
 	return c
@@ -120,7 +243,11 @@ func newMirrorListCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
 			defer cancel()
-			s, err := sqlitemirror.Open(f.db)
+			dbPath, err := resolveMirrorDB(f)
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.list.path", "resolve db path", err)
+			}
+			s, err := sqlitemirror.Open(dbPath)
 			if err != nil {
 				return errs.Wrap(errs.ExitUserError, "mirror.list.open", "open mirror", err)
 			}
@@ -132,11 +259,10 @@ func newMirrorListCmd() *cobra.Command {
 			return emitMirrorRows(cmd, rows)
 		},
 	}
-	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (required)")
+	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (default: ~/.config/sapctl/mirror/<service>_<entity>.db)")
 	c.Flags().StringVar(&f.service, "service", "", "service (required)")
 	c.Flags().StringVar(&f.entity, "entity", "", "entity (required)")
 	c.Flags().IntVar(&f.limit, "limit", 25, "max rows (0 = all)")
-	_ = c.MarkFlagRequired("db")
 	_ = c.MarkFlagRequired("service")
 	_ = c.MarkFlagRequired("entity")
 	return c
@@ -151,7 +277,11 @@ func newMirrorSearchCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
 			defer cancel()
-			s, err := sqlitemirror.Open(f.db)
+			dbPath, err := resolveMirrorDB(f)
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.search.path", "resolve db path", err)
+			}
+			s, err := sqlitemirror.Open(dbPath)
 			if err != nil {
 				return errs.Wrap(errs.ExitUserError, "mirror.search.open", "open mirror", err)
 			}
@@ -163,12 +293,11 @@ func newMirrorSearchCmd() *cobra.Command {
 			return emitMirrorRows(cmd, rows)
 		},
 	}
-	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (required)")
+	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (default: ~/.config/sapctl/mirror/<service>_<entity>.db)")
 	c.Flags().StringVar(&f.service, "service", "", "service (required)")
 	c.Flags().StringVar(&f.entity, "entity", "", "entity (required)")
 	c.Flags().StringVar(&f.search, "query", "", "FTS5 MATCH expression (required)")
 	c.Flags().IntVar(&f.limit, "limit", 25, "max rows (0 = all)")
-	_ = c.MarkFlagRequired("db")
 	_ = c.MarkFlagRequired("service")
 	_ = c.MarkFlagRequired("entity")
 	_ = c.MarkFlagRequired("query")
@@ -183,7 +312,11 @@ func newMirrorStatsCmd() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx, cancel := context.WithTimeout(cmd.Context(), 30*time.Second)
 			defer cancel()
-			s, err := sqlitemirror.Open(f.db)
+			dbPath, err := resolveMirrorDB(f)
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.stats.path", "resolve db path", err)
+			}
+			s, err := sqlitemirror.Open(dbPath)
 			if err != nil {
 				return errs.Wrap(errs.ExitUserError, "mirror.stats.open", "open mirror", err)
 			}
@@ -203,13 +336,91 @@ func newMirrorStatsCmd() *cobra.Command {
 			return nil
 		},
 	}
-	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (required)")
+	c.Flags().StringVar(&f.db, "db", "", "mirror DB path (default: ~/.config/sapctl/mirror/<service>_<entity>.db)")
 	c.Flags().StringVar(&f.service, "service", "", "service (required)")
 	c.Flags().StringVar(&f.entity, "entity", "", "entity (required)")
-	_ = c.MarkFlagRequired("db")
 	_ = c.MarkFlagRequired("service")
 	_ = c.MarkFlagRequired("entity")
 	return c
+}
+
+func newMirrorQueryCmd() *cobra.Command {
+	var db string
+	var query string
+	var limit int
+	c := &cobra.Command{
+		Use:   "query",
+		Short: "Cross-entity FTS5 search across all mirrored data",
+		Long: `Search across ALL mirrored databases. Unlike 'mirror search',
+this does not require --service/--entity — it searches every .db file under
+~/.config/sapctl/mirror/ and returns results ranked by BM25 relevance.
+
+Useful for agents: "find all rows mentioning 'overdue' across all entities".`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx, cancel := context.WithTimeout(cmd.Context(), 60*time.Second)
+			defer cancel()
+
+			// If --db is given, search that single file.
+			if db != "" {
+				return queryFromFile(ctx, cmd, db, query, limit)
+			}
+
+			// Otherwise scan all .db files in the mirror directory.
+			dir, err := sqlitemirror.DefaultDir()
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.query.dir", "resolve default dir", err)
+			}
+			entries, err := filepath.Glob(filepath.Join(dir, "*.db"))
+			if err != nil {
+				return errs.Wrap(errs.ExitUserError, "mirror.query.glob", "glob mirror dir", err)
+			}
+			if len(entries) == 0 {
+				if globalFlags.JSON {
+					return writeJSON(cmd, map[string]any{"count": 0, "rows": []any{}})
+				}
+				fmt.Fprintln(cmd.OutOrStdout(), "no mirrored databases found in "+dir)
+				return nil
+			}
+
+			var all []sqlitemirror.Row
+			for _, f := range entries {
+				s, err := sqlitemirror.Open(f)
+				if err != nil {
+					continue
+				}
+				rows, err := s.Search(ctx, "", "", query, limit)
+				_ = s.Close()
+				if err != nil {
+					continue
+				}
+				all = append(all, rows...)
+				if limit > 0 && len(all) >= limit {
+					all = all[:limit]
+					break
+				}
+			}
+			return emitMirrorRows(cmd, all)
+		},
+	}
+	c.Flags().StringVar(&db, "db", "", "single mirror DB path (default: scan all ~/.config/sapctl/mirror/*.db)")
+	c.Flags().StringVar(&query, "query", "", "FTS5 MATCH expression (required)")
+	c.Flags().IntVar(&limit, "limit", 25, "max rows (0 = all)")
+	_ = c.MarkFlagRequired("query")
+	return c
+}
+
+// queryFromFile searches a single mirror DB file.
+func queryFromFile(ctx context.Context, cmd *cobra.Command, path, query string, limit int) error {
+	s, err := sqlitemirror.Open(path)
+	if err != nil {
+		return errs.Wrap(errs.ExitUserError, "mirror.query.open", "open mirror", err)
+	}
+	defer s.Close()
+	rows, err := s.Search(ctx, "", "", query, limit)
+	if err != nil {
+		return errs.Wrap(errs.ExitUserError, "mirror.query.search", "query rows", err)
+	}
+	return emitMirrorRows(cmd, rows)
 }
 
 func emitMirrorRows(cmd *cobra.Command, rows []sqlitemirror.Row) error {
