@@ -1,0 +1,75 @@
+name: Status update
+
+# Refreshes apps/web-static/status.json on every published release so the
+# status page (ADR 0006) reflects the latest signed release without manual
+# edits. Can also be triggered manually to flip a component or open/close an
+# incident.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      component:
+        description: 'Component id to set (release-pipeline | sapctl-dev | docs-sapctl-dev | sap-api-hub)'
+        required: false
+        type: string
+      status:
+        description: 'New status (operational | degraded | maintenance | down)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update status.json
+        env:
+          COMPONENT: ${{ github.event.inputs.component }}
+          NEW_STATUS: ${{ github.event.inputs.status }}
+        run: |
+          node <<'EOF'
+          const fs = require('fs');
+          const path = 'apps/web-static/status.json';
+          const s = JSON.parse(fs.readFileSync(path, 'utf8'));
+          s.updated_at = new Date().toISOString().replace(/\.\d+Z$/, 'Z');
+
+          const comp = process.env.COMPONENT;
+          const st = process.env.NEW_STATUS;
+          const VALID = ['operational', 'degraded', 'maintenance', 'down'];
+          if (comp && st) {
+            if (!VALID.includes(st)) { console.error('invalid status: ' + st); process.exit(1); }
+            const c = s.components.find((x) => x.id === comp);
+            if (!c) { console.error('unknown component: ' + comp); process.exit(1); }
+            c.status = st;
+          }
+
+          // A published release means the release pipeline succeeded.
+          const rp = s.components.find((x) => x.id === 'release-pipeline');
+          if (rp && !comp) rp.status = 'operational';
+
+          // Recompute overall: worst non-operational wins, else operational.
+          const rank = { down: 3, degraded: 2, maintenance: 1, operational: 0 };
+          s.overall = s.components.reduce((acc, x) =>
+            (rank[x.status] > rank[acc] ? x.status : acc), 'operational');
+
+          fs.writeFileSync(path, JSON.stringify(s, null, 2) + '\n');
+          console.log('status.json updated: overall=' + s.overall);
+          EOF
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet apps/web-static/status.json; then
+            echo "no change"; exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add apps/web-static/status.json
+          git commit -m "chore(status): refresh status.json [skip ci]"
+          git push
