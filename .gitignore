@@ -60,6 +60,7 @@ tmp/
 # Private working files -- live locally only, never on remote
 /CLAUDE.md
 /AGENTS.md
+/.github/copilot-instructions.md
 /company/
 /plans/
 /ref/

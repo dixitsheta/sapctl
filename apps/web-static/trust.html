@@ -53,6 +53,25 @@
   ]
 }
 </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "sapctl",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "url": "https://sapctl.dev/",
+  "downloadUrl": "https://github.com/dixitsheta/sapctl/releases/latest",
+  "softwareVersion": "0.1.0-alpha",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "description": "One CLI for the SAP portfolio with an ed25519 hash-chained audit log, CycloneDX 1.7 SBOM, cosign signatures, and SLSA L3 provenance on every release.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "sapctl",
+    "url": "https://sapctl.dev/"
+  }
+}
+</script>
 </head>
 <body>
   <header data-site-nav></header>
@@ -62,26 +81,36 @@
       <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Trust portal</div>
       <h1 class="page-title">Trust portal</h1>
       <p class="page-sub">Compliance certifications, SBOMs, pen-test summaries, and EU CRA Annex IV documentation.</p>
-      <div class="page-meta">Last updated: May 16, 2026</div>
+      <div class="page-meta">Last updated: May 24, 2026</div>
     </div>
   </section>
 
   <main>
     <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
 
+<div class="card" style="border-left:3px solid var(--accent,#5b8def); margin-bottom:40px">
+  <span class="kicker">Security & disclosure</span>
+  <h3 style="margin-top:4px">Report a vulnerability</h3>
+  <p>sapctl runs a Coordinated Vulnerability Disclosure (CVD) program. Report privately via our <a href="security.html">security policy</a> or email <a href="mailto:security@sapctl.dev">security@sapctl.dev</a>. We acknowledge within 72 hours and credit reporters who follow CVD.</p>
+  <div class="row">
+    <a class="pill" href="security.html">Security policy</a>
+    <a class="pill" href="mailto:security@sapctl.dev">security@sapctl.dev</a>
+  </div>
+</div>
+
 <h2 id="certs">Certifications & attestations</h2>
 <div class="card-grid">
   <div class="card">
-    <span class="kicker">SOC 2 Type II</span>
-    <h3>Trust Services Criteria · 2026 audit window</h3>
-    <p>Annual audit by an AICPA-licensed firm. Report available under NDA.</p>
-    <div class="row"><a class="pill" href="mailto:trust@sapctl.dev">Request report</a></div>
+    <span class="kicker">SOC 2 Type I</span>
+    <h3>Trust Services Criteria · audit window in progress</h3>
+    <p>Type I attestation (controls design) is in its audit window with an AICPA-licensed firm. Type II (operating effectiveness) follows after the observation period. Draft control narratives available under NDA.</p>
+    <div class="row"><a class="pill" href="mailto:trust@sapctl.dev">Request status</a></div>
   </div>
   <div class="card">
     <span class="kicker">ISO/IEC 27001:2022</span>
-    <h3>Information security management</h3>
-    <p>Certified scope: design, development, and operation of sapctl cloud services.</p>
-    <div class="row"><a class="pill" href="assets/iso-27001-cert.pdf">Public certificate</a></div>
+    <h3>Information security management · roadmap</h3>
+    <p>Targeted scope: design, development, and operation of sapctl cloud services. Certification is planned to follow the SOC 2 audit; ISMS controls are being implemented in parallel.</p>
+    <div class="row"><a class="pill" href="mailto:trust@sapctl.dev">Roadmap detail</a></div>
   </div>
   <div class="card">
     <span class="kicker">PCI DSS</span>
@@ -91,16 +120,119 @@
 </div>
 
 <h2 id="sbom">Software bill of materials</h2>
-<p>Every signed release publishes a CycloneDX 1.7 and SPDX 3.0.1 SBOM, plus SLSA L3 provenance attestations. Download the latest:</p>
-<ul>
-  <li><a href="sbom/sapctl-0.1.0.cdx.json">sapctl-0.1.0.cdx.json</a> (CycloneDX 1.7)</li>
-  <li><a href="sbom/sapctl-0.1.0.spdx.json">sapctl-0.1.0.spdx.json</a> (SPDX 3.0.1)</li>
-  <li><a href="sbom/sapctl-0.1.0.intoto.jsonl">sapctl-0.1.0.intoto.jsonl</a> (in-toto attestation)</li>
-</ul>
-<p>Verify with <code>cosign verify-blob</code> against our public Fulcio identity.</p>
+<p>Every signed release publishes a CycloneDX 1.7 and SPDX 3.0.1 SBOM, plus SLSA L3 provenance attestations and a cosign signature. The list below is pulled live from the latest GitHub release:</p>
+<div id="sbom-live" data-state="loading">
+  <p class="muted" data-sbom-loading>Loading latest release evidence…</p>
+  <ul data-sbom-list hidden></ul>
+  <p data-sbom-meta class="page-meta" hidden></p>
+  <ul data-sbom-fallback hidden>
+    <li><a href="sbom/sapctl-0.1.0.cdx.json">sapctl-0.1.0.cdx.json</a> (CycloneDX 1.7)</li>
+    <li><a href="sbom/sapctl-0.1.0.spdx.json">sapctl-0.1.0.spdx.json</a> (SPDX 3.0.1)</li>
+    <li><a href="sbom/sapctl-0.1.0.intoto.jsonl">sapctl-0.1.0.intoto.jsonl</a> (in-toto attestation)</li>
+  </ul>
+</div>
+<p>Verify with <code>cosign verify-blob</code> against our public Fulcio identity. Every signature is logged in the public <a href="https://search.sigstore.dev/" rel="noopener">Rekor transparency log</a>.</p>
+
+<script>
+(function () {
+  var root = document.getElementById('sbom-live');
+  if (!root) return;
+  var loading = root.querySelector('[data-sbom-loading]');
+  var list = root.querySelector('[data-sbom-list]');
+  var meta = root.querySelector('[data-sbom-meta]');
+  var fallback = root.querySelector('[data-sbom-fallback]');
+
+  function showFallback() {
+    if (loading) loading.hidden = true;
+    if (fallback) fallback.hidden = false;
+    root.setAttribute('data-state', 'fallback');
+  }
+
+  // Classify a release asset so we only surface evidence artefacts.
+  function label(name) {
+    var n = name.toLowerCase();
+    if (n.indexOf('.cdx.json') !== -1) return 'CycloneDX 1.7 SBOM';
+    if (n.indexOf('.spdx.json') !== -1) return 'SPDX 3.0.1 SBOM';
+    if (n.indexOf('.intoto.jsonl') !== -1) return 'in-toto / SLSA provenance';
+    if (n.indexOf('.sig') !== -1) return 'cosign signature';
+    if (n.indexOf('.pem') !== -1) return 'cosign certificate';
+    if (n.indexOf('checksums') !== -1 || n.indexOf('.sha256') !== -1) return 'checksums';
+    return null;
+  }
+
+  fetch('/api/releases', { headers: { Accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
+    .then(function (data) {
+      var releases = (data && data.releases) || [];
+      var latest = releases.filter(function (x) { return !x.draft; })[0];
+      if (!latest || !latest.assets || !latest.assets.length) { showFallback(); return; }
+
+      var rows = latest.assets
+        .map(function (a) { var l = label(a.name); return l ? { a: a, l: l } : null; })
+        .filter(Boolean);
+      if (!rows.length) { showFallback(); return; }
+
+      rows.forEach(function (row) {
+        var li = document.createElement('li');
+        var link = document.createElement('a');
+        link.href = row.a.browser_download_url;
+        link.rel = 'noopener';
+        link.textContent = row.a.name;
+        li.appendChild(link);
+        li.appendChild(document.createTextNode(' (' + row.l + ')'));
+        list.appendChild(li);
+      });
+      list.hidden = false;
+
+      if (meta) {
+        var when = latest.published_at ? new Date(latest.published_at).toISOString().slice(0, 10) : '';
+        meta.textContent = 'Release ' + (latest.tag_name || '') + (when ? ' · published ' + when : '');
+        if (latest.html_url) {
+          meta.appendChild(document.createTextNode(' · '));
+          var rl = document.createElement('a');
+          rl.href = latest.html_url; rl.rel = 'noopener'; rl.textContent = 'view on GitHub';
+          meta.appendChild(rl);
+        }
+        meta.hidden = false;
+      }
+      if (loading) loading.hidden = true;
+      root.setAttribute('data-state', 'live');
+    })
+    .catch(showFallback);
+})();
+</script>
 
 <h2 id="pen-test">Penetration testing</h2>
 <p>Annual third-party penetration test, with a retest after material architecture change. Executive summary available on request; the full report is available under NDA.</p>
+
+<h2 id="regmap">Regulatory mapping</h2>
+<p>sapctl does not make you compliant — it gives you the evidence primitives auditors ask for. Each regulation below maps to a concrete command or artefact.</p>
+<div class="card-grid">
+  <div class="card">
+    <span class="kicker">EU CRA</span>
+    <h3>Cyber Resilience Act</h3>
+    <p>SBOM (CycloneDX 1.7), SLSA L3 provenance, and a CVD policy on every release feed Annex IV technical documentation and the vulnerability-handling requirement.</p>
+    <div class="row"><a class="pill" href="#annex-iv">Annex IV statement</a></div>
+  </div>
+  <div class="card">
+    <span class="kicker">EU DORA</span>
+    <h3>Digital Operational Resilience Act</h3>
+    <p>The ed25519 hash-chained audit log gives tamper-evident records of every SAP API call for ICT-risk reporting; the air-gap bundle format supports resilience testing on isolated networks.</p>
+    <div class="row"><code>sapctl audit verify</code></div>
+  </div>
+  <div class="card">
+    <span class="kicker">SOX 404</span>
+    <h3>Sarbanes-Oxley, ITGC</h3>
+    <p>Signed journal extracts (<code>--use-case sox-journal</code>) produce an auditor-verifiable evidence chain for financial-reporting controls, independent of SAP GUI screenshots.</p>
+    <div class="row"><code>sapctl s4 audit-export</code></div>
+  </div>
+  <div class="card">
+    <span class="kicker">21 CFR Part 11</span>
+    <h3>FDA electronic records</h3>
+    <p>The hash-chained log provides the audit trail, record integrity, and signature linkage Part 11 requires for regulated life-sciences SAP data. Retention gating ties evidence to a defined retention window.</p>
+    <div class="row"><code>sapctl audit-export --retain</code></div>
+  </div>
+</div>
 
 <h2 id="annex-iv">EU CRA Annex IV statement</h2>
 <p>From 11 December 2027 the EU Cyber Resilience Act applies in full to sapctl as a “product with digital elements”. Our Annex IV technical documentation includes: product description, intended use, risk assessment, threat model, secure development lifecycle, vulnerability handling, applied harmonised standards, and a CE marking statement.</p>
