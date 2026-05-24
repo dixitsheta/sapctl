@@ -1,0 +1,31 @@
+{
+  "updated_at": "2026-05-24T00:00:00Z",
+  "overall": "operational",
+  "components": [
+    {
+      "id": "release-pipeline",
+      "name": "Release pipeline",
+      "status": "operational",
+      "description": "goreleaser build, SBOM, cosign signing, SLSA L3 provenance"
+    },
+    {
+      "id": "sapctl-dev",
+      "name": "sapctl.dev",
+      "status": "operational",
+      "description": "Marketing site on Cloudflare Pages"
+    },
+    {
+      "id": "docs-sapctl-dev",
+      "name": "docs.sapctl.dev",
+      "status": "maintenance",
+      "description": "Astro Starlight docs; Cloudflare Pages deploy in progress"
+    },
+    {
+      "id": "sap-api-hub",
+      "name": "SAP API Hub reachability",
+      "status": "operational",
+      "description": "Upstream SAP Business Accelerator Hub used for spec harvesting"
+    }
+  ],
+  "incidents": []
+}

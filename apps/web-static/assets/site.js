@@ -113,6 +113,7 @@
       +     col('Resources', [
               ['/blog.html',            'Blog'],
               ['/changelog.html',       'Changelog'],
+              ['https://status.sapctl.dev/', 'Status'],
               ['/roadmap.html',         'Roadmap'],
               ['/sitemap.xml',          'XML sitemap'],
               ['/humans.txt',           'humans.txt'],

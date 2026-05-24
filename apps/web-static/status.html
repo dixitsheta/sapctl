@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Status — sapctl</title>
+  <meta name="description" content="Live operational status for sapctl.dev, docs, the release pipeline, and SAP API Hub reachability." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://status.sapctl.dev/" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://status.sapctl.dev/" />
+  <meta property="og:title"       content="Status — sapctl" />
+  <meta property="og:description" content="Live operational status for sapctl.dev, docs, the release pipeline, and SAP API Hub reachability." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Status — sapctl" />
+  <meta name="twitter:description" content="Live operational status for sapctl." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
+  <link rel="alternate" type="application/rss+xml" title="sapctl incidents" href="incidents.rss" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" },
+    { "@type": "ListItem", "position": 2, "name": "Status", "item": "https://status.sapctl.dev/" }
+  ]
+}</script>
+  <style>
+    .status-banner { padding:20px 24px; border-radius:12px; margin-bottom:32px; font-weight:600; display:flex; align-items:center; gap:12px; }
+    .status-banner[data-overall="operational"] { background:rgba(34,197,94,.12); color:#22c55e; }
+    .status-banner[data-overall="degraded"]    { background:rgba(234,179,8,.12);  color:#eab308; }
+    .status-banner[data-overall="maintenance"] { background:rgba(59,130,246,.12); color:#3b82f6; }
+    .status-banner[data-overall="down"]        { background:rgba(239,68,68,.12);  color:#ef4444; }
+    .status-row { display:flex; align-items:center; justify-content:space-between; padding:16px 0; border-bottom:1px solid rgba(128,128,128,.18); gap:16px; }
+    .status-row:last-child { border-bottom:none; }
+    .status-row .meta { display:flex; flex-direction:column; gap:2px; }
+    .status-row .meta small { opacity:.6; }
+    .status-dot { display:inline-flex; align-items:center; gap:8px; white-space:nowrap; font-weight:500; }
+    .status-dot::before { content:""; width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .status-dot[data-s="operational"]::before { background:#22c55e; }
+    .status-dot[data-s="degraded"]::before    { background:#eab308; }
+    .status-dot[data-s="maintenance"]::before { background:#3b82f6; }
+    .status-dot[data-s="down"]::before        { background:#ef4444; }
+  </style>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> Status</div>
+      <h1 class="page-title">System status</h1>
+      <p class="page-sub">Live operational status for the sapctl release pipeline, websites, and upstream SAP reachability.</p>
+      <div class="page-meta" id="status-updated">Loading…</div>
+    </div>
+  </section>
+
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+      <div class="status-banner" data-overall="operational" id="status-banner">
+        <i class="ti ti-circle-check" aria-hidden="true"></i>
+        <span id="status-banner-text">Checking status…</span>
+      </div>
+
+      <h2 id="components">Components</h2>
+      <div id="status-components">
+        <p class="muted">Loading components…</p>
+      </div>
+
+      <h2 id="release">Current release</h2>
+      <p id="status-release" class="muted">Checking latest signed release…</p>
+
+      <h2 id="incidents">Incident history</h2>
+      <div id="status-incidents">
+        <p class="muted">Loading…</p>
+      </div>
+      <p>Subscribe to incidents via the <a href="incidents.rss">RSS feed</a>.</p>
+
+      <noscript>
+        <p>JavaScript is required to render live status. Source of truth:
+        <a href="status.json">status.json</a>.</p>
+      </noscript>
+
+    </article>
+  </main>
+
+  <footer data-site-footer></footer>
+  <script src="assets/site.js" defer></script>
+  <script>
+  (function () {
+    var LABEL = { operational: 'Operational', degraded: 'Degraded', maintenance: 'Maintenance', down: 'Down' };
+
+    function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+
+    function renderStatus(data) {
+      var overall = data.overall || 'operational';
+      var banner = document.getElementById('status-banner');
+      banner.setAttribute('data-overall', overall);
+      var allOk = overall === 'operational';
+      document.getElementById('status-banner-text').textContent =
+        allOk ? 'All systems operational' : ('Status: ' + (LABEL[overall] || overall));
+      banner.querySelector('i').className = allOk ? 'ti ti-circle-check' : 'ti ti-alert-triangle';
+
+      if (data.updated_at) {
+        document.getElementById('status-updated').textContent =
+          'Last updated: ' + new Date(data.updated_at).toUTCString();
+      }
+
+      var comp = document.getElementById('status-components');
+      comp.innerHTML = '';
+      (data.components || []).forEach(function (c) {
+        var row = document.createElement('div');
+        row.className = 'status-row';
+        row.innerHTML =
+          '<div class="meta"><strong>' + esc(c.name) + '</strong><small>' + esc(c.description || '') + '</small></div>' +
+          '<span class="status-dot" data-s="' + esc(c.status) + '">' + esc(LABEL[c.status] || c.status) + '</span>';
+        comp.appendChild(row);
+      });
+
+      var inc = document.getElementById('status-incidents');
+      if (!data.incidents || !data.incidents.length) {
+        inc.innerHTML = '<p class="muted">No incidents reported.</p>';
+      } else {
+        inc.innerHTML = '';
+        data.incidents.forEach(function (i) {
+          var div = document.createElement('div');
+          div.className = 'status-row';
+          div.innerHTML =
+            '<div class="meta"><strong>' + esc(i.title) + '</strong><small>' +
+            esc(i.date || '') + ' · ' + esc(i.status || '') + '</small></div>';
+          inc.appendChild(div);
+        });
+      }
+    }
+
+    fetch('status.json', { headers: { Accept: 'application/json' }, cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(renderStatus)
+      .catch(function () {
+        document.getElementById('status-banner-text').textContent = 'Status feed unavailable';
+        document.getElementById('status-components').innerHTML =
+          '<p class="muted">Could not load status.json.</p>';
+        document.getElementById('status-incidents').innerHTML = '';
+      });
+
+    // Live release-pipeline check via the existing /api/releases edge function.
+    fetch('/api/releases', { headers: { Accept: 'application/json' } })
+      .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
+      .then(function (data) {
+        var rel = (data && data.releases || []).filter(function (x) { return !x.draft; })[0];
+        var el = document.getElementById('status-release');
+        if (!rel) { el.textContent = 'No published release found.'; return; }
+        var when = rel.published_at ? new Date(rel.published_at).toISOString().slice(0, 10) : '';
+        el.classList.remove('muted');
+        el.innerHTML = 'Latest signed release: <strong>' + esc(rel.tag_name) + '</strong>' +
+          (when ? ' (' + when + ')' : '') +
+          ' · <a href="' + esc(rel.html_url) + '" rel="noopener">view on GitHub</a>';
+      })
+      .catch(function () {
+        document.getElementById('status-release').textContent = 'Release pipeline status unavailable.';
+      });
+  })();
+  </script>
+</body>
+</html>

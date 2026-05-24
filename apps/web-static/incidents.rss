@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>sapctl — Incident history</title>
+    <link>https://status.sapctl.dev/</link>
+    <description>Service incidents and maintenance notices for sapctl.dev, docs, and the release pipeline.</description>
+    <language>en</language>
+    <lastBuildDate>Sat, 24 May 2026 00:00:00 GMT</lastBuildDate>
+    <!-- No incidents to report. New incidents are appended as <item> entries by the status GH Action. -->
+  </channel>
+</rss>
