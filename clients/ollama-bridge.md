@@ -1,3 +1,5 @@
+> **Model availability update (2026-05-26):** Names below are reference-only. These local copies have been removed from this machine: `llama3.3:70b`, `qwen2.5:14b`, `qwen2.5-coder:14b`, `qwen2.5:7b`, `qwen2.5-coder:7b`, `hermes3:8b`, `gemma3:4b`, `gemma3:latest`, `gemma4:26b`, `gemma4:e2b`, `phi4-mini`, `llava-phi3`, `llava-llama3`, `qwen3:4b`, `qwen3:1.7b`, `granite3.2-vision`, `llama3.2:3b`, `llama3.2`, `llama3.1:8b`, plus LM Studio bundles `Qwen3-Coder-Next-MLX`, `Qwen3.5-35B-A3B`, `Qwen2.5-Coder-14B-MLX`, `gpt-oss-20b-MXFP4-Q8`, `rnj-1-instruct`, `gemma-4-E4B-it-MLX`, `Qwen3.5-9B-MLX`, `Meta-Llama-3.1-8B`, `DeepSeek-R1-0528-Qwen3-8B-MLX`, `Qwen3.6-27B-Q4_K_M`, `Qwen3.6-27B-Q6_K`, `Llama-3.2-3B`, `Llama-3.2-1B`. Standard llm-server now lives at `http://localhost:8079` (llama-swap, OpenAI-compat); use aliases `default` (qwen3-8b) / `fast` (qwen3-4b) / `vision` (qwen2.5-vl-7b) / `embed` (nomic-embed). Central GGUF cache: `~/.cache/llama-models/`. Re-download from HF if you need any specific deleted model.
+
 # Ollama + sapctl
 
 Ollama itself does not implement MCP. Use a bridge that exposes MCP tools to
