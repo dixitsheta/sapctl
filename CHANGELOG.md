@@ -4,22 +4,33 @@ All notable changes to sapctl. Format based on [Keep a Changelog](https://keepac
 
 ## [Unreleased]
 
+*(No changes since v1.0.0)*
+
+## [1.0.0] - 2026-08-28
+
+### Breaking changes
+
+*(None — v1.0.0 is backwards-compatible with v0.1.0-alpha.2 across all documented command surfaces.)*
+
 ### Added
-- Central `~/.config/sapctl/.env` auto-loader (`internal/config/env.go`). Auto-loads on every invocation. Shell env takes precedence. Format: `KEY=VALUE` with `#` comments, optional `export `, optional double-quoted value.
-- `.env.example` at repo root documenting every key sapctl + Pages Functions read.
-- `docs/manual-setup.md` Sections H-K: GitHub repo flip + branch protection, docs.sapctl.dev Cloudflare Pages project, Google Search Console verification, central `.env` migration walkthrough.
-- `apps/web-static/google41f66520f7aade66.html` for Search Console verification.
-- **License framework (Phase 7.1).** `sapctl license install | verify | show | refresh` -- ed25519-signed JWT, offline-verifiable against an embedded issuer public key per ADR 0005. Free-tier users see no change; gated features check the JWT `features` claim.
-- **Audit-export retention gate (Phase 7.1.5).** `sapctl s4 audit-export --retain N` annotates the manifest with intended retention. `N > 30 days` requires a Team-tier license with feature flag `audit-export-retain-365d`; hard upper bound 365 days.
-- **`docs/adr/0005-license-key-jwt-model.md`** -- offline-verifiable JWT model.
-- **`apps/docs/src/content/docs/install/team-tier.md`** -- recipe for Team-tier license install + troubleshooting.
+
+- **License framework.** `sapctl license install | verify | show | refresh` — ed25519-signed JWT, offline-verifiable against an embedded issuer public key per ADR 0005. Free-tier users see no change; Team-tier features gated by `features` claim.
+- **Audit-export retention gate.** `sapctl s4 audit-export --retain N` — `N > 30 days` requires Team-tier license (`audit-export-retain-365d` feature flag); hard upper bound 365 days.
+- **License ADR.** `docs/adr/0005-license-key-jwt-model.md` — offline-verifiable JWT model, revocation strategy, Team-tier feature matrix.
+- **Team-tier install recipe.** `apps/docs/src/content/docs/install/team-tier.md` — step-by-step install + troubleshooting.
+- **Trust portal.** `sapctl.dev/trust` — CRA/DORA/SOX/Part 11 regulation mapping, live SBOM from GitHub Releases API, SOC 2 Type I audit window status, Schema.org SoftwareApplication JSON-LD.
+- **Status page.** `status.sapctl.dev` + `status.json` source of truth + `incidents.rss` — release pipeline, sapctl.dev, docs.sapctl.dev, SAP API Hub reachability tracked.
+- **Central config loader.** `~/.config/sapctl/.env` auto-loaded on every invocation. Shell env takes precedence. `.env.example` at repo root.
+- **docs.sapctl.dev.** Astro Starlight docs site (17 pages): Quickstart, Install, Auth reference, CLI reference, 10 golden recipes (sox-journal, sox-bp, dora-evidence, cra-sbom, mcp-claude-desktop, mcp-ollama-bridge, air-gap, delta-fetch, mirror-fts5, verify-release).
 
 ### Changed
-- `apps/cli/main.go` now calls `config.LoadDefault()` before Cobra dispatch.
+
+- `apps/cli/main.go` calls `config.LoadDefault()` before Cobra dispatch.
 - ADR 0002 ("Cobra framework"): drop "solo+AI" phrasing in Alternatives row.
 
 ### Security
-- License `verify` is fully offline (embedded ed25519 pubkey, no JWKS). `refresh` is the only command that touches the network and only runs when the user explicitly calls it.
+
+- License `verify` is fully offline (embedded ed25519 pubkey, no JWKS fetch). `refresh` is the only network-touching command and only on explicit user call.
 - License file stored at `~/.config/sapctl/license.jwt` with `0600`. `Install()` performs a verify-roundtrip before writing; signature failure leaves the filesystem untouched.
 
 ## [0.1.0-alpha.2] - 2026-05-19
