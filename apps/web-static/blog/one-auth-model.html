@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>One auth model for every SAP product — sapctl</title>
+  <meta name="description" content="Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/blog/one-auth-model.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="article" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/blog/one-auth-model.html" />
+  <meta property="og:title"       content="One auth model for every SAP product" />
+  <meta property="og:description" content="Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="One auth model for every SAP product" />
+  <meta name="twitter:description" content="Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="../sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sapctl.dev/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": "One auth model for every SAP product", "item": "https://sapctl.dev/blog/one-auth-model.html" }
+  ]
+}</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "One auth model for every SAP product",
+  "datePublished": "2026-05-16",
+  "dateModified": "2026-05-16",
+  "author": { "@type": "Organization", "name": "sapctl" },
+  "publisher": { "@type": "Organization", "name": "sapctl", "url": "https://sapctl.dev/" },
+  "mainEntityOfPage": "https://sapctl.dev/blog/one-auth-model.html"
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="../index.html">Home</a> <span aria-hidden="true">/</span> <a href="../blog.html">Blog</a> <span aria-hidden="true">/</span> One auth model</div>
+      <h1 class="page-title">One auth model for every SAP product</h1>
+      <p class="page-sub">Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet.</p>
+      <div class="page-meta">May 16, 2026 · 12 min read</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p>Every SAP product ships its own way of proving who you are. S/4HANA wants a communication user. BTP wants an XSUAA OAuth2 client. Datasphere wants a service key. AI Core wants a bearer token minted from a different grant. None of them speak the same dialect, and none of them store credentials the way a CLI should.</p>
+
+<p>sapctl collapses that into one verb: <code>sapctl auth login</code>. One command, one credential store, one mental model — regardless of which SAP product you are about to touch.</p>
+
+<h2>The problem</h2>
+
+<p>Before sapctl, wiring a script to two SAP products meant two auth flows, two token refreshes, and two places to leak a secret. A SOX journal extract touches S/4HANA; a BTP subaccount audit touches XSUAA; a Datasphere snapshot touches a service key. That is three auth systems for one audit.</p>
+
+<p>Each flow has its own failure mode. XSUAA tokens expire and need a client-credentials grant. Basic auth against S/4 needs a communication user with the right role collection. Service keys are long-lived and easy to paste into the wrong file.</p>
+
+<h2>The design</h2>
+
+<p>sapctl models every SAP auth system as a <em>provider</em> behind a single interface:</p>
+
+<pre><code>sapctl auth login --flow xsuaa --label trial \
+  --client-id $CID --client-secret $CSECRET --token-url $TURL
+
+sapctl auth login --flow apikey --label sandbox --api-key "$KEY"
+
+sapctl auth login --flow basic --label prod --username "$U" --password "$P"</code></pre>
+
+<p>Each credential is stored under a <em>label</em> — <code>trial</code>, <code>sandbox</code>, <code>prod</code> — and referenced by that label on every command. The credential store lives in the OS keychain, not in a dotfile with world-readable permissions.</p>
+
+<h2>Why the keychain</h2>
+
+<p>Secrets in <code>~/.config/sapctl/credentials.json</code> with <code>0600</code> permissions are better than nothing, but they are still plaintext on disk. The OS keychain gives us encryption at rest, access control, and a place auditors expect secrets to live. sapctl never writes a token to a log, a trace, or a shell history.</p>
+
+<h2>The takeaway</h2>
+
+<p>One auth model is not a convenience — it is a security boundary. When every product shares one credential store and one verify path, there is one place to audit, one place to rotate, and one place to get it wrong. That is the property a regulated SAP shop actually needs.</p>
+
+<p><a class="link" href="../blog.html">Back to blog</a></p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>

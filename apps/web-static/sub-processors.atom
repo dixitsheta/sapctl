@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>sapctl sub-processors</title>
+  <link href="https://sapctl.dev/sub-processors.html" />
+  <id>https://sapctl.dev/sub-processors.atom</id>
+  <updated>2026-05-16T00:00:00Z</updated>
+  <author><name>sapctl</name></author>
+  <entry>
+    <title>Sub-processor list published</title>
+    <link href="https://sapctl.dev/sub-processors.html" />
+    <id>https://sapctl.dev/sub-processors.atom/1</id>
+    <updated>2026-05-16T00:00:00Z</updated>
+    <summary>Initial sub-processor list published. We notify customers at least 30 days before adding or changing a sub-processor.</summary>
+  </entry>
+</feed>

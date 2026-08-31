@@ -37,6 +37,42 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://sapctl.dev/blog/one-auth-model.html</loc>
+    <lastmod>2026-05-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sapctl.dev/blog/emitting-mcp-from-cobra.html</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sapctl.dev/blog/hash-chained-audit-air-gap.html</loc>
+    <lastmod>2026-04-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sapctl.dev/blog/slsa-l3-on-a-budget.html</loc>
+    <lastmod>2026-03-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sapctl.dev/blog/sap-api-policy-v4.html</loc>
+    <lastmod>2026-03-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sapctl.dev/blog/why-sqlite-mirror.html</loc>
+    <lastmod>2026-02-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://sapctl.dev/partners.html</loc>
     <lastmod>2026-05-16</lastmod>
     <changefreq>monthly</changefreq>

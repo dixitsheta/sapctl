@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAP API Policy v4/2026 in plain English — sapctl</title>
+  <meta name="description" content="What the policy actually says about agents and what it means for your architecture." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/blog/sap-api-policy-v4.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="article" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/blog/sap-api-policy-v4.html" />
+  <meta property="og:title"       content="SAP API Policy v4/2026 in plain English" />
+  <meta property="og:description" content="What the policy actually says about agents and what it means for your architecture." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="SAP API Policy v4/2026 in plain English" />
+  <meta name="twitter:description" content="What the policy actually says about agents and what it means for your architecture." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="../sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sapctl.dev/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": "SAP API Policy v4/2026 in plain English", "item": "https://sapctl.dev/blog/sap-api-policy-v4.html" }
+  ]
+}</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SAP API Policy v4/2026 in plain English",
+  "datePublished": "2026-03-12",
+  "dateModified": "2026-03-12",
+  "author": { "@type": "Organization", "name": "sapctl" },
+  "publisher": { "@type": "Organization", "name": "sapctl", "url": "https://sapctl.dev/" },
+  "mainEntityOfPage": "https://sapctl.dev/blog/sap-api-policy-v4.html"
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="../index.html">Home</a> <span aria-hidden="true">/</span> <a href="../blog.html">Blog</a> <span aria-hidden="true">/</span> SAP API Policy</div>
+      <h1 class="page-title">SAP API Policy v4/2026 in plain English</h1>
+      <p class="page-sub">What the policy actually says about agents and what it means for your architecture.</p>
+      <div class="page-meta">March 12, 2026 · 6 min read</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p>SAP's API Policy v4/2026 is the document every SAP+AI architecture now has to answer to. It is short, but its implications are not obvious. Here is what it actually says, in plain English.</p>
+
+<h2>The core rule</h2>
+
+<p>Agents must not orchestrate raw SAP API calls directly. Instead, agent traffic should route through SAP-endorsed pathways — Joule, Business Data Cloud, the Agent Gateway, or an MCP server that wraps a Published API.</p>
+
+<p>In practice: an agent should not be handed a generic OData client and told to go. It should be handed a constrained tool that only does what the business approved.</p>
+
+<h2>What counts as on-policy</h2>
+
+<ul>
+  <li>Consuming a <strong>Published API</strong> from the SAP Business Accelerator Hub.</li>
+  <li>Routing agent calls through an <strong>MCP server</strong> that wraps those Published APIs.</li>
+  <li>Using <strong>Joule</strong> or the <strong>Agent Gateway</strong> as the sanctioned orchestration layer.</li>
+</ul>
+
+<h2>What is off-policy</h2>
+
+<ul>
+  <li>Scraping or reverse-engineering undocumented SAP endpoints.</li>
+  <li>Letting an agent call raw OData with no guardrail, no audit, no scope.</li>
+  <li>Building a bespoke integration that bypasses the approved pathway.</li>
+</ul>
+
+<h2>What this means for sapctl</h2>
+
+<p>sapctl is deterministic automation that consumes only Published APIs. It does not orchestrate generative AI calls. Instead, it <em>emits</em> MCP servers and A2A Agent Cards so agent traffic routes through the sanctioned surface. Every call still writes to the signed audit chain.</p>
+
+<p>The result: an agent gets a constrained, auditable tool surface — exactly what the policy asks for, and exactly what a regulated buyer needs to demonstrate.</p>
+
+<h2>The takeaway</h2>
+
+<p>The policy is not anti-agent. It is pro-guardrail. The teams that win are the ones that give agents a narrow, auditable, on-policy tool surface — not a raw API client.</p>
+
+<p><a class="link" href="../blog.html">Back to blog</a></p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>

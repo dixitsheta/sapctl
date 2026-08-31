@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Why we built a local SQLite mirror — sapctl</title>
+  <meta name="description" content="FTS5, vector search, and a deliberate choice to keep agents off the OData hot path." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/blog/why-sqlite-mirror.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="article" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/blog/why-sqlite-mirror.html" />
+  <meta property="og:title"       content="Why we built a local SQLite mirror" />
+  <meta property="og:description" content="FTS5, vector search, and a deliberate choice to keep agents off the OData hot path." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Why we built a local SQLite mirror" />
+  <meta name="twitter:description" content="FTS5, vector search, and a deliberate choice to keep agents off the OData hot path." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="../sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sapctl.dev/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": "Why we built a local SQLite mirror", "item": "https://sapctl.dev/blog/why-sqlite-mirror.html" }
+  ]
+}</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why we built a local SQLite mirror",
+  "datePublished": "2026-02-18",
+  "dateModified": "2026-02-18",
+  "author": { "@type": "Organization", "name": "sapctl" },
+  "publisher": { "@type": "Organization", "name": "sapctl", "url": "https://sapctl.dev/" },
+  "mainEntityOfPage": "https://sapctl.dev/blog/why-sqlite-mirror.html"
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="../index.html">Home</a> <span aria-hidden="true">/</span> <a href="../blog.html">Blog</a> <span aria-hidden="true">/</span> SQLite mirror</div>
+      <h1 class="page-title">Why we built a local SQLite mirror</h1>
+      <p class="page-sub">FTS5, vector search, and a deliberate choice to keep agents off the OData hot path.</p>
+      <div class="page-meta">February 18, 2026 · 11 min read</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p>Every SAP API call is a round-trip to a production system. Every round-trip is a load on the tenant, a token refresh, and a line in someone's rate-limit budget. When an agent wants to search master data, it should not hammer OData. It should query a local mirror.</p>
+
+<h2>The problem</h2>
+
+<p>An agent that needs to look up a business partner, a GL account, or a supplier has two bad options: call the live API every time (slow, rate-limited, load on prod), or keep a copy in memory (lost on restart, no search). Neither scales.</p>
+
+<h2>The design</h2>
+
+<p>sapctl mirrors fetched OData rows into a local SQLite database with FTS5 full-text search. The mirror tracks a watermark per entity, so incremental sync pulls only what changed since the last cursor.</p>
+
+<pre><code>sapctl s4 odata get --cred sandbox --service API_BUSINESS_PARTNER \
+  --entity A_BusinessPartner --mirror
+
+sapctl mirror search --query "acme" --entity A_BusinessPartner
+sapctl mirror stats</code></pre>
+
+<p>Extract once, consume downstream. Agents read from the mirror; the live API is only touched on sync.</p>
+
+<h2>Why FTS5</h2>
+
+<p>SQLite's FTS5 gives us full-text search with zero extra infrastructure. No Elasticsearch cluster, no vector database to operate. For the 95% of SAP lookups that are keyword searches, FTS5 is fast, local, and free.</p>
+
+<h2>Why this matters for agents</h2>
+
+<p>An agent that reads from a local mirror is faster, cheaper, and kinder to the production tenant. It also stays on-policy: the mirror is populated by sapctl's constrained, audited calls, not by an agent's ad-hoc queries.</p>
+
+<h2>The takeaway</h2>
+
+<p>Extract once, consume downstream. A local SQLite mirror is the difference between an agent that respects the production system and one that hammers it.</p>
+
+<p><a class="link" href="../blog.html">Back to blog</a></p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>

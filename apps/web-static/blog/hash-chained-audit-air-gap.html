@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hash-chained audit logs that survive an air-gap — sapctl</title>
+  <meta name="description" content="How we made an audit chain that you can verify after a cold restore on a network you cannot reach." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://sapctl.dev/blog/hash-chained-audit-air-gap.html" />
+  <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+  <meta property="og:type"        content="article" />
+  <meta property="og:site_name"   content="sapctl" />
+  <meta property="og:url"         content="https://sapctl.dev/blog/hash-chained-audit-air-gap.html" />
+  <meta property="og:title"       content="Hash-chained audit logs that survive an air-gap" />
+  <meta property="og:description" content="How we made an audit chain that you can verify after a cold restore on a network you cannot reach." />
+  <meta property="og:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@sapctl" />
+  <meta name="twitter:title"       content="Hash-chained audit logs that survive an air-gap" />
+  <meta name="twitter:description" content="How we made an audit chain that you can verify after a cold restore on a network you cannot reach." />
+  <meta name="twitter:image"       content="https://sapctl.dev/assets/og-image.svg" />
+  <link rel="icon" type="image/svg+xml" href="../assets/icon.svg" />
+  <link rel="sitemap" type="application/xml" title="sapctl sitemap" href="../sitemap.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="../assets/site.css" />
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://sapctl.dev/" },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://sapctl.dev/blog.html" },
+    { "@type": "ListItem", "position": 3, "name": "Hash-chained audit logs that survive an air-gap", "item": "https://sapctl.dev/blog/hash-chained-audit-air-gap.html" }
+  ]
+}</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Hash-chained audit logs that survive an air-gap",
+  "datePublished": "2026-04-08",
+  "dateModified": "2026-04-08",
+  "author": { "@type": "Organization", "name": "sapctl" },
+  "publisher": { "@type": "Organization", "name": "sapctl", "url": "https://sapctl.dev/" },
+  "mainEntityOfPage": "https://sapctl.dev/blog/hash-chained-audit-air-gap.html"
+}</script>
+</head>
+<body>
+  <header data-site-nav></header>
+  <section class="page-head">
+    <div class="container-narrow">
+      <div class="crumb"><a href="../index.html">Home</a> <span aria-hidden="true">/</span> <a href="../blog.html">Blog</a> <span aria-hidden="true">/</span> Audit chains</div>
+      <h1 class="page-title">Hash-chained audit logs that survive an air-gap</h1>
+      <p class="page-sub">How we made an audit chain that you can verify after a cold restore on a network you cannot reach.</p>
+      <div class="page-meta">April 8, 2026 · 7 min read</div>
+    </div>
+  </section>
+  <main>
+    <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
+
+<p>An audit log is only useful if an auditor can trust it. A CSV a developer could have edited is not evidence. sapctl's answer is a hash-chained, ed25519-signed audit log that verifies entirely offline — no phone-home, no certificate authority, no network dependency.</p>
+
+<h2>The chain</h2>
+
+<p>Every audit event is a JSONL line. Each line carries the SHA-256 of the previous line, so the whole log forms a chain. The genesis block is 64 zero bytes. Alter any line, and every subsequent hash breaks.</p>
+
+<pre><code>sapctl audit init
+sapctl --audit s4 catalog discover --cred sandbox --top 5
+sapctl audit verify</code></pre>
+
+<p><code>audit verify</code> walks the chain, recomputes every hash, and checks the ed25519 signature. It returns a yes/no on whether any record was altered after the fact.</p>
+
+<h2>Why offline matters</h2>
+
+<p>Regulated SAP shops run in air-gapped networks — a German bank's production, a defense prime's classified enclave. A verification path that needs a network, a CA, or a hosted service is a non-starter. sapctl's chain verifies with local CPU and a public key embedded in the binary.</p>
+
+<h2>Air-gap bundles</h2>
+
+<p>For the most restricted environments, sapctl packages the evidence into an in-toto v1 bundle: rows, chain, public key, and manifest in one signed archive. The same binary that runs in a connected bank also runs on a USB stick into a classified network.</p>
+
+<h2>The takeaway</h2>
+
+<p>Tamper-evidence is a property of the data, not the network. A hash chain you can verify on a cold, disconnected host is the only audit log that survives the environments where audits actually matter.</p>
+
+<p><a class="link" href="../blog.html">Back to blog</a></p>
+
+    </article>
+  </main>
+  <footer data-site-footer></footer>
+  <script src="../assets/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sapctl blog</title>
+    <link>https://sapctl.dev/blog.html</link>
+    <description>Field notes on building sapctl: SAP CDS, MCP servers, CRA conformity, air-gap distribution.</description>
+    <atom:link href="https://sapctl.dev/feed.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 May 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>One auth model for every SAP product</title>
+      <link>https://sapctl.dev/blog/one-auth-model.html</link>
+      <guid>https://sapctl.dev/blog/one-auth-model.html</guid>
+      <pubDate>Sat, 16 May 2026 00:00:00 GMT</pubDate>
+      <description>Why xsuaa, IAS, and Cloud Identity belong behind one CLI verb — and how we kept the keychain quiet.</description>
+    </item>
+    <item>
+      <title>Emitting an MCP server from a Cobra tree</title>
+      <link>https://sapctl.dev/blog/emitting-mcp-from-cobra.html</link>
+      <guid>https://sapctl.dev/blog/emitting-mcp-from-cobra.html</guid>
+      <pubDate>Thu, 16 Apr 2026 00:00:00 GMT</pubDate>
+      <description>A walk-through of the code generator that turns sub-commands into a standards-compliant MCP transport.</description>
+    </item>
+    <item>
+      <title>Hash-chained audit logs that survive an air-gap</title>
+      <link>https://sapctl.dev/blog/hash-chained-audit-air-gap.html</link>
+      <guid>https://sapctl.dev/blog/hash-chained-audit-air-gap.html</guid>
+      <pubDate>Wed, 08 Apr 2026 00:00:00 GMT</pubDate>
+      <description>How we made an audit chain that you can verify after a cold restore on a network you cannot reach.</description>
+    </item>
+    <item>
+      <title>SLSA L3 on a budget</title>
+      <link>https://sapctl.dev/blog/slsa-l3-on-a-budget.html</link>
+      <guid>https://sapctl.dev/blog/slsa-l3-on-a-budget.html</guid>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 GMT</pubDate>
+      <description>Reproducible builds, hermetic environments, and the cheapest path to credible provenance.</description>
+    </item>
+    <item>
+      <title>SAP API Policy v4/2026 in plain English</title>
+      <link>https://sapctl.dev/blog/sap-api-policy-v4.html</link>
+      <guid>https://sapctl.dev/blog/sap-api-policy-v4.html</guid>
+      <pubDate>Thu, 12 Mar 2026 00:00:00 GMT</pubDate>
+      <description>What the policy actually says about agents and what it means for your architecture.</description>
+    </item>
+    <item>
+      <title>Why we built a local SQLite mirror</title>
+      <link>https://sapctl.dev/blog/why-sqlite-mirror.html</link>
+      <guid>https://sapctl.dev/blog/why-sqlite-mirror.html</guid>
+      <pubDate>Wed, 18 Feb 2026 00:00:00 GMT</pubDate>
+      <description>FTS5, vector search, and a deliberate choice to keep agents off the OData hot path.</description>
+    </item>
+  </channel>
+</rss>

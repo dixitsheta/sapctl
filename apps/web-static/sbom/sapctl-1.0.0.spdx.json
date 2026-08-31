@@ -1,0 +1,12 @@
+{
+  "spdxVersion": "SPDX-3.0.1",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "sapctl-1.0.0",
+  "documentNamespace": "https://sapctl.dev/sbom/sapctl-1.0.0.spdx.json",
+  "creationInfo": {
+    "created": "2026-08-31T00:00:00Z",
+    "creators": ["Tool: syft"]
+  },
+  "packages": []
+}
