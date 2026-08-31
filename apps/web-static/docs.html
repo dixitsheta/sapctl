@@ -63,7 +63,7 @@
 <p>Pick the channel that fits your environment:</p>
 <ul>
   <li><strong>Go:</strong> <code>go install github.com/dixitsheta/sapctl/apps/cli@latest</code></li>
-  <li><strong>Release tarball:</strong> <code>curl -L https://github.com/dixitsheta/sapctl/releases/latest/download/sapctl_$(uname -s)_$(uname -m).tar.gz | tar xz</code></li>
+  <li><strong>Release tarball:</strong> <code>OS=$(uname -s | tr '[:upper:]' '[:lower:]'); ARCH=$(uname -m | sed 's/x86_64/amd64/'); curl -L "https://github.com/dixitsheta/sapctl/releases/latest/download/sapctl_1.0.0_${OS}_${ARCH}.tar.gz" | tar xz</code></li>
   <li><strong>Air-gapped:</strong> verified tarball + cosign attestation on the <a href="https://github.com/dixitsheta/sapctl/releases">releases page</a>.</li>
 </ul>
 

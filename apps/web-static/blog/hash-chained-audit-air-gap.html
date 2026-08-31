@@ -60,7 +60,7 @@
   <main>
     <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
 
-<p>An audit log is only useful if an auditor can trust it. A CSV a developer could have edited is not evidence. sapctl's answer is a hash-chained, ed25519-signed audit log that verifies entirely offline — no phone-home, no certificate authority, no network dependency.</p>
+<p>An audit log is only useful if an auditor can trust it. A CSV a developer could have edited is not evidence. sapctl's answer is a hash-chained, ed25519-signed audit log that verifies entirely offline: no phone-home, no certificate authority, no network dependency.</p>
 
 <h2>The chain</h2>
 
@@ -74,13 +74,13 @@ sapctl audit verify</code></pre>
 
 <h2>Why offline matters</h2>
 
-<p>Regulated SAP shops run in air-gapped networks — a German bank's production, a defense prime's classified enclave. A verification path that needs a network, a CA, or a hosted service is a non-starter. sapctl's chain verifies with local CPU and a public key embedded in the binary.</p>
+<p>Regulated SAP shops run in air-gapped networks: a German bank's production, a defense prime's classified enclave. A verification path that needs a network, a CA, or a hosted service is a non-starter. sapctl's chain verifies with local CPU and a public key embedded in the binary.</p>
 
 <h2>Air-gap bundles</h2>
 
 <p>For the most restricted environments, sapctl packages the evidence into an in-toto v1 bundle: rows, chain, public key, and manifest in one signed archive. The same binary that runs in a connected bank also runs on a USB stick into a classified network.</p>
 
-<h2>The takeaway</h2>
+<h2>What this buys you</h2>
 
 <p>Tamper-evidence is a property of the data, not the network. A hash chain you can verify on a cold, disconnected host is the only audit log that survives the environments where audits actually matter.</p>
 

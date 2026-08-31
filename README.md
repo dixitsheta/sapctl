@@ -18,7 +18,9 @@ Three things it tries to get right:
 
 ```bash
 # macOS / Linux -- grab a signed release
-curl -L https://github.com/dixitsheta/sapctl/releases/latest/download/sapctl_$(uname -s)_$(uname -m).tar.gz | tar xz
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+ARCH=$(uname -m | sed 's/x86_64/amd64/')
+curl -L "https://github.com/dixitsheta/sapctl/releases/latest/download/sapctl_1.0.0_${OS}_${ARCH}.tar.gz" | tar xz
 sudo install sapctl /usr/local/bin/
 
 # Verify the binary (cosign keyless)

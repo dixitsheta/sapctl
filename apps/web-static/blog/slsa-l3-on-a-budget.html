@@ -60,7 +60,7 @@
   <main>
     <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
 
-<p>Supply-chain security is a procurement gate, not a nice-to-have. The EU Cyber Resilience Act makes SBOMs and signed binaries mandatory for anything sold into the EU. But SLSA L3 — the level that actually convinces an auditor — sounds expensive. It does not have to be.</p>
+<p>Supply-chain security is a procurement gate, not a nice-to-have. The EU Cyber Resilience Act makes SBOMs and signed binaries mandatory for anything sold into the EU. But SLSA L3, the level that actually convinces an auditor, sounds expensive. It does not have to be.</p>
 
 <h2>What SLSA L3 actually requires</h2>
 
@@ -71,7 +71,7 @@
 <p>sapctl uses GitHub Actions as the build platform. The release workflow:</p>
 
 <ul>
-  <li>builds with <code>-trimpath</code> and pinned Go toolchain,</li>
+  <li>builds with <code>-trimpath</code> and a pinned Go toolchain,</li>
   <li>generates a CycloneDX 1.7 SBOM with syft,</li>
   <li>signs the checksums with cosign keyless (Fulcio/OIDC),</li>
   <li>emits SLSA L3 provenance via the official builder.</li>
@@ -90,9 +90,9 @@
 
 <p>That one command proves the artifact came from the sapctl release pipeline and was not tampered with in transit.</p>
 
-<h2>The takeaway</h2>
+<h2>What this buys you</h2>
 
-<p>SLSA L3 is within reach of a small team if you let the build platform do the work. The provenance is only as credible as the platform that issued it — and GitHub Actions, with its OIDC identity, is a platform auditors already trust.</p>
+<p>SLSA L3 is within reach of a small team if you let the build platform do the work. The provenance is only as credible as the platform that issued it, and GitHub Actions, with its OIDC identity, is a platform auditors already trust.</p>
 
 <p><a class="link" href="../blog.html">Back to blog</a></p>
 

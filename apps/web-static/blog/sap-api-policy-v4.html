@@ -64,9 +64,9 @@
 
 <h2>The core rule</h2>
 
-<p>Agents must not orchestrate raw SAP API calls directly. Instead, agent traffic should route through SAP-endorsed pathways — Joule, Business Data Cloud, the Agent Gateway, or an MCP server that wraps a Published API.</p>
+<p>Agents must not orchestrate raw SAP API calls directly. Instead, agent traffic should route through SAP-endorsed pathways: Joule, Business Data Cloud, the Agent Gateway, or an MCP server that wraps a Published API.</p>
 
-<p>In practice: an agent should not be handed a generic OData client and told to go. It should be handed a constrained tool that only does what the business approved.</p>
+<p>In practice, an agent should not be handed a generic OData client and told to go. It should be handed a constrained tool that only does what the business approved.</p>
 
 <h2>What counts as on-policy</h2>
 
@@ -88,11 +88,11 @@
 
 <p>sapctl is deterministic automation that consumes only Published APIs. It does not orchestrate generative AI calls. Instead, it <em>emits</em> MCP servers and A2A Agent Cards so agent traffic routes through the sanctioned surface. Every call still writes to the signed audit chain.</p>
 
-<p>The result: an agent gets a constrained, auditable tool surface — exactly what the policy asks for, and exactly what a regulated buyer needs to demonstrate.</p>
+<p>The result: an agent gets a constrained, auditable tool surface, exactly what the policy asks for and exactly what a regulated buyer needs to demonstrate.</p>
 
-<h2>The takeaway</h2>
+<h2>What this buys you</h2>
 
-<p>The policy is not anti-agent. It is pro-guardrail. The teams that win are the ones that give agents a narrow, auditable, on-policy tool surface — not a raw API client.</p>
+<p>The policy is not anti-agent. It is pro-guardrail. The teams that win are the ones that give agents a narrow, auditable, on-policy tool surface, not a raw API client.</p>
 
 <p><a class="link" href="../blog.html">Back to blog</a></p>
 

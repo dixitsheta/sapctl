@@ -60,15 +60,15 @@
   <main>
     <article class="container-narrow prose" style="padding-top:48px; padding-bottom:96px">
 
-<p>Every SAP product ships its own way of proving who you are. S/4HANA wants a communication user. BTP wants an XSUAA OAuth2 client. Datasphere wants a service key. AI Core wants a bearer token minted from a different grant. None of them speak the same dialect, and none of them store credentials the way a CLI should.</p>
+<p>Every SAP product proves who you are a different way. S/4HANA wants a communication user. BTP wants an XSUAA OAuth2 client. Datasphere wants a service key. AI Core wants a bearer token minted from a different grant. None of them speak the same dialect, and none of them store credentials the way a CLI should.</p>
 
-<p>sapctl collapses that into one verb: <code>sapctl auth login</code>. One command, one credential store, one mental model — regardless of which SAP product you are about to touch.</p>
+<p>sapctl collapses that into one verb: <code>sapctl auth login</code>. One command, one credential store, one mental model, no matter which SAP product you are about to touch.</p>
 
 <h2>The problem</h2>
 
-<p>Before sapctl, wiring a script to two SAP products meant two auth flows, two token refreshes, and two places to leak a secret. A SOX journal extract touches S/4HANA; a BTP subaccount audit touches XSUAA; a Datasphere snapshot touches a service key. That is three auth systems for one audit.</p>
+<p>Before sapctl, wiring a script to two SAP products meant two auth flows, two token refreshes, and two places to leak a secret. A SOX journal extract touches S/4HANA; a BTP subaccount audit touches XSUAA; a Datasphere snapshot touches a service key. Three auth systems for one audit.</p>
 
-<p>Each flow has its own failure mode. XSUAA tokens expire and need a client-credentials grant. Basic auth against S/4 needs a communication user with the right role collection. Service keys are long-lived and easy to paste into the wrong file.</p>
+<p>Each flow fails in its own way. XSUAA tokens expire and need a client-credentials grant. Basic auth against S/4 needs a communication user with the right role collection. Service keys are long-lived and easy to paste into the wrong file.</p>
 
 <h2>The design</h2>
 
@@ -81,15 +81,15 @@ sapctl auth login --flow apikey --label sandbox --api-key "$KEY"
 
 sapctl auth login --flow basic --label prod --username "$U" --password "$P"</code></pre>
 
-<p>Each credential is stored under a <em>label</em> — <code>trial</code>, <code>sandbox</code>, <code>prod</code> — and referenced by that label on every command. The credential store lives in the OS keychain, not in a dotfile with world-readable permissions.</p>
+<p>Each credential is stored under a <em>label</em> (<code>trial</code>, <code>sandbox</code>, <code>prod</code>) and referenced by that label on every command. The credential store lives in the OS keychain, not in a dotfile with world-readable permissions.</p>
 
 <h2>Why the keychain</h2>
 
 <p>Secrets in <code>~/.config/sapctl/credentials.json</code> with <code>0600</code> permissions are better than nothing, but they are still plaintext on disk. The OS keychain gives us encryption at rest, access control, and a place auditors expect secrets to live. sapctl never writes a token to a log, a trace, or a shell history.</p>
 
-<h2>The takeaway</h2>
+<h2>What this buys you</h2>
 
-<p>One auth model is not a convenience — it is a security boundary. When every product shares one credential store and one verify path, there is one place to audit, one place to rotate, and one place to get it wrong. That is the property a regulated SAP shop actually needs.</p>
+<p>One auth model is not a convenience. It is a security boundary. When every product shares one credential store and one verify path, there is one place to audit, one place to rotate, and one place to get it wrong. That is the property a regulated SAP shop actually needs.</p>
 
 <p><a class="link" href="../blog.html">Back to blog</a></p>
 
