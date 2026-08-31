@@ -66,3 +66,6 @@ tmp/
 /ref/
 /GSC/
 /memory/
+
+# Local LLM dev doc -- private only
+/LLAMA_LOCAL_LLM.md
