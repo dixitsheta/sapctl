@@ -6,7 +6,7 @@
 
 ## Context
 
-sapctl is a unified CLI consuming SAP REST/OData/SQL APIs, emitting MCP servers + signed audit chains, distributed as a single static binary across linux/macos/windows x amd64/arm64. Solo founder + AI agents. 95% of runtime is HTTP IO against SAP APIs.
+sapctl is a unified CLI consuming SAP REST/OData/SQL APIs, emitting MCP servers + signed audit chains, distributed as a single static binary across linux/macos/windows x amd64/arm64. 95% of runtime is HTTP IO against SAP APIs.
 
 ## Decision
 
@@ -18,7 +18,7 @@ Use **Go 1.23+** as the primary implementation language for the sapctl CLI and a
 - Cobra ecosystem (kubectl, helm, gh, terraform precedent) = mature CLI UX patterns.
 - OpenAPI Generator has first-class Go target; custom Cobra template feasible.
 - Sigstore (cosign), SLSA builders, CycloneDX tooling, in-toto, opa, syft = reference implementations in Go.
-- Largest LLM training corpus for CLI patterns = best AI-assisted velocity for solo dev.
+- Largest LLM training corpus for CLI patterns = best AI-assisted velocity for a small team.
 - Compile time 2-5s incremental = tight feedback loop.
 - Hiring pool when team grows (k8s/cloud-native devs) is the largest.
 
