@@ -119,7 +119,7 @@
               ['/humans.txt',           'humans.txt'],
             ])
       +     col('Connect', [
-              ['https://github.com/sapctl/sapctl',    'GitHub'],
+              ['https://github.com/dixitsheta/sapctl',    'GitHub'],
               ['https://discord.gg/sapctl',           'Discord'],
               ['https://x.com/sapctl',                'X'],
               ['https://www.linkedin.com/company/sapctl', 'LinkedIn'],
@@ -129,7 +129,7 @@
       +   '<div class="foot-bottom">'
       +     '<div>© 2026 sapctl contributors. Apache 2.0. sapctl is an independent open-source project and is not affiliated with or endorsed by SAP SE.</div>'
       +     '<div class="foot-social">'
-      +       '<a href="https://github.com/sapctl/sapctl" aria-label="GitHub"><i class="ti ti-brand-github"  style="font-size:18px"></i></a>'
+      +       '<a href="https://github.com/dixitsheta/sapctl" aria-label="GitHub"><i class="ti ti-brand-github"  style="font-size:18px"></i></a>'
       +       '<a href="https://x.com/sapctl" aria-label="X"><i class="ti ti-brand-x" style="font-size:18px"></i></a>'
       +       '<a href="https://www.linkedin.com/company/sapctl" aria-label="LinkedIn"><i class="ti ti-brand-linkedin" style="font-size:18px"></i></a>'
       +     '</div>'

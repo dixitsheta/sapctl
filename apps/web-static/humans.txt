@@ -1,7 +1,7 @@
 /* TEAM */
   Project: sapctl
   Contact: hello [at] sapctl.dev
-  Source: https://github.com/sapctl/sapctl
+  Source: https://github.com/dixitsheta/sapctl
   License: Apache-2.0
 
 /* SITE */
