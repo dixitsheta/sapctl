@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-24T00:00:00Z",
+  "updated_at": "2026-08-31T00:00:00Z",
   "overall": "operational",
   "components": [
     {
@@ -17,8 +17,8 @@
     {
       "id": "docs-sapctl-dev",
       "name": "docs.sapctl.dev",
-      "status": "maintenance",
-      "description": "Astro Starlight docs; Cloudflare Pages deploy in progress"
+      "status": "operational",
+      "description": "Astro Starlight docs on Cloudflare Pages"
     },
     {
       "id": "sap-api-hub",
