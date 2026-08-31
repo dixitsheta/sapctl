@@ -366,6 +366,11 @@
     .tab:hover { color: var(--ink); }
     .tab.active { color: var(--ink); border-bottom-color: var(--accent); }
 
+    /* use-case availability badges */
+    .uc-badge { display:inline-block; font-size:10px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; padding:2px 7px; border-radius:999px; margin-left:6px; vertical-align:middle; }
+    .uc-avail { color:#10B981; background:rgba(16,185,129,.12); border:1px solid rgba(16,185,129,.35); }
+    .uc-road { color:#F59E0B; background:rgba(245,158,11,.12); border:1px solid rgba(245,158,11,.35); }
+
     /* use-case + flagship cards — premium hover */
     .uc-card {
       background: var(--surface);
@@ -651,21 +656,21 @@
     <div class="reveal">
       <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Use cases</div>
       <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px] max-w-[820px]">
-        50+ ready-made workflows across the SAP portfolio.
+        Workflows across the SAP portfolio — some available now, more on the roadmap.
       </h2>
     </div>
 
     <!-- tab strip -->
     <div class="mt-10 border-b hairline">
       <div role="tablist" id="uc-tabs" class="flex gap-8 overflow-x-auto no-scrollbar font-medium text-[14px]">
-        <button role="tab" data-tab="s4"      class="tab active">S/4HANA</button>
-        <button role="tab" data-tab="btp"     class="tab">BTP + AI Core</button>
-        <button role="tab" data-tab="data"    class="tab">Datasphere + HANA</button>
-        <button role="tab" data-tab="joule"   class="tab">Joule + MCP</button>
-        <button role="tab" data-tab="lob"     class="tab">LoB clouds</button>
-        <button role="tab" data-tab="cpi"     class="tab">Integration Suite</button>
-        <button role="tab" data-tab="sac"     class="tab">SAC + Signavio + LeanIX</button>
-        <button role="tab" data-tab="alm"     class="tab">Cloud ALM + ops</button>
+        <button role="tab" data-tab="s4"      class="tab active">S/4HANA <span class="uc-badge uc-avail">Available</span></button>
+        <button role="tab" data-tab="btp"     class="tab">BTP + AI Core <span class="uc-badge uc-avail">Available</span></button>
+        <button role="tab" data-tab="data"    class="tab">Datasphere + HANA <span class="uc-badge uc-avail">Available</span></button>
+        <button role="tab" data-tab="joule"   class="tab">Joule + MCP <span class="uc-badge uc-avail">Available</span></button>
+        <button role="tab" data-tab="lob"     class="tab">LoB clouds <span class="uc-badge uc-road">Roadmap</span></button>
+        <button role="tab" data-tab="cpi"     class="tab">Integration Suite <span class="uc-badge uc-road">Roadmap</span></button>
+        <button role="tab" data-tab="sac"     class="tab">SAC + Signavio + LeanIX <span class="uc-badge uc-road">Roadmap</span></button>
+        <button role="tab" data-tab="alm"     class="tab">Cloud ALM + ops <span class="uc-badge uc-road">Roadmap</span></button>
       </div>
     </div>
 
@@ -1070,76 +1075,80 @@
 
     /* ---------------- use-case data + renderer ---------------- */
     var UC = {
-      s4: [
+      s4: { status:'available', items:[
         { n:'01', persona:'Auditor', title:'Extract 12 months of journal entries for SOX audit', sub:'Bypasses the empty-allowlist default on CDS auth groups; pulls A_JournalEntryItemBasic + I_GLAccountLineItem in parallel.', tags:['SOX','IFRS','SOC1'] },
         { n:'02', persona:'Migration architect', title:'Migrate master data ECC → S/4 Cloud Greenfield', sub:'Replaces the per-object LTMOM clickfest with a single Git-reviewable manifest.', tags:['SOX','GDPR'] },
         { n:'03', persona:'Integration dev', title:'Bulk-post sales orders from upstream e-commerce', sub:'Handles deep-insert + CSRF + partial-failure semantics on API_SALES_ORDER_SRV out of the box.', tags:['SOX','PCI'] },
         { n:'04', persona:'Data engineer', title:'Continuous ACDOCA replication to a data lake', sub:'Skips multi-week SLT setup; CDC via Change Data Capture annotation in one command.', tags:['SOC1','IFRS'] },
         { n:'05', persona:'Technical architect', title:'ECC → S/4 Brownfield custom-code readiness', sub:'Wraps central ATC + SCMON + simplification DB into a Git-reviewable readiness report.', tags:['ITGC','ITAR'] },
         { n:'06', persona:'AI engineer', title:'Emit an MCP server for an agent writing back to S/4', sub:'Walks the Cobra tree, registers CSRF + deep-insert + ETag handling; works with Claude Desktop, Cursor, Continue.', tags:['AI Act','SOX'] },
-      ],
-      btp: [
+      ]},
+      btp: { status:'available', items:[
         { n:'07', persona:'Platform architect', title:'Clone a BTP subaccount with all entitlements', sub:'Snapshot quotas, subscriptions, role collections; re-apply against a sibling subaccount idempotently.', tags:['SOC2','ISO27001'] },
         { n:'08', persona:'AI engineer', title:'Provision AI Core resource group with guardrails', sub:'Bind orchestration deployments and content filtering policy from one YAML manifest.', tags:['AI Act','GDPR'] },
         { n:'09', persona:'Security lead', title:'Rotate xsuaa client secrets across landscape', sub:'Discovers every app binding via Cloud Foundry + Kyma APIs; rotates and re-deploys in one pass.', tags:['SOC2','ISO27001'] },
         { n:'10', persona:'Consultant', title:'Audit destinations and connectivity configs', sub:'Diffs Cloud Connector subaccount bindings against an expected baseline; flags drift.', tags:['SOX','ITGC'] },
         { n:'11', persona:'AI engineer', title:'Deploy a Joule-compatible skill to AI Core', sub:'Packages the prompt + tools + grounding source bundle; emits an A2A Agent Card.', tags:['AI Act'] },
         { n:'12', persona:'Architect', title:'Promote CAP service from dev → prod', sub:'Git-reviewable promotion with build-once, deploy-many. Signed manifest preserved as evidence.', tags:['SLSA L3','SOC2'] },
-      ],
-      data: [
+      ]},
+      data: { status:'available', items:[
         { n:'13', persona:'Data engineer', title:'Materialise an analytic model into HANA Cloud', sub:'Compiles a Datasphere analytic model to HANA Cloud HDI artefacts and deploys in one shot.', tags:['SOC1','IFRS'] },
         { n:'14', persona:'Architect', title:'Federate two Datasphere tenants for M&A', sub:'Sets up cross-tenant remote sources, replication flows, and access policies declaratively.', tags:['SOX','GDPR'] },
         { n:'15', persona:'AI engineer', title:'Index HANA Cloud Vector Engine from S/4 docs', sub:'Chunks attached documents, embeds, and writes back vectors with row-level entitlements.', tags:['AI Act','GDPR'] },
         { n:'16', persona:'Data engineer', title:'Replicate a finance space to a lakehouse', sub:'Wires Datasphere replication flow into Iceberg with schema evolution handled.', tags:['SOC1'] },
         { n:'17', persona:'Auditor', title:'Snapshot a privileged-user access policy', sub:'Captures privilege grants + audit policy as evidence for ITGC walkthrough.', tags:['SOX','ITGC'] },
         { n:'18', persona:'Architect', title:'Lift a HANA Cloud schema into a new tenant', sub:'Bundles tables + roles + analytic privileges as an air-gap-able archive.', tags:['SOC2','ISO27001'] },
-      ],
-      joule: [
+      ]},
+      joule: { status:'available', items:[
         { n:'19', persona:'AI engineer', title:'Stand up a Joule-compatible MCP server', sub:'Walks any sub-command tree and exposes it as a standards-compliant MCP transport.', tags:['AI Act'] },
         { n:'20', persona:'AI engineer', title:'Mirror SAP master data locally for agents', sub:'Local SQLite + FTS5 mirror prevents agent traffic from hammering production OData.', tags:['SOX','GDPR'] },
         { n:'21', persona:'Architect', title:'Constrain agents to SAP API Policy v4/2026', sub:'Blocks raw API orchestration; routes every tool call through approved sapctl verbs.', tags:['AI Act'] },
         { n:'22', persona:'Auditor', title:'Replay an agent session from signed audit log', sub:'Every prompt, tool call, and side effect is hash-chained and verifiable post-hoc.', tags:['AI Act','SOX'] },
         { n:'23', persona:'AI engineer', title:'Emit an A2A Agent Card for a finance workflow', sub:'Generates capability descriptors so other agents can discover and negotiate handoffs.', tags:['AI Act'] },
         { n:'24', persona:'Consultant', title:'Package Joule skills as a customer-installable bundle', sub:'Ships skills + grounding sources + entitlement manifests as one signed artifact.', tags:['SLSA L3'] },
-      ],
-      lob: [
+      ]},
+      lob: { status:'roadmap', items:[
         { n:'25', persona:'Procurement lead', title:'Pull Ariba supplier risk into a single feed', sub:'Joins supplier master + risk indicators + sanctions screening into one consumable view.', tags:['Sanctions','GDPR'] },
         { n:'26', persona:'Finance ops', title:'Reconcile Concur expense against G/L postings', sub:'Diffs Concur reports against ACDOCA line items; surfaces unbilled and orphaned entries.', tags:['SOX','IFRS'] },
         { n:'27', persona:'HRIS lead', title:'Replicate SuccessFactors orgs to identity provider', sub:'Idempotent sync of org structure, line manager, and cost centre into IdP groups.', tags:['GDPR','SOC2'] },
         { n:'28', persona:'Consultant', title:'Export Ariba contracts for clean-core review', sub:'Bulk-exports contract metadata + clauses for migration assessment.', tags:['SOX','GDPR'] },
         { n:'29', persona:'AI engineer', title:'Build a Concur-aware travel agent', sub:'Emits an MCP server bound to Concur Request/Expense APIs with policy-aware guardrails.', tags:['AI Act'] },
         { n:'30', persona:'Auditor', title:'Capture SuccessFactors leaver evidence', sub:'Generates signed evidence that joiner-mover-leaver controls fired correctly.', tags:['SOX','GDPR'] },
-      ],
-      cpi: [
+      ]},
+      cpi: { status:'roadmap', items:[
         { n:'31', persona:'Integration dev', title:'Promote a CPI iFlow with reviewable diff', sub:'Git-native iFlow promotion across runtimes with parameterised value mappings.', tags:['SOX','ITGC'] },
         { n:'32', persona:'Architect', title:'Wire an Event Mesh subscriber for SAP events', sub:'Subscribes a downstream consumer to an Event Mesh queue with dead-letter and retry.', tags:['SOC2'] },
         { n:'33', persona:'Security lead', title:'Rotate certificate-based auth on every iFlow', sub:'Discovers every iFlow using a given keystore alias; rotates and redeploys atomically.', tags:['SOC2','ISO27001'] },
         { n:'34', persona:'Auditor', title:'Export iFlow inventory + change history', sub:'Produces an evidence pack of every integration, last edited by whom, and last deployed when.', tags:['SOX','ITGC'] },
         { n:'35', persona:'Integration dev', title:'Trace a transaction across CPI + S/4 + LoB', sub:'Joins OpenTelemetry spans with CPI MPL events into one timeline.', tags:['DORA'] },
         { n:'36', persona:'Architect', title:'Migrate a Process Orchestration iFlow to CPI', sub:'Translates channel + adapter + mapping definitions into CPI artefacts with diffable output.', tags:['SOX'] },
-      ],
-      sac: [
+      ]},
+      sac: { status:'roadmap', items:[
         { n:'37', persona:'Analyst', title:'Promote an SAC story across tenants', sub:'Git-reviewable story export/import with bound model references and authorisation roles.', tags:['SOX','SOC2'] },
         { n:'38', persona:'Process architect', title:'Sync Signavio process collection to Confluence', sub:'Auto-publishes the latest process diagrams + descriptions; preserves links across renames.', tags:['ITGC'] },
         { n:'39', persona:'EA lead', title:'Diff a LeanIX inventory against actual landscape', sub:'Compares LeanIX fact sheets against live BTP + S/4 + LoB inventory; flags drift.', tags:['ITGC'] },
         { n:'40', persona:'Analyst', title:'Bulk-rebind SAC models to a new HANA tenant', sub:'Sweeps every story; rewrites connection bindings without breaking calculation references.', tags:['SOC2'] },
         { n:'41', persona:'Process owner', title:'Mine an SAP process from Signavio + S/4 logs', sub:'Joins Signavio mining output with ACDOCA + EKBE to find the actual happy path.', tags:['SOX'] },
         { n:'42', persona:'EA lead', title:'Emit a LeanIX export as a CycloneDX SBOM', sub:'Translates the application inventory into a tool-agnostic SBOM for procurement & audit.', tags:['CRA','SOC2'] },
-      ],
-      alm: [
+      ]},
+      alm: { status:'roadmap', items:[
         { n:'43', persona:'Ops engineer', title:'Wire Cloud ALM alerts into PagerDuty', sub:'Subscribes ALM events; routes by impact + service; preserves correlation IDs end-to-end.', tags:['DORA','SOC2'] },
         { n:'44', persona:'Architect', title:'Provision a Cloud Connector with golden config', sub:'One command lays down Cloud Connector + subaccount bindings + policies as code.', tags:['SOC2','ISO27001'] },
         { n:'45', persona:'Auditor', title:'Export ALM project tasks as audit evidence', sub:'Snapshots requirements, tests, and approvals into a tamper-evident archive.', tags:['SOX','ITGC'] },
         { n:'46', persona:'SRE', title:'Emit OpenTelemetry from every sapctl invocation', sub:'Spans, metrics, and audit events flow to your existing observability stack.', tags:['DORA','SOC2'] },
         { n:'47', persona:'Ops engineer', title:'Sweep stale Cloud Connector tunnels', sub:'Detects orphaned virtual hosts; recommends safe deletions with blast-radius preview.', tags:['ITGC'] },
         { n:'48', persona:'Architect', title:'Air-gap bundle a release for restricted networks', sub:'Single signed archive: binaries, SBOM, cosign attestations, replay scripts.', tags:['CRA','SLSA L3'] },
-      ],
+      ]},
     };
 
     var grid = document.getElementById('uc-grid');
     function renderUC(key) {
       grid.innerHTML = '';
-      var items = UC[key] || [];
+      var group = UC[key] || { status:'roadmap', items:[] };
+      var items = group.items || [];
+      var badge = group.status === 'available'
+        ? '<span class="uc-badge uc-avail">Available now</span>'
+        : '<span class="uc-badge uc-road">Roadmap</span>';
       items.forEach(function (it) {
         var card = document.createElement('article');
         card.className = 'uc-card rounded-lg border hairline p-5 bg-surface dark:bg-surface flex flex-col';
@@ -1151,7 +1160,8 @@
           '</div>' +
           '<h3 class="mt-4 font-semibold text-[16px] leading-snug">' + it.title + '</h3>' +
           '<p class="mt-2 text-[14px] text-ink2">' + it.sub + '</p>' +
-          '<div class="mt-5 flex flex-wrap gap-2">' + tags + '</div>';
+          '<div class="mt-5 flex flex-wrap gap-2">' + tags + '</div>' +
+          '<div class="mt-4 pt-3 border-t hairline">' + badge + '</div>';
         grid.appendChild(card);
       });
     }

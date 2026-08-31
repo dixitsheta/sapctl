@@ -63,9 +63,7 @@
 <p>Pick the channel that fits your environment:</p>
 <ul>
   <li><strong>Go:</strong> <code>go install github.com/dixitsheta/sapctl/apps/cli@latest</code></li>
-  <li><strong>Homebrew:</strong> <code>brew install sapctl/tap/sapctl</code></li>
-  <li><strong>Scoop:</strong> <code>scoop bucket add sapctl https://github.com/dixitsheta/scoop &amp;&amp; scoop install sapctl</code></li>
-  <li><strong>Apt:</strong> <code>curl -fsSL https://sapctl.dev/install.sh | bash</code></li>
+  <li><strong>Release tarball:</strong> <code>curl -L https://github.com/dixitsheta/sapctl/releases/latest/download/sapctl_$(uname -s)_$(uname -m).tar.gz | tar xz</code></li>
   <li><strong>Air-gapped:</strong> verified tarball + cosign attestation on the <a href="https://github.com/dixitsheta/sapctl/releases">releases page</a>.</li>
 </ul>
 
@@ -81,7 +79,7 @@ sapctl auth status</code></pre>
 <p>Every sub-command tree can be emitted as a Model Context Protocol server, ready to wire into Claude Desktop, Cursor, or Continue. See <code>sapctl mcp emit --help</code>.</p>
 
 <h2 id="examples">Examples</h2>
-<p>Browse 50+ ready-made workflows on the <a href="index.html#use-cases">use cases</a> page or in the <a href="https://github.com/dixitsheta/examples">examples repo</a>.</p>
+<p>Browse ready-made workflows on the <a href="index.html#use-cases">use cases</a> page.</p>
 
 <h2>Full documentation</h2>
 <p>The full reference, configuration cookbook, and tenant-by-tenant guides live at <a href="https://docs.sapctl.dev">docs.sapctl.dev</a>.</p>
