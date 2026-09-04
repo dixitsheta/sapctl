@@ -769,17 +769,83 @@
   </section>
 
   <!-- =====================================================================
-       9. Pricing
+       9. Features + interest
   ====================================================================== -->
   <section id="pricing" class="container-x py-24 border-t hairline">
     <div class="max-w-[820px] reveal">
-      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Pricing</div>
+      <div class="text-[13px] font-mono text-ink3 uppercase zone-label">Features</div>
       <h2 class="mt-3 font-semibold tracking-tight2 text-[32px] sm:text-[40px]">
-        Free for individuals. Per-seat for teams. Custom for enterprises.
+        Everything you need for signed, auditable SAP evidence.
       </h2>
+      <p class="mt-4 text-[16px] text-ink2 max-w-[640px]">
+        The core CLI is free and open source. Team features are coming soon — tell us what you need and we'll shape the package around it.
+      </p>
     </div>
 
     <div id="pricing-grid" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+    <!-- interest form -->
+    <div class="mt-16 max-w-[720px] mx-auto reveal">
+      <div class="rounded-xl border hairline p-8 bg-surface dark:bg-surface">
+        <h3 class="font-semibold text-[20px]">Interested in a Team package?</h3>
+        <p class="mt-2 text-[14px] text-ink2">
+          Pricing is coming soon. Tell us your team size and budget, and we'll get back to you with a package that fits.
+        </p>
+        <form id="interest-form" class="mt-6 space-y-4" novalidate>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="form-row">
+              <label for="in-name">Name</label>
+              <input id="in-name" name="name" type="text" required autocomplete="name" />
+            </div>
+            <div class="form-row">
+              <label for="in-email">Work email</label>
+              <input id="in-email" name="email" type="email" required autocomplete="email" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="in-company">Company</label>
+            <input id="in-company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="form-row">
+              <label for="in-seats">How many seats do you need?</label>
+              <select id="in-seats" name="seats" required>
+                <option value="">Select…</option>
+                <option value="1-5">1–5</option>
+                <option value="6-15">6–15</option>
+                <option value="16-30">16–30</option>
+                <option value="31-50">31–50</option>
+                <option value="50+">50+</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="in-budget">Willing to pay (per seat / month)</label>
+              <select id="in-budget" name="budget" required>
+                <option value="">Select…</option>
+                <option value="< $30">&lt; $30</option>
+                <option value="$30-60">$30–60</option>
+                <option value="$60-100">$60–100</option>
+                <option value="$100+">$100+</option>
+                <option value="not sure">Not sure yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label for="in-notes">What do you need it for? (optional)</label>
+            <textarea id="in-notes" name="notes" rows="3" maxlength="1000" placeholder="e.g. SOX journal evidence, DORA reporting, air-gap…"></textarea>
+          </div>
+          <div class="form-row hp" aria-hidden="true" style="position:absolute; left:-10000px; height:0; overflow:hidden">
+            <label for="in-website">Website</label>
+            <input id="in-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEjD71ls1vTMBR2B" data-theme="dark"></div>
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Show interest</button>
+            <span id="in-status" class="form-status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </div>
   </section>
 
   <!-- =====================================================================
@@ -1294,45 +1360,65 @@
       tl.appendChild(li);
     });
 
-    /* ---------------- pricing ---------------- */
-    var PRICING = [
-      { tier:'FREE / OSS',  price:'$0',      suffix:'',     pitch:'The full open-source binary. No license check, no nag.',
-        feats:['All core commands','Signed audit chain','MCP emission','Air-gap bundles','Community Discord'],
-        cta:'Install', primary:false, recommended:false },
-      { tier:'TEAM',        price:'$60',     suffix:'/seat/mo (annual)', pitch:'For teams that need retention + multi-credential workflows.',
-        feats:['Audit-export retention >30 days','Multi-credential storage','Email support','Offline-verifiable license'],
-        cta:'Start trial', primary:true,  recommended:true  },
-      { tier:'ENTERPRISE',  price:'Custom',  suffix:'',     pitch:'For air-gapped, regulated, defense workloads.',
-        feats:['Unlimited seats','On-prem or HYOK','24×7 + named CSM','Custom compliance support'],
-        cta:'Talk to us', primary:true,  recommended:false },
+    /* ---------------- features (replaces pricing) ---------------- */
+    var FEATURES = [
+      { icon:'ti-shield-check', title:'Signed audit chain', desc:'ed25519 hash-chained log on every call. Tamper-evident, offline-verifiable.', tag:'Free' },
+      { icon:'ti-file-text', title:'CycloneDX SBOM + cosign', desc:'Every release ships a CycloneDX 1.7 SBOM, cosign keyless signature, SLSA L3 provenance.', tag:'Free' },
+      { icon:'ti-box', title:'Air-gap bundles', desc:'in-toto v1 bundles that run in a bank or on a USB stick into a classified network.', tag:'Free' },
+      { icon:'ti-plug', title:'MCP server emission', desc:'Emit an MCP server from any sub-command tree — 32 tools auto-generated.', tag:'Free' },
+      { icon:'ti-database', title:'Local SQLite mirror', desc:'FTS5 search over fetched SAP data. Extract once, consume downstream.', tag:'Free' },
+      { icon:'ti-clock', title:'Retention >30 days', desc:'Longer audit-export retention for SOX/DORA evidence pipelines.', tag:'Team · soon' },
+      { icon:'ti-users', title:'Multi-credential storage', desc:'Manage credentials across many tenants and environments.', tag:'Team · soon' },
+      { icon:'ti-headset', title:'Email support', desc:'Direct support for Team-tier customers.', tag:'Team · soon' },
+      { icon:'ti-building', title:'Enterprise compliance', desc:'On-prem / HYOK, named CSM, custom compliance support.', tag:'Enterprise' },
     ];
     var pg = document.getElementById('pricing-grid');
-    PRICING.forEach(function (p) {
+    FEATURES.forEach(function (f) {
       var card = document.createElement('article');
-      card.className = 'relative rounded-lg p-6 bg-surface dark:bg-surface flex flex-col '
-                     + (p.recommended ? 'border-2' : 'border hairline');
-      if (p.recommended) card.classList.add('price-recommended');
-      var feats = p.feats.map(function (f) {
-        return '<li class="flex items-start gap-2 text-[14px] text-ink2"><i class="ti ti-check text-[16px]" style="color:#10B981; margin-top:2px"></i><span>' + f + '</span></li>';
-      }).join('');
+      card.className = 'rounded-lg border hairline p-5 bg-surface dark:bg-surface flex flex-col gap-3';
       card.innerHTML =
-        (p.recommended ? '<span class="absolute top-3 right-3 pill" style="color:var(--accent); border-color:color-mix(in srgb, var(--accent) 60%, var(--line)); background: var(--accent-soft);">Recommended</span>' : '') +
-        '<div class="text-[12px] font-mono text-ink3 zone-label">' + p.tier + '</div>' +
-        '<div class="mt-3 flex items-baseline gap-2">' +
-          '<div class="font-semibold text-[32px] tracking-tight2 leading-none">' + p.price + '</div>' +
-          (p.suffix ? '<div class="text-[14px] text-ink3">' + p.suffix + '</div>' : '') +
+        '<div class="flex items-center justify-between gap-3">' +
+          '<i class="ti ' + f.icon + ' text-[22px]" style="color:var(--accent)"></i>' +
+          '<span class="pill">' + f.tag + '</span>' +
         '</div>' +
-        '<p class="mt-3 text-[14px] text-ink2">' + p.pitch + '</p>' +
-        '<div class="my-5 h-px bg-line dark:bg-line"></div>' +
-        '<ul class="space-y-2">' + feats + '</ul>' +
-        '<div class="mt-6">' +
-          (p.primary
-            ? '<a href="contact.html" class="block text-center rounded-md bg-accent text-white font-medium text-[14px] px-4 py-[10px] hover:bg-[#2f6fe0]">' + p.cta + '</a>'
-            : '<a href="docs.html" class="block text-center rounded-md border hairline text-ink dark:text-ink font-medium text-[14px] px-4 py-[10px] hover:bg-bg dark:hover:bg-bg">' + p.cta + '</a>'
-          ) +
-        '</div>';
+        '<h3 class="font-semibold text-[16px]">' + f.title + '</h3>' +
+        '<p class="text-[14px] text-ink2">' + f.desc + '</p>';
       pg.appendChild(card);
     });
+
+    /* ---------------- interest form ---------------- */
+    var interestForm = document.getElementById('interest-form');
+    if (interestForm) {
+      interestForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var status = document.getElementById('in-status');
+        var btn = interestForm.querySelector('button[type=submit]');
+        var website = document.getElementById('in-website').value;
+        var payload = {
+          name: document.getElementById('in-name').value,
+          email: document.getElementById('in-email').value,
+          company: document.getElementById('in-company').value,
+          seats: document.getElementById('in-seats').value,
+          budget: document.getElementById('in-budget').value,
+          notes: document.getElementById('in-notes').value,
+          website: website,
+          'cf-turnstile-response': (window.turnstile && turnstile.getResponse) ? turnstile.getResponse() : '',
+        };
+        btn.disabled = true;
+        status.textContent = 'Sending…';
+        fetch('/api/interest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function (r) {
+            if (r.status === 204) { status.textContent = 'Thanks — we\'ll be in touch.'; interestForm.reset(); if (window.turnstile) turnstile.reset(); }
+            else { return r.text().then(function (t) { throw new Error(t || ('status ' + r.status)); }); }
+          })
+          .catch(function (err) { status.textContent = 'Something went wrong: ' + err.message; })
+          .finally(function () { btn.disabled = false; });
+      });
+    }
 
     /* ---------------- trust strip ---------------- */
     var TRUST = [
